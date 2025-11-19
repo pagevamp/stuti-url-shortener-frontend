@@ -10,23 +10,27 @@ const RegisterComponent = () => {
       </p>
 
       <InputFields
+        name="Full Name"
         type="text"
         placeholder="Enter your name"
         labelName="Full Name"
       />
 
       <InputFields
+        name="User Name"
         type="text"
         placeholder="Enter your username"
         labelName="User Name"
       />
 
       <InputFields
+        name="Email"
         type="text"
         placeholder="Enter your email"
         labelName="Email"
       />
       <InputFields
+        name="Password"
         type="text"
         placeholder="Enter  password"
         labelName="Password"
