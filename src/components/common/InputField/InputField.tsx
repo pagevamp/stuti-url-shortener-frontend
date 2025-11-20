@@ -1,19 +1,25 @@
-import React from "react"
+import { Icon } from "@iconify/react"
 
-const InputFields = ({
+export const InputField = ({
   labelName,
   name,
   type,
+  icon,
   placeholder,
 }: {
-  name?: string
-  labelName?: string
+  name: string
+  labelName: string
+  icon: string 
   type?: string
-  placeholder?: string
+  placeholder: string
 }) => {
   return (
     <div>
-      <label htmlFor={name} className="text-shadow-md text-shadow-lime-950">
+      <label
+        htmlFor={name}
+        className="text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center"
+      >
+        <Icon icon={icon} width={16} height={16} className="text-[#2F2E43]" />
         {labelName}
       </label>
       <input
@@ -25,5 +31,3 @@ const InputFields = ({
     </div>
   )
 }
-
-export default InputFields

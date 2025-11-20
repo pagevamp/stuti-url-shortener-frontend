@@ -1,5 +1,5 @@
-import ImageSlider from "@/src/components/common/ImageSlider/ImageSlider"
-import RadialDecorator from "@/src/components/common/RadialDecorator/RadialDecorator"
+import { ImageSlider } from "@/src/components/common/ImageSlider/ImageSlider"
+import { RadialDecorator } from "@/src/components/common/RadialDecorator/RadialDecorator"
 import React from "react"
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

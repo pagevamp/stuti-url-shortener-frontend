@@ -1,43 +1,54 @@
 "use client"
-import InputFields from "../common/InputFields/InputFields"
-import Button from "../common/Button/Button"
+import { InputField } from "../common/InputField/InputField"
+import { Button } from "../common/Button/Button"
+import { Icon } from "@iconify/react"
 
-const RegisterComponent = () => {
+export const RegisterComponent = () => {
   return (
-    <div className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center">
+    <form className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center">
       <p className="text-2xl font-extrabold text-shadow-2xs text-shadow-[#2F2E43]">
         SIGN UP
       </p>
 
-      <InputFields
-        name="Full Name"
+      <InputField
+        name="fullname"
         type="text"
+        icon="mdi:rename-outline"
         placeholder="Enter your name"
         labelName="Full Name"
       />
 
-      <InputFields
-        name="User Name"
+      <InputField
+        name="username"
         type="text"
+        icon="akar-icons:person"
         placeholder="Enter your username"
         labelName="User Name"
       />
 
-      <InputFields
-        name="Email"
-        type="text"
+      <InputField
+        name="email"
+        type="email"
+        icon="ic:outline-email"
         placeholder="Enter your email"
         labelName="Email"
       />
-      <InputFields
-        name="Password"
+      <InputField
+        name="password"
         type="text"
+        icon="tdesign:user-password"
         placeholder="Enter  password"
         labelName="Password"
       />
-      <Button>Sign Up</Button>
-    </div>
+      <Button>
+        <span className="flex flex-row items-center gap-1">
+          Sign Up <Icon icon="icomoon-free:enter" width={16} height={16} />
+        </span>
+      </Button>
+
+      <span className="flex flex-row items-center gap-1 mx-auto text-gray-400 text-sm my-5">
+        Sign up with your <Icon icon="logos:google" /> account instead
+      </span>
+    </form>
   )
 }
-
-export default RegisterComponent

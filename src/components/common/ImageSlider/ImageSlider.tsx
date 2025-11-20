@@ -11,7 +11,7 @@ const slide = [
   { image: "/join.svg", alt: "join" },
 ]
 
-const ImageSlider = () => {
+export const ImageSlider = () => {
   return (
     <motion.div
       className="w-full max-w-[600px] min-w-[300px] h-[800px] min-h-[500px] lg:h-[90vh] 2xl:h-[80vh] rounded-[20px] overflow-hidden"
@@ -25,8 +25,8 @@ const ImageSlider = () => {
         pagination={{ clickable: true }}
         loop={true}
       >
-        {slide.map((slide, idx) => (
-          <SwiperSlide key={idx}>
+        {slide.map((slide) => (
+          <SwiperSlide key={slide.alt}>
             <div className="w-full h-full">
               <Image
                 width={500}
@@ -42,4 +42,3 @@ const ImageSlider = () => {
   )
 }
 
-export default ImageSlider

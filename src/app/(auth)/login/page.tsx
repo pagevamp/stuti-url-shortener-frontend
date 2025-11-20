@@ -1,10 +1,11 @@
-import LoginComponent from "@/src/components/login/LoginComponent"
+import { Container } from "@/src/components/common/Container/Container"
+import { LoginComponent } from "@/src/components/login/LoginComponent"
 
 const Login = () => {
   return (
-    <div className="flex flex-col gap-5 py-10 px-20">
+    <Container>
       <LoginComponent />
-    </div>
+    </Container>
   )
 }
 

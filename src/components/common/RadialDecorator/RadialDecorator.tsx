@@ -1,7 +1,7 @@
 "use client"
 import { motion } from "framer-motion"
 
-const RadialDecorator = () => {
+export const RadialDecorator = () => {
   return (
     <section className="relative">
       <div className="absolute top-0">
@@ -68,4 +68,3 @@ const RadialDecorator = () => {
   )
 }
 
-export default RadialDecorator
