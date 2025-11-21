@@ -6,18 +6,7 @@ import { useRegister } from "@/src/hooks/useRegister"
 import Link from "next/link"
 
 export const RegisterComponent = () => {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    username,
-    setUsername,
-    fullName,
-    setFullName,
-    error,
-    handleSubmit,
-  } = useRegister()
+  const { error, registerFormData, handleChange, handleSubmit } = useRegister()
   return (
     <form
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
@@ -33,8 +22,8 @@ export const RegisterComponent = () => {
         icon="mdi:rename-outline"
         placeholder="Enter your name"
         labelName="Full Name"
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
+        value={registerFormData.fullName}
+        onChange={(e) => handleChange(e)}
         error={error?.fullName}
       />
 
@@ -44,8 +33,8 @@ export const RegisterComponent = () => {
         icon="akar-icons:person"
         placeholder="Enter your username"
         labelName="User Name"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={registerFormData.username}
+        onChange={(e) => handleChange(e)}
         error={error?.username}
       />
 
@@ -55,8 +44,8 @@ export const RegisterComponent = () => {
         icon="ic:outline-email"
         placeholder="Enter your email"
         labelName="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={registerFormData.email}
+        onChange={(e) => handleChange(e)}
         error={error?.email}
       />
       <InputField
@@ -65,8 +54,8 @@ export const RegisterComponent = () => {
         icon="tdesign:user-password"
         placeholder="Enter  password"
         labelName="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={registerFormData.password}
+        onChange={(e) => handleChange(e)}
         error={error?.password}
       />
       <Button type="submit">

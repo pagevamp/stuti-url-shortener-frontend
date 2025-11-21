@@ -1,38 +1,31 @@
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { registerFormValidationSchema } from "../core/validation/register-validation"
 import { RegisterErrors } from "../core/types/register-types"
 import { userRegister } from "../core/api/register-api"
 
 export function useRegister() {
-  const [email, setEmail] = useState<string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("email") ?? ""
-    return ""
+  const [registerFormData, setRegisterFormData] = useState({
+    username: "",
+    fullName: "",
+    email: "",
+    password: "",
   })
-  const [username, setUsername] = useState<string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("username") ?? ""
-    return ""
-  })
-  const [fullName, setFullName] = useState<string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("fullName") ?? ""
-    return ""
-  })
-  const [password, setPassword] = useState<string>("")
 
   const [error, setError] = useState<RegisterErrors>({})
 
-  if (typeof window !== "undefined") {
-    localStorage.setItem("email", email)
-    localStorage.setItem("username", username)
-    localStorage.setItem("fullName", fullName)
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+
+    setRegisterFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const formValues = { fullName, username, email, password }
+    const formValues = registerFormData
     const result = registerFormValidationSchema.safeParse(formValues)
 
     if (!result.success) {
@@ -44,17 +37,18 @@ export function useRegister() {
       setError(formattedErrors)
       return
     }
-
     setError({})
 
     try {
       const response = await userRegister(formValues)
       console.log("Register successful:", response.data)
 
-      setEmail("")
-      setUsername("")
-      setFullName("")
-      setPassword("")
+      setRegisterFormData({
+        username: registerFormData.username,
+        fullName: registerFormData.fullName,
+        email: registerFormData.email,
+        password: registerFormData.password,
+      })
       setError({})
     } catch (err) {
       console.error("Register failed")
@@ -62,16 +56,11 @@ export function useRegister() {
   }
 
   return {
-    email,
-    setEmail,
-    username,
-    setUsername,
-    fullName,
-    setFullName,
-    password,
-    setPassword,
     error,
     setError,
+    registerFormData,
+    setRegisterFormData,
+    handleChange,
     handleSubmit,
   }
 }

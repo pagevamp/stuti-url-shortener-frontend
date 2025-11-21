@@ -6,8 +6,7 @@ import { useLogin } from "@/src/hooks/useLogin"
 import Link from "next/link"
 
 export const LoginComponent = () => {
-  const { email, setEmail, password, setPassword, error, handleSubmit } =
-    useLogin()
+  const { formData, error, handleChange, handleSubmit } = useLogin()
   return (
     <form
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
@@ -22,9 +21,9 @@ export const LoginComponent = () => {
         icon="akar-icons:person"
         placeholder="Enter your email"
         labelName="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={formData.email}
         error={error?.email}
+        onChange={(e) => handleChange(e)}
       />
       <InputField
         name="password"
@@ -32,9 +31,9 @@ export const LoginComponent = () => {
         icon="tdesign:user-password"
         placeholder="Enter  password"
         labelName="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={formData.password}
         error={error?.password}
+        onChange={(e) => handleChange(e)}
       />
 
       <span className="flex flex-row items-center gap-1 mx-auto text-gray-200 text-sm my-5">

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { LoginErrors } from "../core/types/login-types"
 import { loginFormValidationSchema } from "../core/validation/login-validation"
 import { useRouter } from "next/navigation"
@@ -6,23 +6,27 @@ import { userLogin } from "../core/api/login-api"
 
 export function useLogin() {
   const router = useRouter()
-  const [error, setError] = useState<LoginErrors>({})
 
-  const [password, setPassword] = useState("")
-
-  const [email, setEmail] = useState<string>(() => {
-    if (typeof window !== "undefined")
-      return localStorage.getItem("email") ?? ""
-    return ""
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
   })
 
-  if (typeof window !== "undefined") {
-    localStorage.setItem("email", email)
+  const [error, setError] = useState<LoginErrors>({})
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }))
   }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const formValues = { email, password }
+    const formValues = formData
     const result = loginFormValidationSchema.safeParse(formValues)
 
     if (!result.success) {
@@ -34,15 +38,17 @@ export function useLogin() {
       setError(formattedErrors)
       return
     }
-
-    router.push("/")
     setError({})
+    router.push("/")
 
     try {
-      const response = await userLogin({ email, password })
+      const response = await userLogin(formValues)
       console.log("Login successful:", response.data)
-      setEmail("")
-      setPassword("")
+
+      setFormData({
+        email: formData.email,
+        password: formData.password,
+      })
       setError({})
     } catch (err) {
       console.error("Login failed")
@@ -50,12 +56,11 @@ export function useLogin() {
   }
 
   return {
-    email,
-    setEmail,
-    password,
-    setPassword,
     error,
     setError,
+    formData,
+    setFormData,
     handleSubmit,
+    handleChange,
   }
 }
