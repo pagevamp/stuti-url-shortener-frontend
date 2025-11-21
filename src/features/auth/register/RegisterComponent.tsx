@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react"
 export const RegisterComponent = () => {
   return (
     <form className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center">
-      <p className="text-2xl font-extrabold text-shadow-(--color-undraw-secondary-100)">
+      <p className="text-2xl font-extrabold text-shadow-undraw-secondary-100">
         SIGN UP
       </p>
 

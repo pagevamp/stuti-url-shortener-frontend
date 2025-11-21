@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react"
 export const LoginComponent = () => {
   return (
     <form className="flex flex-col mx-auto w-[85%] gap-3 place-content-center">
-      <p className="text-2xl font-extrabold text-shadow-(--color-undraw-secondary-100)">
+      <p className="text-2xl font-extrabold text-shadow-undraw-secondary-100">
         LOG IN
       </p>
       <InputField
