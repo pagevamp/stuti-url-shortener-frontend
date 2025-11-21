@@ -1,6 +1,6 @@
 "use client"
-import { InputField } from "../common/InputField/InputField"
-import { Button } from "../common/Button/Button"
+import { InputField } from "../../../components/common/InputField/InputField"
+import { Button } from "../../../components/common/Button/Button"
 import { Icon } from "@iconify/react"
 import { useRegister } from "@/src/hooks/useRegister"
 import Link from "next/link"
@@ -61,7 +61,7 @@ export const RegisterComponent = () => {
       />
       <InputField
         name="password"
-        type="text"
+        type="password"
         icon="tdesign:user-password"
         placeholder="Enter  password"
         labelName="Password"

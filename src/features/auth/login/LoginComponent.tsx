@@ -1,19 +1,13 @@
 "use client"
-import { InputField } from "../common/InputField/InputField"
-import { Button } from "../common/Button/Button"
+import { InputField } from "../../../components/common/InputField/InputField"
+import { Button } from "../../../components/common/Button/Button"
 import { Icon } from "@iconify/react"
 import { useLogin } from "@/src/hooks/useLogin"
 import Link from "next/link"
 
 export const LoginComponent = () => {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    error,
-    handleSubmit,
-  } = useLogin()
+  const { email, setEmail, password, setPassword, error, handleSubmit } =
+    useLogin()
   return (
     <form
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
@@ -34,7 +28,7 @@ export const LoginComponent = () => {
       />
       <InputField
         name="password"
-        type="text"
+        type="password"
         icon="tdesign:user-password"
         placeholder="Enter  password"
         labelName="Password"

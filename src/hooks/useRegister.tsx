@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { registerFormValidationSchema } from "../components/register/validation"
-import { RegisterErrors } from "../components/register/types"
-import { userRegister } from "../components/register/api"
+import { registerFormValidationSchema } from "../core/validation/register-validation"
+import { RegisterErrors } from "../core/types/register-types"
+import { userRegister } from "../core/api/register-api"
 
 export function useRegister() {
   const [email, setEmail] = useState<string>(() => {

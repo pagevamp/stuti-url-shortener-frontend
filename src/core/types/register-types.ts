@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { registerFormValidationSchema } from "../validation"
+import { registerFormValidationSchema } from "../validation/register-validation"
 
 export interface userRegistrationParams {
   username: string

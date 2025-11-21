@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { LoginErrors } from "../components/login/types"
-import { loginFormValidationSchema } from "../components/login/validation"
-import { userLogin } from "../components/login/api"
+import { LoginErrors } from "../core/types/login-types"
+import { loginFormValidationSchema } from "../core/validation/login-validation"
 import { useRouter } from "next/navigation"
+import { userLogin } from "../core/api/login-api"
 
 export function useLogin() {
   const router = useRouter()
