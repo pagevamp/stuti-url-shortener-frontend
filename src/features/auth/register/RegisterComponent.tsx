@@ -1,6 +1,6 @@
 "use client"
-import { InputField } from "../common/InputField/InputField"
-import { Button } from "../common/Button/Button"
+import { InputField } from "../../../components/common/InputField/InputField"
+import { Button } from "../../../components/common/Button/Button"
 import { Icon } from "@iconify/react"
 
 export const RegisterComponent = () => {
