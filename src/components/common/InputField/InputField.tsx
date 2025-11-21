@@ -9,7 +9,7 @@ export const InputField = ({
 }: {
   name: string
   labelName: string
-  icon: string 
+  icon: string
   type?: string
   placeholder: string
 }) => {
@@ -19,14 +19,19 @@ export const InputField = ({
         htmlFor={name}
         className="text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center"
       >
-        <Icon icon={icon} width={16} height={16} className="text-[#2F2E43]" />
+        <Icon
+          icon={icon}
+          width={16}
+          height={16}
+          className="text-(--color-undraw-secondary-100)"
+        />
         {labelName}
       </label>
       <input
         name={name}
         type={type}
         placeholder={placeholder}
-        className="flex h-12 w-full my-2 rounded-md border-2 border-[#2F2E43] shadow-md shadow-lime-950 bg-[#e0e1d8] text-[#2F2E43] font-light px-3 py-2 text-sm placeholder:text-[#716f91] placeholder:text-xs"
+        className="flex h-12 w-full my-2 rounded-md border-2 border-(--color-undraw-secondary-100) shadow-md shadow-lime-950 bg-(--color-primary-100) text-(--color-undraw-secondary-100) font-light px-3 py-2 text-sm placeholder:text-(--color-placeholder-100) placeholder:text-xs"
       />
     </div>
   )
