@@ -2,7 +2,6 @@
 /* to use the different swiper js modules */
 @import "swiper/css/pagination";
 @import "swiper/css";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
