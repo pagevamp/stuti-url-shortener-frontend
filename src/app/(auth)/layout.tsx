@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <RadialDecorator />
       <section className="max-w-screen h-screen grid grid-cols-2 gap-10 mx-10 my-10 px-20 absolute top-0">
         <ImageSlider />
-        <div className="bg-[#448850] rounded-3xl shadow-2xl shadow-lime-950 ">
+        <div className="bg-[#448850] h-[90%] rounded-3xl shadow-2xl shadow-lime-950 ">
           <div>{children}</div>
         </div>
       </section>
