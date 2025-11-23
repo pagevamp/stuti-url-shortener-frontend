@@ -34,13 +34,13 @@ export const InputField = ({
     <div>
       <label
         htmlFor={name}
-        className="text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-(--color-primary-100)"
+        className="text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-primary-100"
       >
         <Icon
           icon={icon}
           width={16}
           height={16}
-          className="text-(--color-undraw-secondary-100)"
+          className="text-undraw-secondary-100"
         />
         {labelName}
       </label>
