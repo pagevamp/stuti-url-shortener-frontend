@@ -39,19 +39,22 @@ export function useLogin() {
       return
     }
     setError({})
-    router.push("/")
 
     try {
-      const response = await userLogin(formValues)
-      console.log("Login successful:", response.data)
+      await userLogin(formValues)
 
       setFormData({
-        email: formData.email,
-        password: formData.password,
+        email: "",
+        password: "",
       })
       setError({})
+      router.push("/")
     } catch (err) {
-      console.error("Login failed")
+      if (err instanceof Error) {
+        console.error("Login failed :", err.message)
+      } else {
+        console.error("Login failed : An unknown error occurred")
+      }
     }
   }
 

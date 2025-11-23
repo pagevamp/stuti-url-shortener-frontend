@@ -44,14 +44,18 @@ export function useRegister() {
       console.log("Register successful:", response.data)
 
       setRegisterFormData({
-        username: registerFormData.username,
-        fullName: registerFormData.fullName,
-        email: registerFormData.email,
-        password: registerFormData.password,
+        username: "",
+        fullName: "",
+        email: "",
+        password: "",
       })
       setError({})
     } catch (err) {
-      console.error("Register failed")
+      if (err instanceof Error) {
+        console.error("Register failed :", err.message)
+      } else {
+        console.error("Register failed : An unknown error occurred")
+      }
     }
   }
 

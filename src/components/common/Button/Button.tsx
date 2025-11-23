@@ -35,15 +35,15 @@ export const Button = ({
   VariantProps<typeof buttonVariants> & {
     children: React.ReactNode
     type?: "button" | "submit" | "reset"
-    variant?: string
-    size?: string
+    variant?: VariantProps<typeof buttonVariants>
+    size?: VariantProps<typeof buttonVariants>
     onClick?: () => void
   }) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size }), className)}
     >
       {children}
     </button>

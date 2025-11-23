@@ -8,11 +8,13 @@ const createApiInstance = (baseURL: string | undefined) => {
   instance.interceptors.request.use(
     (config) => {
       try {
-        const token = localStorage.getItem("token")
-        const accessToken = token ? JSON.parse(token) : null
+        if (typeof window !== "undefined") {
+          const token = localStorage.getItem("token")
+          const accessToken = token ? token : null
 
-        if (accessToken && config.headers) {
-          config.headers["Authorization"] = `Bearer ${accessToken}`
+          if (accessToken && config.headers) {
+            config.headers["Authorization"] = `Bearer ${accessToken}`
+          }
         }
       } catch (err) {
         console.error("Invalid token in localStorage", err)
