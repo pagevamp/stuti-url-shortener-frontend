@@ -1,5 +1,6 @@
 import axios from "axios"
 import toast from "react-hot-toast"
+import { cookies } from "next/headers"
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
@@ -7,19 +8,17 @@ const createApiInstance = (baseURL: string | undefined) => {
   const instance = axios.create({ baseURL, timeout: 5000 })
 
   instance.interceptors.request.use(
-    (config) => {
+    async (config) => {
       try {
-        if (typeof window !== "undefined") {
-          const token = localStorage.getItem("token")
-          const accessToken = token ? token : null
+        const cookieStore = await cookies()
+        const accessToken = cookieStore.get("jwt")
 
-          if (accessToken && config.headers) {
-            config.headers["Authorization"] = `Bearer ${accessToken}`
-          }
+        if (accessToken && config.headers) {
+          config.headers["Authorization"] = `Bearer ${accessToken}`
         }
       } catch (err) {
         if (err instanceof Error) {
-          toast.error(`Invalid token in localStorage : ${err.message} `)
+          toast.error(`Invalid token in cookies : ${err.message} `)
         }
       }
 
@@ -38,6 +37,7 @@ const createApiInstance = (baseURL: string | undefined) => {
       return Promise.reject(error)
     }
   )
+
   return instance
 }
 
