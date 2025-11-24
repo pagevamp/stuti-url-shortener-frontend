@@ -1,6 +1,6 @@
-import { api } from "@/src/lib/axios"
 import { UserLoginParams } from "../types/login-types"
+import apiClient from "@/src/lib/axios-client"
 
 export const loginUser = (body: UserLoginParams) => {
-  return api.post(`/auth/login`, body)
+  return apiClient.post(`/auth/login`, body)
 }
