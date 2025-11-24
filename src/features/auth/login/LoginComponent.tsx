@@ -12,7 +12,7 @@ export const LoginComponent = () => {
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
       onSubmit={handleSubmit}
     >
-      <p className="text-2xl font-extrabold text-shadow-2xs text-shadow-[#2F2E43]">
+      <p className="text-2xl font-extrabold text-shadow-2xs text-shadow-undraw-secondary-100">
         LOG IN
       </p>
       <InputField
@@ -47,7 +47,7 @@ export const LoginComponent = () => {
       </Button>
 
       <p className="flex flex-row items-center gap-1 mx-auto text-gray-200 text-sm my-5">
-        Don&#39;t have an account yet?
+        Don&apos;t have an account yet?
         <Link
           href="/register"
           className="text-blue-950 flex flex-row items-center gap-1 cursor-pointer"

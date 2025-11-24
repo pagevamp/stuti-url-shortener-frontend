@@ -2,7 +2,7 @@
 import { ChangeEvent, useState } from "react"
 import { registerFormValidationSchema } from "../core/validation/register-validation"
 import { RegisterErrors } from "../core/types/register-types"
-import { userRegister } from "../core/api/register-api"
+import { registerUser } from "../core/api/register-api"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
@@ -45,8 +45,7 @@ export function useRegister() {
     setError({})
 
     try {
-      const response = await userRegister(formValues)
-      console.log("Register successful:", response.data)
+      await registerUser(formValues)
 
       setRegisterFormData({
         username: "",
@@ -59,10 +58,8 @@ export function useRegister() {
       router.push("/login")
     } catch (err) {
       if (err instanceof Error) {
-        console.error("Register failed :", err.message)
         toast.error(`Register failed : ${err.message}`)
       } else {
-        console.error("Register failed : An unknown error occurred")
         toast.error("Register failed : An unknown error occurred")
       }
     }

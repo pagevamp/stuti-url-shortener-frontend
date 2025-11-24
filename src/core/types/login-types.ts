@@ -1,7 +1,7 @@
 import * as z from "zod"
 import { loginFormValidationSchema } from "../validation/login-validation"
 
-export interface userLoginParams {
+export interface UserLoginParams {
   email: string
   password: string
 }

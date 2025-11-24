@@ -1,6 +1,6 @@
 import { api } from "@/src/lib/axios"
-import { userRegistrationParams } from "../types/register-types"
+import { UserRegistrationParams } from "../types/register-types"
 
-export const userRegister = (body: userRegistrationParams) => {
+export const registerUser = (body: UserRegistrationParams) => {
   return api.post(`/auth/sign-up`, body)
 }

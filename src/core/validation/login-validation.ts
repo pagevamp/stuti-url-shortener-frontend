@@ -6,7 +6,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const loginFormValidationSchema = z.object({
   email: z
-    .string()
+    .email()
     .min(1, "Email is required")
     .regex(emailRegex, "Must be a valid Email address"),
 

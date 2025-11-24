@@ -1,4 +1,5 @@
 import axios from "axios"
+import toast from "react-hot-toast"
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
@@ -17,8 +18,11 @@ const createApiInstance = (baseURL: string | undefined) => {
           }
         }
       } catch (err) {
-        console.error("Invalid token in localStorage", err)
+        if (err instanceof Error) {
+          toast.error(`Invalid token in localStorage : ${err.message} `)
+        }
       }
+
       return config
     },
     (error) => {

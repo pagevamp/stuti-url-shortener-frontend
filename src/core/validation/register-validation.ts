@@ -14,7 +14,7 @@ export const registerFormValidationSchema = z.object({
     .min(1, "User name is required"),
 
   email: z
-    .string()
+    .email()
     .min(1, "Email is required")
     .regex(emailRegex, "Must be a valid Email address"),
 

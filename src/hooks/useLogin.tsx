@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react"
 import { LoginErrors } from "../core/types/login-types"
 import { loginFormValidationSchema } from "../core/validation/login-validation"
 import { useRouter } from "next/navigation"
-import { userLogin } from "../core/api/login-api"
+import { loginUser } from "../core/api/login-api"
 import toast from "react-hot-toast"
 
 export function useLogin() {
@@ -42,7 +42,7 @@ export function useLogin() {
     setError({})
 
     try {
-      await userLogin(formValues)
+      await loginUser(formValues)
 
       setFormData({
         email: "",
@@ -53,10 +53,8 @@ export function useLogin() {
       router.push("/")
     } catch (err) {
       if (err instanceof Error) {
-        console.error("Login failed :", err.message)
         toast.error(`Login failed : ${err.message}`)
       } else {
-        console.error("Login failed : An unknown error occurred")
         toast.error("Login failed : An unknown error occurred")
       }
     }

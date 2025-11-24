@@ -12,7 +12,7 @@ export const RegisterComponent = () => {
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
       onSubmit={handleSubmit}
     >
-      <p className="text-2xl font-extrabold text-shadow-2xs text-shadow-[#2F2E43]">
+      <p className="text-2xl font-extrabold text-shadow-2xs text-shadow-undraw-secondary-100">
         SIGN UP
       </p>
 
