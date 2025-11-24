@@ -3,6 +3,7 @@ import { LoginErrors } from "../core/types/login-types"
 import { loginFormValidationSchema } from "../core/validation/login-validation"
 import { useRouter } from "next/navigation"
 import { userLogin } from "../core/api/login-api"
+import toast from "react-hot-toast"
 
 export function useLogin() {
   const router = useRouter()
@@ -48,12 +49,15 @@ export function useLogin() {
         password: "",
       })
       setError({})
+      toast.success("Login successful")
       router.push("/")
     } catch (err) {
       if (err instanceof Error) {
         console.error("Login failed :", err.message)
+        toast.error(`Login failed : ${err.message}`)
       } else {
         console.error("Login failed : An unknown error occurred")
+        toast.error("Login failed : An unknown error occurred")
       }
     }
   }

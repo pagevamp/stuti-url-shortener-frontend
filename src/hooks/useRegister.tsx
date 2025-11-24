@@ -1,9 +1,14 @@
+"use client"
 import { ChangeEvent, useState } from "react"
 import { registerFormValidationSchema } from "../core/validation/register-validation"
 import { RegisterErrors } from "../core/types/register-types"
 import { userRegister } from "../core/api/register-api"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 
 export function useRegister() {
+  const router = useRouter()
+
   const [registerFormData, setRegisterFormData] = useState({
     username: "",
     fullName: "",
@@ -50,11 +55,15 @@ export function useRegister() {
         password: "",
       })
       setError({})
+      toast.success("Register successful")
+      router.push("/login")
     } catch (err) {
       if (err instanceof Error) {
         console.error("Register failed :", err.message)
+        toast.error(`Register failed : ${err.message}`)
       } else {
         console.error("Register failed : An unknown error occurred")
+        toast.error("Register failed : An unknown error occurred")
       }
     }
   }
