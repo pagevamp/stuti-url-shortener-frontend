@@ -1,3 +1,4 @@
+"use server"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { cookies } from "next/headers"
@@ -5,13 +6,17 @@ import { cookies } from "next/headers"
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
 const createApiInstance = (baseURL: string | undefined) => {
-  const instance = axios.create({ baseURL, timeout: 5000 })
+  const instance = axios.create({
+    baseURL,
+    timeout: 5000,
+    withCredentials: true,
+  })
 
   instance.interceptors.request.use(
     async (config) => {
       try {
         const cookieStore = await cookies()
-        const accessToken = cookieStore.get("jwt")
+        const accessToken = cookieStore.get("accessToken")
 
         if (accessToken && config.headers) {
           config.headers["Authorization"] = `Bearer ${accessToken}`
