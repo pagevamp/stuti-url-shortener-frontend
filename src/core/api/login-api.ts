@@ -1,6 +1,6 @@
-import axios from "axios";
-import { UserLoginParams } from "../types/login-types"
+import api from '@/src/lib/axios';
+import { UserLoginParams } from '../types/login-types';
 
 export const loginUser = (body: UserLoginParams) => {
-  return axios.post(`/auth/login`, body);
-}
+  return api.post(`/auth/login`, body);
+};
