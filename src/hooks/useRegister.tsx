@@ -1,69 +1,69 @@
-"use client"
-import { ChangeEvent, useState } from "react"
-import { registerFormValidationSchema } from "../core/validation/register-validation"
-import { RegisterErrors } from "../core/types/register-types"
-import { registerUser } from "../core/api/register-api"
-import { useRouter } from "next/navigation"
-import toast from "react-hot-toast"
+'use client';
+import { ChangeEvent, useState } from 'react';
+import { registerFormValidationSchema } from '../core/validation/register-validation';
+import { RegisterErrors } from '../core/types/register-types';
+import { registerUser } from '../core/api/register-api';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export function useRegister() {
-  const router = useRouter()
+  const router = useRouter();
 
   const [registerFormData, setRegisterFormData] = useState({
-    username: "",
-    fullName: "",
-    email: "",
-    password: "",
-  })
+    username: '',
+    fullName: '',
+    email: '',
+    password: '',
+  });
 
-  const [error, setError] = useState<RegisterErrors>({})
+  const [error, setError] = useState<RegisterErrors>({});
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     setRegisterFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const formValues = registerFormData
-    const result = registerFormValidationSchema.safeParse(formValues)
+    const formValues = registerFormData;
+    const result = registerFormValidationSchema.safeParse(formValues);
 
     if (!result.success) {
-      const formattedErrors: RegisterErrors = {}
+      const formattedErrors: RegisterErrors = {};
       result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof RegisterErrors
-        formattedErrors[field] = issue.message
-      })
-      setError(formattedErrors)
-      return
+        const field = issue.path[0] as keyof RegisterErrors;
+        formattedErrors[field] = issue.message;
+      });
+      setError(formattedErrors);
+      return;
     }
-    setError({})
+    setError({});
 
     try {
-      await registerUser(formValues)
+      await registerUser(formValues);
 
       setRegisterFormData({
-        username: "",
-        fullName: "",
-        email: "",
-        password: "",
-      })
-      setError({})
-      toast.success("Register successful")
-      router.push("/login")
+        username: '',
+        fullName: '',
+        email: '',
+        password: '',
+      });
+      setError({});
+      toast.success('Register successful');
+      router.push('/resend-email');
     } catch (err) {
       if (err instanceof Error) {
-        toast.error(`Register failed : ${err.message}`)
+        toast.error(`Register failed : ${err.message}`);
       } else {
-        toast.error("Register failed : An unknown error occurred")
+        toast.error('Register failed : An unknown error occurred');
       }
     }
-  }
+  };
 
   return {
     error,
@@ -72,5 +72,5 @@ export function useRegister() {
     setRegisterFormData,
     handleChange,
     handleSubmit,
-  }
+  };
 }

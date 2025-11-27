@@ -21,7 +21,7 @@ export const LoginComponent = () => {
         icon="akar-icons:person"
         placeholder="Enter your email"
         labelName="Email"
-        value={formData.email}
+        value={formData.email.trim()}
         error={error?.email}
         onChange={(e) => handleChange(e)}
       />
@@ -31,7 +31,7 @@ export const LoginComponent = () => {
         icon="tdesign:user-password"
         placeholder="Enter  password"
         labelName="Password"
-        value={formData.password}
+        value={formData.password.trim()}
         error={error?.password}
         onChange={(e) => handleChange(e)}
       />
