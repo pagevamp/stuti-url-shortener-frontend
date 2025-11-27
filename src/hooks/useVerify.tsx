@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { verifyEmail } from '@/src/core/api/verify-email-api';
@@ -17,5 +16,4 @@ export function useVerify() {
     setTimeout(redirectLogin, 6000);
   }, []);
 
-  return <div>useVerify</div>;
 }
