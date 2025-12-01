@@ -1,9 +1,11 @@
-import React from 'react'
+import { UrlsComponent } from '@/src/features/urls/UrlsComponent';
 
 const Urls = () => {
   return (
-    <div>Urls</div>
-  )
-}
+    <>
+      <UrlsComponent />
+    </>
+  );
+};
 
-export default Urls
+export default Urls;

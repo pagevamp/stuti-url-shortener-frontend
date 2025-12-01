@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme{
+  --color-undraw-primary-100: #448850;
+
+  --color-undraw-secondary-100: #2f2e43;
+
+  --color-primary-100: #e0e1d8;
+
+  --color-secondary-100: #e5e7d6;
+
+  --color-tertiary-100: #448850;
+
+  --color-placeholder-100: #716f91;
+}

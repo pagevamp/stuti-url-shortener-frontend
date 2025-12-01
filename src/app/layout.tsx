@@ -1,20 +1,21 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import './colors.css';
 
 const primary = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const secondary = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: "URL Shortener Frontend",
-  description: "Created the frontend for the URL Shortener Project",
+  title: 'URL Shortener Frontend',
+  description: 'Created the frontend for the URL Shortener Project',
 };
 
 export default function RootLayout({
@@ -28,5 +29,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  )
+  );
 }
