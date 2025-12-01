@@ -44,7 +44,7 @@ export const InputField = ({
         />
         {labelName}
       </label>
-      <div className="flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-(--color-undraw-secondary-100) shadow-md shadow-lime-950 bg-(--color-primary-100) text-(--color-undraw-secondary-100) font-light px-2 py-2 text-sm placeholder:text-(--color-placeholder-100) placeholder:text-sm">
+      <div className="flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-undraw-secondary-100 shadow-md shadow-lime-950 bg-primary-100 text-undraw-secondary-100 font-light px-2 py-2 text-sm placeholder:text-placeholder-100 placeholder:text-sm">
         {isPassword && (
           <Button
             type="button"
