@@ -1,9 +1,9 @@
 'use server';
 import { cookies } from 'next/headers';
 
-export async function getCookie() {
+export async function getAccessToken() {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')
+  const accessToken = cookieStore.get('accessToken');
 
   return accessToken;
 }

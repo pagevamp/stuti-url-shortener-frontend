@@ -31,16 +31,18 @@ async function handlePublicPath(
   pathname: string,
   token?: string
 ) {
-  if (
-    token &&
-    (pathname === '/login' || pathname === '/register' || pathname === '/')
-  ) {
-    const userId = await getUserFromSession(token);
-    if (userId) {
-      return NextResponse.redirect(new URL('/urls', request.url));
+  const pathArray = ['/login', '/register', '/'];
+
+  for (let index = 0; index < pathArray.length; index++) {
+    const path = pathArray[index];
+    if (token && pathname === path) {
+      const userId = await getUserFromSession(token);
+      if (userId) {
+        return NextResponse.redirect(new URL('/urls', request.url));
+      }
     }
+    return NextResponse.next();
   }
-  return NextResponse.next();
 }
 
 async function getUserFromSession(token: string): Promise<string | null> {

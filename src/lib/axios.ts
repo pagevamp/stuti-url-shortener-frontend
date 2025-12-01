@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { getCookie } from './actions';
+import { getAccessToken } from './actions';
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
+
+const pathArray = ['/urls, /url-analytics'];
 
 const createApiInstance = (baseURL: string | undefined) => {
   const instance = axios.create({
@@ -12,18 +14,18 @@ const createApiInstance = (baseURL: string | undefined) => {
 
   instance.interceptors.request.use(
     async (config) => {
-      if (
-        config.url?.includes('/urls, /url-analytics') &&
-        typeof window === 'undefined'
-      )
-        try {
-          const accessToken = getCookie();
-          if (accessToken && config.headers) {
-            config.headers['Authorization'] = `Bearer ${accessToken}`;
+      for (let index = 0; index < pathArray.length; index++) {
+        const element = config.url?.includes(pathArray[index]);
+        if (element && typeof window === 'undefined')
+          try {
+            const accessToken = getAccessToken();
+            if (accessToken && config.headers) {
+              config.headers['Authorization'] = `Bearer ${accessToken}`;
+            }
+          } catch (err) {
+            console.error('Invalid token', err);
           }
-        } catch (err) {
-          console.error('Invalid token', err);
-        }
+      }
       return config;
     },
     (error) => {

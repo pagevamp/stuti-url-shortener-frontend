@@ -1,18 +1,21 @@
-"use client"
-import { Icon } from "@iconify/react"
-import { motion } from "framer-motion"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+'use client';
+import { Icon } from '@iconify/react';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export const VerifyEmailComponent = () => {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    function redirectLogin() {
-      router.push("/login")
-    }
-    setTimeout(redirectLogin, 6000)
-  }, [])
+    const redirectLogin = setTimeout(() => {
+      router.push('/login');
+    }, 6000);
+
+    return () => {
+      clearTimeout(redirectLogin);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -23,8 +26,8 @@ export const VerifyEmailComponent = () => {
         duration: 5,
         delay: 100,
         repeat: Infinity,
-        repeatType: "loop",
-        ease: "easeInOut",
+        repeatType: 'loop',
+        ease: 'easeInOut',
       }}
     >
       <p className="text-primary-100 text-shadow-2xs text-shadow-undraw-secondary-100 font-extrabold text-4xl whitespace-nowrap">
@@ -40,5 +43,5 @@ export const VerifyEmailComponent = () => {
         You are now a proud user of our URL Shortener
       </p>
     </motion.div>
-  )
-}
+  );
+};
