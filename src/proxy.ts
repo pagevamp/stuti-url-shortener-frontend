@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PUBLIC_PATH } from '../routes';
+import { PUBLIC_PATH } from './routes';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('accessToken')?.value;
 
