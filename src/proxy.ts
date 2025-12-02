@@ -35,9 +35,8 @@ async function handlePublicPath(
   pathname: string,
   token?: string
 ) {
-  const pathArray = ['/login', '/register', '/'];
 
-  if (token && pathArray.some((path) => pathname === path)) {
+  if (token && PUBLIC_PATH.some((path) => pathname === path)) {
     const userId = await getUserFromSession(token);
     if (userId) {
       return NextResponse.redirect(new URL('/urls', request.url));

@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { getAccessToken } from './actions';
+import { PROTECTED_PATH } from '../routes';
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
-
-const pathArray = ['/urls', '/url-analytics'];
 
 const createApiInstance = (baseURL: string | undefined) => {
   const instance = axios.create({
@@ -14,7 +13,7 @@ const createApiInstance = (baseURL: string | undefined) => {
 
   instance.interceptors.request.use(
     async (config) => {
-      if (pathArray.some((path) => config.url?.includes(path))) {
+      if (PROTECTED_PATH.some((path) => config.url?.includes(path))) {
         if (typeof window === 'undefined') {
           try {
             const accessTokenObj = await getAccessToken();
