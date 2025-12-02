@@ -11,9 +11,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <div className="relative">
       <RadialDecorator />
       <Toaster position="top-right" />
-      <section className="max-w-screen h-screen grid lg:grid-cols-2 grid-cols-1 gap-10 mx-10 my-10 px-20 absolute top-0">
-        <ImageSlider />
-        <div className="bg-(--color-undraw-primary-100) h-[90%] rounded-3xl shadow-2xl shadow-lime-950 min-w-[400px]">
+      <section className="max-w-screen h-screen grid grid-cols-2 gap-10 mx-10 my-10 px-20 absolute top-0">
+        <section className="hidden lg:block">
+          {" "}
+          <ImageSlider />
+        </section>
+        <div className="bg-(--color-undraw-primary-100) h-[90%] rounded-3xl shadow-2xl shadow-lime-950 md:w-[600px] sm:min-w-[400px] xs:min-w-[200px]">
           <Container>{children}</Container>
         </div>
       </section>
