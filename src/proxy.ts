@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PUBLIC_PATH } from './routes';
+import { getAccessToken } from './lib/actions';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -18,6 +19,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  if (token && await isTokenExpired(token) === true) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
   const userId = await getUserFromSession(token);
   if (!userId) {
     return NextResponse.redirect(new URL('/login', request.url));
@@ -33,16 +37,13 @@ async function handlePublicPath(
 ) {
   const pathArray = ['/login', '/register', '/'];
 
-  for (let index = 0; index < pathArray.length; index++) {
-    const path = pathArray[index];
-    if (token && pathname === path) {
-      const userId = await getUserFromSession(token);
-      if (userId) {
-        return NextResponse.redirect(new URL('/urls', request.url));
-      }
+  if (token && pathArray.some((path) => pathname === path)) {
+    const userId = await getUserFromSession(token);
+    if (userId) {
+      return NextResponse.redirect(new URL('/urls', request.url));
     }
-    return NextResponse.next();
   }
+  return NextResponse.next();
 }
 
 async function getUserFromSession(token: string): Promise<string | null> {
@@ -54,3 +55,20 @@ async function getUserFromSession(token: string): Promise<string | null> {
     return null;
   }
 }
+
+async function isTokenExpired(token: string): Promise<boolean | null> {
+  try {
+    const [, payload] = token.split('.');
+    const decoded = JSON.parse(atob(payload));
+    const now = Math.floor(Date.now() / 1000);
+    if (!decoded.exp) {
+      return true;
+    }
+    return decoded.exp < now;
+  } catch {
+    return true;
+  }
+}
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)'],
+};

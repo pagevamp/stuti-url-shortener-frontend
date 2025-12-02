@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -9,6 +10,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      credentials: 'include',
     }
   );
 
@@ -33,3 +35,4 @@ export async function POST(req: Request) {
 
   return response;
 }
+
