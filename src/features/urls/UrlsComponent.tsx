@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Table,
   TableBody,
@@ -7,9 +8,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/src/components/ui/table';
-import { UrlTableIcons, UrlTableTypes } from '@/src/core/types/url-types';
-import { useUrls } from '@/src/hooks/useUrls';
 import { Icon } from '@iconify/react';
+import { useUrls } from '@/src/hooks/useUrls';
+import Modal from '@/src/components/commom/Modal/Modal';
+import { InputField } from '@/src/components/commom/InputField.tsx/InputField';
+import { ConfirmationDialogBox } from '@/src/components/commom/ConfirmationBox/ConfirmationDialogBox';
+import { UrlTableTypes } from '@/src/core/types/url-types';
 
 const dummyData: UrlTableTypes[] = [
   {
@@ -66,21 +70,21 @@ const dummyData: UrlTableTypes[] = [
 
 export const UrlsComponent = () => {
   const {
-    openEditModal,
-    openDeleteModal,
+    modalOpen,
+    confirmationOpen,
+    editFormData,
+    currentAction,
+    openModal,
+    closeModal,
+    openConfirmation,
+    closeConfirmation,
+    handleFormInputChange,
+    handleConfirm,
   } = useUrls();
 
-  const actions: UrlTableIcons[] = [
-    {
-      icon: 'mdi:pencil',
-      title: 'edit',
-      onClick: openEditModal,
-    },
-    {
-      icon: 'gg:trash',
-      title: 'delete',
-      onClick: openDeleteModal,
-    },
+  const actions = [
+    { icon: 'mdi:pencil', title: 'edit', onClick: () => openModal('edit') },
+    { icon: 'gg:trash', title: 'delete', onClick: () => openModal('delete') },
   ];
 
   return (
@@ -117,10 +121,9 @@ export const UrlsComponent = () => {
             </TableHead>
           </TableRow>
         </TableHeader>
-
         <TableBody>
-          {dummyData.map((data, title) => (
-            <TableRow key={title}>
+          {dummyData.map((data, index) => (
+            <TableRow key={index}>
               <TableCell>{data.user_id}</TableCell>
               <TableCell>{data.title}</TableCell>
               <TableCell>{data.short_code}</TableCell>
@@ -130,18 +133,78 @@ export const UrlsComponent = () => {
               <TableCell>{data.deleted_at}</TableCell>
               <TableCell>{data.expires_at}</TableCell>
               <TableCell className="flex flex-row gap-2">
-                {actions.map((action, title) => (
-                  <span key={title}>
-                    <button onClick={action.onClick}>
-                      <Icon icon={action.icon} className="text-emerald-900" />
-                    </button>
-                  </span>
+                {actions.map((action, idx) => (
+                  <button key={idx} onClick={action.onClick}>
+                    <Icon icon={action.icon} className="text-emerald-900" />
+                  </button>
                 ))}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {modalOpen && (
+        <Modal
+          isOpen={modalOpen}
+          trigger={currentAction === 'edit' ? 'Edit URL' : 'Delete URL'}
+          title={currentAction === 'edit' ? 'Edit URL' : 'Delete URL'}
+          message={
+            currentAction === 'edit' ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  openConfirmation();
+                }}
+                className="flex flex-col gap-2 items-center"
+              >
+                <InputField
+                  name="title"
+                  type="text"
+                  labelName="Title"
+                  icon="sc"
+                  placeholder="Title"
+                  value={editFormData.title}
+                  onChange={handleFormInputChange}
+                />
+                <InputField
+                  name="expiresAt"
+                  type="text"
+                  labelName="Expiry Date"
+                  icon="sxax"
+                  placeholder="Title"
+                  value={editFormData.expiresAt}
+                  onChange={handleFormInputChange}
+                />
+                <button type="submit">Submit</button>
+              </form>
+            ) : (
+              <span>Are you sure you want to delete this URL?</span>
+            )
+          }
+          onCancel={closeModal}
+          onConfirm={currentAction === 'delete' ? openConfirmation : undefined}
+        />
+      )}
+
+      {confirmationOpen && (
+        <ConfirmationDialogBox
+          isOpen={confirmationOpen}
+          trigger={currentAction === 'edit' ? 'Edit URL' : 'Delete URL'}
+          title={
+            currentAction === 'edit'
+              ? 'Edit Confirmation'
+              : 'Delete Confirmation'
+          }
+          message={
+            currentAction === 'edit'
+              ? 'Are you sure you want to edit this URL?'
+              : 'Are you sure you want to delete this URL?'
+          }
+          onCancel={closeConfirmation}
+          onConfirm={handleConfirm}
+        />
+      )}
     </div>
   );
 };

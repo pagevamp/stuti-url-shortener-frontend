@@ -28,7 +28,7 @@ export interface ModalTypes {
 
 export interface ConfirmationTypes {
   title: string;
-  message: React.ReactElement;
+  message: React.ReactElement | React.ReactNode;
   trigger: string;
   isOpen?: boolean;
   onConfirm?: MouseEventHandler<HTMLButtonElement>;
