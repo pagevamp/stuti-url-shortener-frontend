@@ -1,5 +1,6 @@
 'use client';
 import { useState, ChangeEvent } from 'react';
+import { getAccessToken } from '../lib/actions';
 
 export function useUrls() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -8,11 +9,11 @@ export function useUrls() {
     title: '',
     expiresAt: '',
   });
-  const [currentAction, setCurrentAction] = useState<'edit' | 'delete' | null>(
-    null
-  );
+  const [currentAction, setCurrentAction] = useState<
+    'add' | 'edit' | 'delete' | null
+  >(null);
 
-  const openModal = (action: 'edit' | 'delete') => {
+  const openModal = (action: 'add' | 'edit' | 'delete') => {
     setCurrentAction(action);
     setModalOpen(true);
   };
@@ -30,8 +31,15 @@ export function useUrls() {
     console.log('Confirmed action:', currentAction, editFormData);
     closeConfirmation();
     closeModal();
+    setEditFormData({
+      title: '',
+      expiresAt: '',
+    });
   };
 
+  function handleSearch(term: string) {
+    console.log(term);
+  }
   return {
     modalOpen,
     confirmationOpen,
@@ -43,5 +51,6 @@ export function useUrls() {
     closeConfirmation,
     handleFormInputChange,
     handleConfirm,
+    handleSearch,
   };
 }

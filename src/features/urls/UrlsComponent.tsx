@@ -14,6 +14,8 @@ import Modal from '@/src/components/commom/Modal/Modal';
 import { InputField } from '@/src/components/commom/InputField.tsx/InputField';
 import { ConfirmationDialogBox } from '@/src/components/commom/ConfirmationBox/ConfirmationDialogBox';
 import { UrlTableTypes } from '@/src/core/types/url-types';
+import { Button } from '@/src/components/commom/Button/Button';
+import { SearchComponent } from '@/src/components/commom/SearchComponent.tsx/SearchComponent';
 
 const dummyData: UrlTableTypes[] = [
   {
@@ -87,38 +89,43 @@ export const UrlsComponent = () => {
     { icon: 'gg:trash', title: 'delete', onClick: () => openModal('delete') },
   ];
 
+  const tableHeaders = [
+    'User ID',
+    'Title',
+    'Shortened URL',
+    'Original URL',
+    'Created At',
+    'Updated At',
+    'Deleted At',
+    'Expires At',
+    'Actions',
+  ];
+
   return (
-    <div className="mx-auto my-auto">
+    <div className="my-20 mx-10 p-5 bg-gray-200 w-fit">
+      <section className="flex flex-row mx-10 my-5">
+        <SearchComponent />
+        <Button className="flex flex-row gap-3 h-12 text-white font-semibold px-2 place-self-end">
+          Shorten New Url{' '}
+          <Icon
+            icon="icon-park-outline:clothes-pants-short"
+            height={22}
+            width={22}
+          />
+        </Button>
+      </section>
+
       <Table>
         <TableHeader>
-          <TableRow className="border-b border-t border-[#E6EFF5] w-[1050px]">
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
-              User ID
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
-              Title{' '}
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
-              Shortened URL
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
-              Original URL
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
-              Created At{' '}
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
-              Updated At{' '}
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] w-[350px]">
-              Deleted At{' '}
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] w-[350px]">
-              Expires At{' '}
-            </TableHead>
-            <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] w-[350px]">
-              Actions{' '}
-            </TableHead>
+          <TableRow className="border-b border-t border-[#E6EFF5]">
+            {tableHeaders.map((headers) => (
+              <TableHead
+                key={headers}
+                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
+              >
+                {headers}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -132,10 +139,15 @@ export const UrlsComponent = () => {
               <TableCell>{data.updated_at}</TableCell>
               <TableCell>{data.deleted_at}</TableCell>
               <TableCell>{data.expires_at}</TableCell>
-              <TableCell className="flex flex-row gap-2">
+              <TableCell className="flex flex-row gap-5">
                 {actions.map((action, idx) => (
                   <button key={idx} onClick={action.onClick}>
-                    <Icon icon={action.icon} className="text-emerald-900" />
+                    <Icon
+                      icon={action.icon}
+                      height={22}
+                      width={22}
+                      className="text-emerald-900"
+                    />
                   </button>
                 ))}
               </TableCell>

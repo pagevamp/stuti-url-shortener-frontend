@@ -1,14 +1,14 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import '../../colors.css';
+import '../colors.css';
 import { Topbar } from '@/src/components/commom/TopBar/Topbar';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative">
-      <section className="bg-blue-50 w-fit min-h-screen absolute top-0 overflow-hidden">
-        <div>{children}</div>
-      </section>
+    <div className="min-w-screen min-h-screen">
+      <Toaster position="top-right" />
+      <Topbar />
+      <div>{children}</div>
     </div>
   );
 };
