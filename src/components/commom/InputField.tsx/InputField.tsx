@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
 import { Button } from '../Button/Button';
+import { cn } from '@/lib/utils';
 
 export interface InputProps {
   name: string;
@@ -11,6 +12,7 @@ export interface InputProps {
   type?: string;
   placeholder: string;
   value?: string;
+  classNames?: { inputClassName?: string; labelClassname?: string };
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -22,6 +24,7 @@ export const InputField = ({
   error,
   value,
   placeholder,
+  classNames,
   onChange,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -35,7 +38,10 @@ export const InputField = ({
     <div>
       <label
         htmlFor={name}
-        className="text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-primary-100"
+        className={cn(
+          'text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-primary-100',
+          classNames?.labelClassname
+        )}
       >
         <Icon
           icon={icon}
@@ -45,7 +51,12 @@ export const InputField = ({
         />
         {labelName}
       </label>
-      <div className="flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-undraw-secondary-100 shadow-md shadow-lime-950 bg-primary-100 text-undraw-secondary-100 font-light px-2 py-2 text-sm placeholder:text-placeholder-100 placeholder:text-sm">
+      <div
+        className={cn(
+          'flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-undraw-secondary-100 shadow-md shadow-lime-950 bg-primary-100 text-undraw-secondary-100 font-light px-2 py-2 text-sm placeholder:text-placeholder-100 placeholder:text-sm',
+          classNames?.inputClassName
+        )}
+      >
         {isPassword && (
           <Button
             type="button"
@@ -69,7 +80,7 @@ export const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="border-none bg-transparent focus:outline-none focus:ring-0"
+          className="border-none bg-transparent focus:outline-none focus:ring-0 w-full"
         />
       </div>
       {error && (
