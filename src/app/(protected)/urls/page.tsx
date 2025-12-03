@@ -1,23 +1,33 @@
 import { UrlsComponent } from '@/src/features/urls/UrlsComponent';
+import { sortFields } from '@/src/hooks/useUrls';
 
 export enum urlOrder {
   ASC,
   DESC,
 }
+
 const Urls = async (props: {
   searchParams?: Promise<{
     query?: string;
-    sort?: urlOrder;
+    sortOrder?: urlOrder;
+    sortColumn?: sortFields;
     page?: string;
   }>;
 }) => {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
-  const sort = searchParams?.sort || urlOrder.ASC;
+  const sortOrder = searchParams?.sortOrder || urlOrder.ASC;
+  const sortColumn = searchParams?.sortColumn || sortFields.created_at;
+
   const currentPage = Number(searchParams?.page) || 1;
   return (
     <>
-      <UrlsComponent query={query} sort={sort} currentPage={currentPage} />
+      <UrlsComponent
+        query={query}
+        sortColumn={sortColumn}
+        sortOrder={sortOrder}
+        currentPage={currentPage}
+      />
     </>
   );
 };

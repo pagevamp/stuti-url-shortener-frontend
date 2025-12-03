@@ -1,6 +1,8 @@
+import { sortFields } from '@/src/hooks/useUrls';
 import { MouseEventHandler } from 'react';
 
 export interface UrlTableTypes {
+  field?: sortFields;
   user_id: string;
   title: string;
   short_code: string;
@@ -14,6 +16,13 @@ export interface UrlTableIcons {
   icon: string;
   title: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+}
+
+export interface UrlTableHeader {
+  title?: string;
+  type?: string;
+  className: string;
+  children?: React.ReactElement | React.ReactNode;
 }
 
 export interface ModalTypes {

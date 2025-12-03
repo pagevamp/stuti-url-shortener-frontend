@@ -3,6 +3,10 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { UrlTableHeader } from '@/src/core/types/url-types';
+import { Button } from '../common/Button/Button';
+import { Icon } from '@iconify/react';
+import { useUrls } from '@/src/hooks/useUrls';
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (
@@ -25,11 +29,11 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
       data-slot="table-header"
       className={cn('[&_tr]:border-b-cyan-950 px-auto  py-2', className)}
       {...props}
-    />
+    ></thead>
   );
 }
 
-function TableBody({ className, ...props }: React.ComponentProps<'tbody'>,) {
+function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
   return (
     <tbody
       data-slot="table-body"
@@ -65,7 +69,23 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   );
 }
 
-function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
+function TableHead({
+  title,
+  type,
+  children,
+  className,
+  ...props
+}: UrlTableHeader) {
+  const { sortOrderAsc, setSortOrderAsc, searchParams, handleSortOrder } =
+    useUrls();
+  const order = searchParams.get('sortOrder') || 'ASC';
+
+  const changeOrder: React.MouseEventHandler<SVGSVGElement> = () => {
+    setSortOrderAsc(!sortOrderAsc);
+  };
+
+  const isSorted = type == 'sorted';
+
   return (
     <th
       data-slot="table-head"
@@ -74,7 +94,28 @@ function TableHead({ className, ...props }: React.ComponentProps<'th'>) {
         className
       )}
       {...props}
-    />
+    >
+      {isSorted && (
+        <Button
+          type="reset"
+          variant="ghost"
+          title={title}
+          size="icon"
+          onClick={(event) =>
+            handleSortOrder(order, event.currentTarget.title.toString())
+          }
+        >
+          {sortOrderAsc && (
+            <Icon
+              icon={order === 'ASC' ? 'lucide:sort-desc' : 'lucide:sort-asc'}
+              className="text-emerald-950"
+              onClick={changeOrder}
+            />
+          )}
+        </Button>
+      )}
+      {children}
+    </th>
   );
 }
 

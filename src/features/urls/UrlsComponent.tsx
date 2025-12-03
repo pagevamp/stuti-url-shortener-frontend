@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/src/components/ui/table';
 import { Icon } from '@iconify/react';
-import { urlTasks, useUrls } from '@/src/hooks/useUrls';
+import { sortFields, urlTasks, useUrls } from '@/src/hooks/useUrls';
 import Modal from '@/src/components/common/Modal/Modal';
 import { InputField } from '@/src/components/common/InputField.tsx/InputField';
 import { ConfirmationDialogBox } from '@/src/components/common/ConfirmationBox/ConfirmationDialogBox';
@@ -23,11 +23,13 @@ import { urlOrder } from '@/src/app/(protected)/urls/page';
 
 export const UrlsComponent = ({
   query,
-  sort,
+  sortOrder,
+  sortColumn,
   currentPage,
 }: {
   query: string;
-  sort: urlOrder;
+  sortOrder: urlOrder;
+  sortColumn: sortFields;
   currentPage: number;
 }) => {
   const {
@@ -62,14 +64,12 @@ export const UrlsComponent = ({
   };
 
   const itemsPerPage = 5;
-  const data = useFilterTable(query, sort, currentPage);
+  const data = useFilterTable(query, sortColumn, sortOrder, currentPage);
 
   return (
     <div className="my-20 mx-10 p-5 bg-gray-200 w-fit">
       <section className="flex flex-row mx-10 my-5">
-        {/* <section className="flex flex-row gap-2 items-center"> */}
         <SearchComponent />
-        {/* </section> */}
 
         <Button
           className="flex flex-row gap-3 h-12 text-white font-semibold px-2 place-self-end"
@@ -84,7 +84,7 @@ export const UrlsComponent = ({
         </Button>
       </section>
 
-      <Suspense key={query + sort + currentPage}>
+      <Suspense key={query + sortColumn + sortOrder + currentPage}>
         <Table>
           <TableHeader>
             <TableRow className="border-b border-t border-[#E6EFF5]">
@@ -96,13 +96,25 @@ export const UrlsComponent = ({
                   {headers}
                 </TableHead>
               ))}
-              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+              <TableHead
+                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
+                type="sorted"
+                title="created_at"
+              >
                 Created At
               </TableHead>
-              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+              <TableHead
+                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
+                type="sorted"
+                title="updated_at"
+              >
                 Updated At
               </TableHead>
-              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+              <TableHead
+                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
+                type="sorted"
+                title="expires_at"
+              >
                 Expires At
               </TableHead>
               <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">

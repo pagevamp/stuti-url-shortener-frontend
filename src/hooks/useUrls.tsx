@@ -1,13 +1,19 @@
 'use client';
 import { dummyData } from '@/public/data/dummyData';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { useState, ChangeEvent, useMemo } from 'react';
+import React, { useState, ChangeEvent, useMemo } from 'react';
 import { urlOrder } from '../app/(protected)/urls/page';
 
 export enum urlTasks {
   'add',
   'edit',
   'delete',
+}
+
+export enum sortFields {
+  'updated_at',
+  'created_at',
+  'expires_at',
 }
 
 export function useUrls() {
@@ -51,7 +57,7 @@ export function useUrls() {
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
 
   function handleSearch(term: string) {
     const params = new URLSearchParams(searchParams);
@@ -61,18 +67,36 @@ export function useUrls() {
     } else {
       params.delete('query');
     }
-    replace(`${pathname}?${params.toString()}`);
+
+    const addQuery = setTimeout(() => {
+      replace(`${pathname}?${params.toString()}`);
+    }, 2000);
+
+    return () => {
+      clearTimeout(addQuery);
+    };
   }
 
-  function handleSort(order: string) {
+  const [sortOrderAsc, setSortOrderAsc] = React.useState(true);
+
+  function handleSortOrder(order: string, field: string) {
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
+
     if (order) {
-      params.set('sort', order);
+      params.set('sortOrder', order.toString());
     } else {
-      params.delete('sort');
+      params.delete('sortOrder');
     }
-    replace(`${pathname}?${params.toString()}`);
+
+    if (field) {
+      params.set('sortColumn', field.toString());
+    } else {
+      params.delete('sortColumn');
+    }
+
+    push(`${pathname}?${params.toString()}`);
+    setSortOrderAsc(!sortOrderAsc);
   }
 
   function handlePagination(page: number) {
@@ -85,24 +109,42 @@ export function useUrls() {
     replace(`${pathname}?${params.toString()}`);
   }
 
-  function useFilterTable(query: string, sort: urlOrder, currentPage: number) {
+  function useFilterTable(
+    query: string,
+    sortColumn: sortFields,
+    sortOrder: urlOrder,
+    currentPage: number
+  ) {
     const itemsPerPage = 5;
     const lowerCaseQuery = query.toLowerCase();
+    const order: urlOrder = sortOrder;
+    const field: sortFields = sortColumn;
     const filteredData = useMemo(() => {
+      const start = (currentPage - 1) * itemsPerPage;
       const queriedData = dummyData.filter(
         (data) =>
-          data.original_url.toLowerCase().includes(lowerCaseQuery) ||
-          data.title.toLowerCase().includes(lowerCaseQuery) ||
-          data.user_id.toLowerCase().includes(lowerCaseQuery) ||
-          data.short_code.toLowerCase().includes(lowerCaseQuery)
+          data.original_url?.toLowerCase().includes(lowerCaseQuery) ||
+          data.title?.toLowerCase().includes(lowerCaseQuery) ||
+          data.user_id?.toLowerCase().includes(lowerCaseQuery) ||
+          data.short_code?.toLowerCase().includes(lowerCaseQuery)
       );
-      const start = (currentPage - 1) * itemsPerPage;
 
-      // if (sort) {
-      //   const sortedData = queriedData.sort();
-      // }
+      if (order === urlOrder.ASC && field) {
+        const sortedData = queriedData.sort(
+          (a, b) =>
+            a.field! - b.field! || a.field! - b.field! || a.field! - b.field!
+        );
+        return sortedData.slice(start, start + itemsPerPage);
+      } else if (order === urlOrder.DESC && field) {
+        const sortedData = queriedData.sort(
+          (a, b) =>
+            b.field! - a.field! || b.field! - a.field! || b.field! - a.field!
+        );
+        return sortedData.slice(start, start + itemsPerPage);
+      }
+
       return queriedData.slice(start, start + itemsPerPage);
-    }, [lowerCaseQuery, currentPage]);
+    }, [lowerCaseQuery, currentPage, order, field]);
     return filteredData;
   }
 
@@ -120,7 +162,9 @@ export function useUrls() {
     handleFormInputChange,
     handleConfirm,
     handleSearch,
-    handleSort,
+    sortOrderAsc,
+    setSortOrderAsc,
+    handleSortOrder,
     handlePagination,
     useFilterTable,
   };
