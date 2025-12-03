@@ -11,12 +11,12 @@ import {
 } from '@/src/components/ui/table';
 import { Icon } from '@iconify/react';
 import { urlTasks, useUrls } from '@/src/hooks/useUrls';
-import Modal from '@/src/components/commom/Modal/Modal';
-import { InputField } from '@/src/components/commom/InputField.tsx/InputField';
-import { ConfirmationDialogBox } from '@/src/components/commom/ConfirmationBox/ConfirmationDialogBox';
-import { Button } from '@/src/components/commom/Button/Button';
-import { SearchComponent } from '@/src/components/commom/SearchComponent.tsx/SearchComponent';
-import { Pagination } from '@/src/components/commom/PaginationComponent.tsx/Pagination';
+import Modal from '@/src/components/common/Modal/Modal';
+import { InputField } from '@/src/components/common/InputField.tsx/InputField';
+import { ConfirmationDialogBox } from '@/src/components/common/ConfirmationBox/ConfirmationDialogBox';
+import { Button } from '@/src/components/common/Button/Button';
+import { SearchComponent } from '@/src/components/common/SearchComponent.tsx/SearchComponent';
+import { Pagination } from '@/src/components/common/PaginationComponent.tsx/Pagination';
 import { Suspense } from 'react';
 import { dummyData } from '@/public/data/dummyData';
 import { urlOrder } from '@/src/app/(protected)/urls/page';
@@ -44,10 +44,7 @@ export const UrlsComponent = ({
     useFilterTable,
   } = useUrls();
 
-  const add = {
-    onClick: () => openModal(urlTasks.add),
-  };
-
+  const tableHeaders = ['User ID', 'Title', 'Shortened URL', 'Original URL'];
   const actions = [
     {
       icon: 'mdi:pencil',
@@ -60,18 +57,9 @@ export const UrlsComponent = ({
       onClick: () => openModal(urlTasks.delete),
     },
   ];
-
-  const tableHeaders = [
-    'User ID',
-    'Title',
-    'Shortened URL',
-    'Original URL',
-    'Created At',
-    'Updated At',
-    'Deleted At',
-    'Expires At',
-    'Actions',
-  ];
+  const add = {
+    onClick: () => openModal(urlTasks.add),
+  };
 
   const itemsPerPage = 5;
   const data = useFilterTable(query, sort, currentPage);
@@ -81,7 +69,6 @@ export const UrlsComponent = ({
       <section className="flex flex-row mx-10 my-5">
         {/* <section className="flex flex-row gap-2 items-center"> */}
         <SearchComponent />
-        {/* <></> */}
         {/* </section> */}
 
         <Button
@@ -109,6 +96,18 @@ export const UrlsComponent = ({
                   {headers}
                 </TableHead>
               ))}
+              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+                Created At
+              </TableHead>
+              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+                Updated At
+              </TableHead>
+              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+                Expires At
+              </TableHead>
+              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -129,7 +128,6 @@ export const UrlsComponent = ({
                 </TableCell>
                 <TableCell> {data.created_at}</TableCell>
                 <TableCell>{data.updated_at}</TableCell>
-                <TableCell>{data.deleted_at}</TableCell>
                 <TableCell>{data.expires_at}</TableCell>
                 <TableCell className="flex flex-row gap-5">
                   {actions.map((action, idx) => (
@@ -193,10 +191,9 @@ export const UrlsComponent = ({
                   value={editFormData.title}
                   onChange={handleFormInputChange}
                   classNames={{
-                    inputClassName:
+                    input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    labelClassname:
-                      'text-black font-semibold text-shadow-gray-100',
+                    label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
                 <InputField
@@ -208,10 +205,9 @@ export const UrlsComponent = ({
                   value={editFormData.expiresAt}
                   onChange={handleFormInputChange}
                   classNames={{
-                    inputClassName:
+                    input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    labelClassname:
-                      'text-black font-semibold text-shadow-gray-100',
+                    label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
               </form>
@@ -232,10 +228,9 @@ export const UrlsComponent = ({
                   value={editFormData.title}
                   onChange={handleFormInputChange}
                   classNames={{
-                    inputClassName:
+                    input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    labelClassname:
-                      'text-black font-semibold text-shadow-gray-100',
+                    label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
                 <InputField
@@ -247,10 +242,9 @@ export const UrlsComponent = ({
                   value={editFormData.expiresAt}
                   onChange={handleFormInputChange}
                   classNames={{
-                    inputClassName:
+                    input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    labelClassname:
-                      'text-black font-semibold text-shadow-gray-100',
+                    label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
                 <button type="submit">Submit</button>

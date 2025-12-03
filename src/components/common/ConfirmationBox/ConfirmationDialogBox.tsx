@@ -1,6 +1,5 @@
 'use client';
 import { ConfirmationTypes } from '@/src/core/types/url-types';
-import { useUrls } from '@/src/hooks/useUrls';
 
 export const ConfirmationDialogBox = ({
   title,

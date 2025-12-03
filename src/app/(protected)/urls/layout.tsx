@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 import '../../colors.css';
-import { Topbar } from '@/src/components/commom/TopBar/Topbar';
+import { Topbar } from '@/src/components/common/TopBar/Topbar';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (

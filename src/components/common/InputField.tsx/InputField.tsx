@@ -12,7 +12,7 @@ export interface InputProps {
   type?: string;
   placeholder: string;
   value?: string;
-  classNames?: { inputClassName?: string; labelClassname?: string };
+  classNames?: { input?: string; label?: string };
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -40,7 +40,7 @@ export const InputField = ({
         htmlFor={name}
         className={cn(
           'text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-primary-100',
-          classNames?.labelClassname
+          classNames?.label
         )}
       >
         <Icon
@@ -54,7 +54,7 @@ export const InputField = ({
       <div
         className={cn(
           'flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-undraw-secondary-100 shadow-md shadow-lime-950 bg-primary-100 text-undraw-secondary-100 font-light px-2 py-2 text-sm placeholder:text-placeholder-100 placeholder:text-sm',
-          classNames?.inputClassName
+          classNames?.input
         )}
       >
         {isPassword && (

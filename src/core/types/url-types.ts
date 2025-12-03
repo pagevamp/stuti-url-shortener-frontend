@@ -7,7 +7,6 @@ export interface UrlTableTypes {
   original_url: string;
   updated_at: string;
   created_at: string;
-  deleted_at: string;
   expires_at: string;
 }
 

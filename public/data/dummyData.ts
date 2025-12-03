@@ -8,7 +8,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -18,7 +17,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -28,7 +26,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -38,7 +35,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -48,7 +44,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -58,7 +53,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -68,7 +62,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -78,7 +71,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -88,7 +80,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -98,7 +89,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -108,7 +98,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -118,7 +107,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -128,7 +116,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -138,7 +125,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -148,7 +134,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -158,7 +143,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -168,7 +152,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -178,7 +161,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -188,7 +170,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
   {
@@ -198,7 +179,6 @@ export const dummyData: UrlTableTypes[] = [
     original_url: 'https://github.com/pagevamp/stuti-url-shortener-frontend',
     updated_at: '2025-12-01',
     created_at: '2025-12-01',
-    deleted_at: '2025-12-01',
     expires_at: '2025-12-01',
   },
 ];
