@@ -4,7 +4,6 @@ import { InputField } from '../InputField.tsx/InputField';
 
 export const FilterCard = () => {
   const {
-    closeFilter,
     filterError,
     filterFormData,
     handleFilterSubmit,
@@ -13,7 +12,7 @@ export const FilterCard = () => {
   return (
     <section>
       <form
-        className="flex flex-col gap-2 items-center z-100 inset-0 border border-undraw-secondary-100 w-fit p-4"
+        className="flex flex-row gap-1 items-center z-100 border border-undraw-secondary-100 w-fit p-1"
         onSubmit={(e) => {
           e.preventDefault();
           handleFilterSubmit(e);
@@ -27,22 +26,19 @@ export const FilterCard = () => {
           placeholder="Enter Start Date"
           value={filterFormData.start_date}
           error={filterError?.start_date}
+          
           onChange={(e) => handleFilterInputChange(e)}
           classNames={{
-            input: 'bg-white text-sm text-undraw-secondary-100 font-bold w-fit',
-            label: 'text-black font-semibold text-shadow-gray-100',
+            input:
+              'bg-white text-xs text-undraw-secondary-100 font-light w-fit h-6',
+            label: 'text-black font-normal text-shadow-gray-100 text-xs',
           }}
         />
-        <button
-          className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
-          type="submit"
-        >
-          Filter
-        </button>
+        <button className="text-xs font-bold text--blue-950">Filter</button>
       </form>
 
       <form
-        className="flex flex-col gap-2 items-center z-100 inset-0 border border-undraw-secondary-100 w-fit p-4"
+        className="flex flex-row gap-1 items-center z-100 border border-undraw-secondary-100 w-fit p-1"
         onSubmit={(e) => {
           e.preventDefault();
           handleFilterSubmit(e);
@@ -58,26 +54,16 @@ export const FilterCard = () => {
           error={filterError?.end_date}
           onChange={(e) => handleFilterInputChange(e)}
           classNames={{
-            input: 'bg-white text-sm text-undraw-secondary-100 font-bold w-fit',
-            label: 'text-black font-semibold text-shadow-gray-100',
+            input:
+              'bg-white text-xs text-undraw-secondary-100 font-light w-fit h-6',
+            label: 'text-black font-normal text-shadow-gray-100 text-xs',
           }}
         />
 
-        <button
-          className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
-          type="submit"
-        >
+        <button className="text-xs font-bold text--blue-950" type="submit">
           Filter
         </button>
       </form>
-      <div className="flex flex-row items-center">
-        <button
-          className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
-          onSubmit={closeFilter}
-        >
-          Cancel
-        </button>
-      </div>
     </section>
   );
 };

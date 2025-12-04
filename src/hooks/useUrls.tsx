@@ -135,12 +135,12 @@ export function useUrls() {
       setFilterError(formattedErrors);
       return;
     }
-    setFilterError({});
-    // handleFilter(re, filterFormData);
-  };
+    const name = result.data as keyof sortFields;
+    const value = result.data.end_date || result.data.start_date;
 
-  const toggleCard = () => {
-    setFilterCardOpen(!filterCardOpen);
+    handleFilter(name, value);
+
+    setFilterError({});
   };
 
   const searchParams = useSearchParams();
@@ -197,12 +197,22 @@ export function useUrls() {
     replace(`${pathname}?${params.toString()}`);
   }
 
-  function handleFilter(filter: filterDates, filterField: sortFields) {
+  function handleFilter(
+    filterField: sortFields,
+    filterFrom?: filterDates.start_date,
+    filterTo?: filterDates.end_date
+  ) {
     const params = new URLSearchParams(searchParams);
-    if (filter) {
-      params.set('filter', filter.toString());
+    if (filterFrom) {
+      params.set('filterFrom', filterFrom.toString());
     } else {
-      params.delete('filter');
+      params.delete('filterFrom');
+    }
+
+    if (filterTo) {
+      params.set('filterTo', filterTo.toString());
+    } else {
+      params.delete('filterTo');
     }
 
     if (filterField) {
@@ -215,7 +225,8 @@ export function useUrls() {
 
   function useFilterTable(
     query: string,
-    filter: filterDates,
+    filterFrom: filterDates.start_date,
+    filterTo: filterDates.end_date,
     filterField: sortFields,
     sortColumn: sortFields,
     sortOrder: urlOrder,
@@ -224,8 +235,11 @@ export function useUrls() {
     const itemsPerPage = 5;
     const lowerCaseQuery = query.toLowerCase();
     const order = sortOrder;
+    const filterStart = filterFrom;
+    const filterEnd = filterTo;
+    const filterColumn = filterField;
     const field = sortColumn;
-    const filteredData = useMemo(() => {
+    const manipulatedData = useMemo(() => {
       const start = (currentPage - 1) * itemsPerPage;
       const queriedData = dummyData.filter(
         (data) =>
@@ -234,6 +248,26 @@ export function useUrls() {
           data.user_id?.toLowerCase().includes(lowerCaseQuery) ||
           data.short_code?.toLowerCase().includes(lowerCaseQuery)
       );
+
+      if (filterFrom && filterColumn) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = filtered[filterColumn];
+          return (
+            filterInstance?.toDateString().includes(filterFrom) &&
+            filterInstance?.toDateString() > filterFrom
+          );
+        });
+        return filteredData.slice(start, start + itemsPerPage);
+      } else if (filterTo && filterColumn) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = filtered[filterColumn];
+          return (
+            filterInstance?.toDateString().includes(filterTo) &&
+            filterInstance?.toDateString() < filterTo
+          );
+        });
+        return filteredData.slice(start, start + itemsPerPage);
+      }
 
       if (order === urlOrder.ASC && field) {
         const sortedData = [...queriedData].sort((a, b) => {
@@ -253,8 +287,16 @@ export function useUrls() {
         return sortedData.slice(start, start + itemsPerPage);
       }
       return queriedData.slice(start, start + itemsPerPage);
-    }, [lowerCaseQuery, currentPage, order, field]);
-    return filteredData;
+    }, [
+      lowerCaseQuery,
+      currentPage,
+      order,
+      field,
+      filterFrom,
+      filterTo,
+      filterColumn,
+    ]);
+    return manipulatedData;
   }
 
   return {
@@ -288,6 +330,5 @@ export function useUrls() {
     closeFilter,
     filterCardOpen,
     setFilterCardOpen,
-    toggleCard,
   };
 }

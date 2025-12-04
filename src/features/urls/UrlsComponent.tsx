@@ -29,14 +29,16 @@ import { UrlTableHead } from '@/src/components/common/UrlTableHead.tsx/UrlTableH
 
 export const UrlsComponent = ({
   query,
-  filter,
+  filterFrom,
+  filterTo,
   filterField,
   sortOrder,
   sortColumn,
   currentPage,
 }: {
   query: string;
-  filter: filterDates;
+  filterFrom: filterDates.start_date;
+  filterTo: filterDates.end_date;
   filterField: sortFields;
   sortOrder: urlOrder;
   sortColumn: sortFields;
@@ -78,7 +80,8 @@ export const UrlsComponent = ({
   const itemsPerPage = 5;
   const data = useFilterTable(
     query,
-    filter,
+    filterFrom,
+    filterTo,
     filterField,
     sortColumn,
     sortOrder,
@@ -105,7 +108,13 @@ export const UrlsComponent = ({
 
       <Suspense
         key={
-          query + sortColumn + sortOrder + filter + filterField + currentPage
+          query +
+          sortColumn +
+          sortOrder +
+          filterFrom +
+          filterTo +
+          filterField +
+          currentPage
         }
       >
         <Table>

@@ -14,6 +14,7 @@ export interface InputProps {
   value?: string;
   classNames?: { input?: string; label?: string };
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onSubmit?: React.InputEventHandler<HTMLInputElement>;
 }
 
 export const InputField = ({
@@ -25,6 +26,7 @@ export const InputField = ({
   value,
   placeholder,
   classNames,
+  onSubmit,
   onChange,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);
