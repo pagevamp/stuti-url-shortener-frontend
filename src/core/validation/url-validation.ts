@@ -13,15 +13,3 @@ export const urlFormValidationSchema = z.object({
       message: 'The Expiry Date must be in the future',
     }),
 });
-
-export const filterFormValidationSchema = z.object({
-  start_date: z.coerce
-    .date()
-    .min(1, { message: 'Starting Date is required' })
-    .optional(),
-
-  end_date: z.coerce
-    .date()
-    .min(1, { message: 'End Date is required' })
-    .optional(),
-});
