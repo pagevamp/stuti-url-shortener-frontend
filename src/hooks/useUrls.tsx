@@ -1,5 +1,5 @@
 'use client';
-import { UrlFormErrors } from '@/core/types/url-types';
+import { UrlFormErrors, UrlFormTypes } from '@/core/types/url-types';
 import { urlFormValidationSchema } from '@/core/validation/url-validation';
 import React, { useState, ChangeEvent } from 'react';
 
@@ -18,6 +18,7 @@ export function useUrls() {
   const [editFormData, setEditFormData] = useState({
     title: '',
     expiresAt: '',
+    originalURL: '',
   });
 
   const [error, setError] = useState<UrlFormErrors>({});
@@ -37,6 +38,7 @@ export function useUrls() {
     setEditFormData({
       title: '',
       expiresAt: '',
+      originalURL: '',
     });
   };
   const openConfirmation = () => setConfirmationOpen(true);
@@ -64,6 +66,7 @@ export function useUrls() {
     setEditFormData({
       title: '',
       expiresAt: '',
+      originalURL: '',
     });
   };
 
@@ -73,6 +76,7 @@ export function useUrls() {
     setEditFormData({
       title: '',
       expiresAt: '',
+      originalURL: '',
     });
   };
 

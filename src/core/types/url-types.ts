@@ -3,6 +3,7 @@ import {
   urlFormValidationSchema,
 } from './../validation/url-validation';
 import { MouseEventHandler } from 'react';
+import { Url } from 'url';
 import * as z from 'zod';
 
 export interface ModalTypes {
@@ -25,7 +26,8 @@ export interface ConfirmationTypes {
 
 export interface UrlFormTypes {
   title: string;
-  expiry_date: Date;
+  expiresAt: Date;
+  originalURL?: Url;
 }
 
 export type UrlFormErrors = Partial<
