@@ -1,45 +1,39 @@
-"use server"
-import axios from "axios"
-import toast from "react-hot-toast"
+import axios from 'axios';
+import { getAccessToken } from './actions';
+import { PROTECTED_PATH } from '../routes';
 
-const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL
+const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 const createApiInstance = (baseURL: string | undefined) => {
-  const instance = axios.create({ baseURL, timeout: 5000 })
+  const instance = axios.create({
+    baseURL,
+    timeout: 5000,
+    withCredentials: true,
+  });
 
   instance.interceptors.request.use(
-    (config) => {
-      try {
-        if (typeof window !== "undefined") {
-          const token = localStorage.getItem("token")
-          const accessToken = token ? token : null
-
-          if (accessToken && config.headers) {
-            config.headers["Authorization"] = `Bearer ${accessToken}`
+    async (config) => {
+      if (PROTECTED_PATH.some((path) => config.url?.includes(path))) {
+        if (typeof window === 'undefined') {
+          try {
+            const accessTokenObj = await getAccessToken();
+            const accessToken = accessTokenObj?.value;
+            if (accessToken && config.headers) {
+              config.headers['Authorization'] = `Bearer ${accessToken}`;
+            }
+          } catch (err) {
+            console.error('Invalid token', err);
           }
         }
-      } catch (err) {
-        if (err instanceof Error) {
-          toast.error(`Invalid token in localStorage : ${err.message} `)
-        }
       }
-
-      return config
+      return config;
     },
     (error) => {
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
-  )
+  );
 
-  instance.interceptors.response.use(
-    (response) => {
-      return response
-    },
-    (error) => {
-      return Promise.reject(error)
-    }
-  )
-  return instance
-}
+  return instance;
+};
 
-export const api = createApiInstance(BASE_API_URL)
+export const api = createApiInstance(BASE_API_URL);
