@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { TableHeadProps } from '@/src/core/types/url-types';
+import { TableCellProps, TableHeadProps } from '@/src/core/types/url-types';
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (
@@ -82,7 +82,7 @@ function TableHead({ slot, children, className, ...props }: TableHeadProps) {
   );
 }
 
-function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
+function TableCell({ children, className, ...props }: TableCellProps) {
   return (
     <td
       data-slot="table-cell"
@@ -91,7 +91,9 @@ function TableCell({ className, ...props }: React.ComponentProps<'td'>) {
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </td>
   );
 }
 

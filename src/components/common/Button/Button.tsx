@@ -30,7 +30,6 @@ export const buttonVariants = cva(
 export const Button = ({
   children,
   variant,
-  title,
   size,
   className,
   type = 'button',
@@ -38,7 +37,6 @@ export const Button = ({
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     children: React.ReactNode;
-    title?: string;
     type?: 'button' | 'submit' | 'reset';
     variant?: VariantProps<typeof buttonVariants>;
     size?: VariantProps<typeof buttonVariants>;
@@ -47,7 +45,6 @@ export const Button = ({
   return (
     <button
       type={type}
-      title={title}
       onClick={onClick}
       className={cn(buttonVariants({ variant, size }), className)}
     >

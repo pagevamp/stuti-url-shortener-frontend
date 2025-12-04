@@ -1,35 +1,31 @@
 import { UrlTableHeadProps } from '@/src/core/types/url-types';
-import { useUrls } from '@/src/hooks/useUrls';
-import React from 'react';
+import { urlOrder, useUrls } from '@/src/hooks/useUrls';
 import { Button } from '../Button/Button';
 import { Icon } from '@iconify/react';
 import { TableHead } from '../../ui/table';
 
-export const UrlTableHead = ({ title, type, children }: UrlTableHeadProps) => {
+export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
   const { sortOrderAsc, handleSortOrder } = useUrls();
   const isSorted = type == 'sorted';
-  const order = sortOrderAsc === true ? 'ASC' : 'DESC';
+  const order = sortOrderAsc  ? urlOrder.ASC : urlOrder.DESC;
   return (
     <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]">
+      {children}
       {isSorted && (
         <Button
-          type="reset"
+          type="button"
           variant="ghost"
-          title={title}
           size="icon"
-          onClick={(event) =>
-            handleSortOrder(order, event.currentTarget.title.toString())
-          }
+          onClick={() => handleSortOrder(order, field!)}
         >
           <Icon
             icon={
-              sortOrderAsc === true ? 'lucide:sort-desc' : 'lucide:sort-asc'
+              sortOrderAsc ? 'lucide:sort-desc' : 'lucide:sort-asc'
             }
             className="text-emerald-950"
           />
         </Button>
       )}
-      {children}
     </TableHead>
   );
 };

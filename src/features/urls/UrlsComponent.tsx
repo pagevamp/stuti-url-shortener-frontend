@@ -37,11 +37,13 @@ export const UrlsComponent = ({
     confirmationOpen,
     editFormData,
     currentAction,
+    error,
     openModal,
     closeModal,
     openConfirmation,
     closeConfirmation,
     handleFormInputChange,
+    handleSubmit,
     handleConfirm,
     useFilterTable,
   } = useUrls();
@@ -67,8 +69,8 @@ export const UrlsComponent = ({
   const data = useFilterTable(query, sortColumn, sortOrder, currentPage);
 
   return (
-    <div className="my-20 mx-10 p-5 bg-gray-200 w-fit">
-      <section className="flex flex-row mx-10 my-5">
+    <div className="my-20 mx-8 p-5 bg-gray-200 w-fit">
+      <section className="flex flex-row items-center place-content-stretch mx-10 my-5 w-full">
         <SearchComponent />
 
         <Button
@@ -96,13 +98,13 @@ export const UrlsComponent = ({
                   {headers}
                 </TableHead>
               ))}
-              <UrlTableHead type="sorted" title="created_at">
+              <UrlTableHead type="sorted" field={sortFields.created_at}>
                 Created At
               </UrlTableHead>
-              <UrlTableHead type="sorted" title="updated_at">
+              <UrlTableHead type="sorted" field={sortFields.updated_at}>
                 Updated At
               </UrlTableHead>
-              <UrlTableHead type="sorted" title="expires_at">
+              <UrlTableHead type="sorted" field={sortFields.expires_at}>
                 Expires At
               </UrlTableHead>
               <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]">
@@ -126,9 +128,9 @@ export const UrlsComponent = ({
                     <Icon icon="line-md:link" className="text-emerald-900" />
                   </a>
                 </TableCell>
-                <TableCell> {data.created_at}</TableCell>
-                <TableCell>{data.updated_at}</TableCell>
-                <TableCell>{data.expires_at}</TableCell>
+                <TableCell> {data.created_at.toString()}</TableCell>
+                <TableCell>{data.updated_at.toString()}</TableCell>
+                <TableCell>{data.expires_at.toString()}</TableCell>
                 <TableCell className="flex flex-row gap-5">
                   {actions.map((action, idx) => (
                     <button key={idx} onClick={action.onClick}>
@@ -176,11 +178,11 @@ export const UrlsComponent = ({
           message={
             currentAction === urlTasks.edit ? (
               <form
-                // onSubmit={(e) => {
-                //   e.preventDefault();
-                //   openConfirmation();
-                // }}
                 className="flex flex-col gap-2 items-center"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }}
               >
                 <InputField
                   name="title"
@@ -189,6 +191,7 @@ export const UrlsComponent = ({
                   icon="fluent:slide-text-title-edit-16-regular"
                   placeholder="Enter Title"
                   value={editFormData.title}
+                  error={error?.title}
                   onChange={handleFormInputChange}
                   classNames={{
                     input:
@@ -203,6 +206,7 @@ export const UrlsComponent = ({
                   icon="line-md:calendar"
                   placeholder="Enter Expiry Date"
                   value={editFormData.expiresAt}
+                  error={error?.expiresAt}
                   onChange={handleFormInputChange}
                   classNames={{
                     input:
@@ -210,14 +214,29 @@ export const UrlsComponent = ({
                     label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
+
+                <div className="flex flex-row gap-4 mt-4">
+                  <button
+                    className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
+                    onClick={closeModal}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
+                    type="submit"
+                  >
+                    Edit URL
+                  </button>
+                </div>
               </form>
             ) : currentAction === urlTasks.add ? (
               <form
-                // onSubmit={(e) => {
-                //   e.preventDefault();
-                //   openConfirmation();
-                // }}
                 className="flex flex-col gap-2 items-center"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }}
               >
                 <InputField
                   name="title"
@@ -226,6 +245,7 @@ export const UrlsComponent = ({
                   icon="fluent:slide-text-title-edit-16-regular"
                   placeholder="Enter Title"
                   value={editFormData.title}
+                  error={error?.title}
                   onChange={handleFormInputChange}
                   classNames={{
                     input:
@@ -240,6 +260,7 @@ export const UrlsComponent = ({
                   icon="line-md:calendar"
                   placeholder="Enter Expiry Date"
                   value={editFormData.expiresAt}
+                  error={error?.expiresAt}
                   onChange={handleFormInputChange}
                   classNames={{
                     input:
@@ -247,6 +268,21 @@ export const UrlsComponent = ({
                     label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
+
+                <div className="flex flex-row gap-4 mt-4">
+                  <button
+                    className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
+                    onClick={closeModal}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
+                    type="submit"
+                  >
+                    Add URL
+                  </button>
+                </div>
               </form>
             ) : (
               <span>Deleting the Url...</span>
@@ -257,13 +293,13 @@ export const UrlsComponent = ({
             currentAction === urlTasks.delete
               ? openConfirmation
               : currentAction === urlTasks.edit
-              ? openConfirmation
+              ? handleSubmit
               : closeModal
           }
         />
       )}
 
-      {confirmationOpen && (
+      {confirmationOpen && currentAction !== urlTasks.add && (
         <ConfirmationDialogBox
           isOpen={confirmationOpen}
           trigger={currentAction === urlTasks.edit ? 'Edit URL' : 'Delete URL'}

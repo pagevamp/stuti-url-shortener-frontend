@@ -28,21 +28,23 @@ const Modal = ({
         <div className="text-xl text-undraw-primary-100 shadow-2xs">
           {message}
         </div>
-        <div className="flex flex-row gap-4 mt-4">
-          <button
-            className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
-          <button
-            className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
-            type="submit"
-            onClick={onConfirm}
-          >
-            {trigger}
-          </button>
-        </div>
+        {trigger === 'Delete URL' && (
+          <div className="flex flex-row gap-4 mt-4">
+            <button
+              className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+            <button
+              className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
+              type="submit"
+              onClick={onConfirm}
+            >
+              {trigger}
+            </button>
+          </div>
+        )}
       </section>
     </article>
   );
