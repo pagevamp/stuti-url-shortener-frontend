@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PUBLIC_PATH } from './routes';
-import { getAccessToken } from './lib/actions';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -8,10 +7,6 @@ export async function proxy(request: NextRequest) {
 
   if (PUBLIC_PATH.includes(pathname)) {
     return handlePublicPath(request, pathname, token);
-  }
-
-  if (pathname === '/error') {
-    return NextResponse.next();
   }
 
   // Authentication check
