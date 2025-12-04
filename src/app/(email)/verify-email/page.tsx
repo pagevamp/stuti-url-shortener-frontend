@@ -1,8 +1,7 @@
-import { VerifyEmailComponent } from "@/src/features/email-verification/VerifyEmailComponent"
-import React from "react"
+import { VerifyEmailComponent } from '@/src/features/email-verification/verify-email/VerifyEmailComponent';
 
-const Index = () => {
-  return <><VerifyEmailComponent/></>
-}
+const VerifyEmail = () => {
+  return <VerifyEmailComponent />;
+};
 
-export default Index
+export default VerifyEmail;

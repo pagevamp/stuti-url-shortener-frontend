@@ -1,11 +1,7 @@
-import { ResendEmailComponent } from "@/src/features/email-verification/ResendEmailComponent"
+import { ResendEmailComponent } from "@/src/features/email-verification/resend-email/ResendEmailComponent";
 
-const Index = () => {
-  return (
-    <>
-      <ResendEmailComponent />
-    </>
-  )
-}
+const ResendEmail = () => {
+  return <ResendEmailComponent />;
+};
 
-export default Index
+export default ResendEmail;

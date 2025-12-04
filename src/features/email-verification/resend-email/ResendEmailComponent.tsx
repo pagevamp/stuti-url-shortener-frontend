@@ -1,12 +1,12 @@
-"use client"
-import { Button } from "@/src/components/common/Button/Button"
-import { InputField } from "@/src/components/common/InputField/InputField"
-import { useResend } from "@/src/hooks/useResend"
-import { Icon } from "@iconify/react"
-import Link from "next/link"
+'use client';
+import { Button } from '@/src/components/common/Button/Button';
+import { InputField } from '@/src/components/common/InputField/InputField';
+import { useResend } from '@/src/hooks/useResend';
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
 
 export const ResendEmailComponent = () => {
-  const { error, resendFormData, handleChange, handleSubmit } = useResend()
+  const { error, resendFormData, handleChange, handleSubmit } = useResend();
   return (
     <form
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
@@ -23,13 +23,13 @@ export const ResendEmailComponent = () => {
         placeholder="Enter your email"
         labelName="Email"
         value={resendFormData.email}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         error={error?.email}
       />
 
       <Button type="submit" className="w-fit">
         <span className="flex flex-row items-center gap-1">
-          Resend Email Verification{" "}
+          Resend Email Verification{' '}
           <Icon icon="mdi:email-resend" width={16} height={16} />
         </span>
       </Button>
@@ -44,5 +44,5 @@ export const ResendEmailComponent = () => {
         </Link>
       </p>
     </form>
-  )
-}
+  );
+};

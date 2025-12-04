@@ -1,5 +1,4 @@
 import React from 'react';
-import '../colors.css';
 import { Container } from '@/src/components/common/Container/Container';
 
 const ResendEmailLayout = ({ children }: { children: React.ReactNode }) => {

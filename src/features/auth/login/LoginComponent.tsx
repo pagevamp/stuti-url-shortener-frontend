@@ -1,12 +1,12 @@
-"use client"
-import { InputField } from "../../../components/common/InputField/InputField"
-import { Button } from "../../../components/common/Button/Button"
-import { Icon } from "@iconify/react"
-import { useLogin } from "@/src/hooks/useLogin"
-import Link from "next/link"
+'use client';
+import { InputField } from '../../../components/common/InputField/InputField';
+import { Button } from '../../../components/common/Button/Button';
+import { Icon } from '@iconify/react';
+import { useAuth } from '@/src/hooks/useAuth';
+import Link from 'next/link';
 
 export const LoginComponent = () => {
-  const { formData, error, handleChange, handleSubmit } = useLogin()
+  const { formData, error, handleChange, handleSubmit } = useAuth();
   return (
     <form
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
@@ -23,17 +23,17 @@ export const LoginComponent = () => {
         labelName="Email"
         value={formData.email.trim()}
         error={error?.email}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
       />
       <InputField
         name="password"
         type="password"
         icon="tdesign:user-password"
-        placeholder="Enter  password"
+        placeholder="Enter password"
         labelName="Password"
         value={formData.password.trim()}
         error={error?.password}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
       />
 
       <span className="flex flex-row items-center gap-1 mx-auto text-gray-200 text-sm my-5">
@@ -56,5 +56,5 @@ export const LoginComponent = () => {
         </Link>
       </p>
     </form>
-  )
-}
+  );
+};

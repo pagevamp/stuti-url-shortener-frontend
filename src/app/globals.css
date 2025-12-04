@@ -1,7 +1,7 @@
-@import "tailwindcss";
 /* to use the different swiper js modules */
-@import "swiper/css/pagination";
-@import "swiper/css";
+@import 'swiper/css/pagination';
+@import 'swiper/css';
+@import './colors.css';
 
 @custom-variant dark (&:is(.dark *));
 
