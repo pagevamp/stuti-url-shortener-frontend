@@ -18,10 +18,15 @@ export interface UrlTableIcons {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export interface UrlTableHeader {
+export interface UrlTableHeadProps {
   title?: string;
   type?: string;
-  className: string;
+  children?: React.ReactElement | React.ReactNode;
+}
+
+export interface TableHeadProps {
+  className?: string;
+  slot?: React.ReactNode;
   children?: React.ReactElement | React.ReactNode;
 }
 

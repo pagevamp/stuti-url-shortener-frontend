@@ -1,10 +1,5 @@
 import { UrlsComponent } from '@/src/features/urls/UrlsComponent';
-import { sortFields } from '@/src/hooks/useUrls';
-
-export enum urlOrder {
-  ASC,
-  DESC,
-}
+import { sortFields, urlOrder } from '@/src/hooks/useUrls';
 
 const Urls = async (props: {
   searchParams?: Promise<{

@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/src/components/ui/table';
 import { Icon } from '@iconify/react';
-import { sortFields, urlTasks, useUrls } from '@/src/hooks/useUrls';
+import { sortFields, urlOrder, urlTasks, useUrls } from '@/src/hooks/useUrls';
 import Modal from '@/src/components/common/Modal/Modal';
 import { InputField } from '@/src/components/common/InputField.tsx/InputField';
 import { ConfirmationDialogBox } from '@/src/components/common/ConfirmationBox/ConfirmationDialogBox';
@@ -19,7 +19,7 @@ import { SearchComponent } from '@/src/components/common/SearchComponent.tsx/Sea
 import { Pagination } from '@/src/components/common/PaginationComponent.tsx/Pagination';
 import { Suspense } from 'react';
 import { dummyData } from '@/public/data/dummyData';
-import { urlOrder } from '@/src/app/(protected)/urls/page';
+import { UrlTableHead } from '@/src/components/common/UrlTableHead.tsx/UrlTableHead';
 
 export const UrlsComponent = ({
   query,
@@ -91,33 +91,21 @@ export const UrlsComponent = ({
               {tableHeaders.map((headers) => (
                 <TableHead
                   key={headers}
-                  className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
+                  className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]"
                 >
                   {headers}
                 </TableHead>
               ))}
-              <TableHead
-                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
-                type="sorted"
-                title="created_at"
-              >
+              <UrlTableHead type="sorted" title="created_at">
                 Created At
-              </TableHead>
-              <TableHead
-                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
-                type="sorted"
-                title="updated_at"
-              >
+              </UrlTableHead>
+              <UrlTableHead type="sorted" title="updated_at">
                 Updated At
-              </TableHead>
-              <TableHead
-                className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]"
-                type="sorted"
-                title="expires_at"
-              >
+              </UrlTableHead>
+              <UrlTableHead type="sorted" title="expires_at">
                 Expires At
-              </TableHead>
-              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-[14.59px] border-r w-[350px]">
+              </UrlTableHead>
+              <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]">
                 Actions
               </TableHead>
             </TableRow>
@@ -188,10 +176,10 @@ export const UrlsComponent = ({
           message={
             currentAction === urlTasks.edit ? (
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  openConfirmation();
-                }}
+                // onSubmit={(e) => {
+                //   e.preventDefault();
+                //   openConfirmation();
+                // }}
                 className="flex flex-col gap-2 items-center"
               >
                 <InputField
@@ -225,10 +213,10 @@ export const UrlsComponent = ({
               </form>
             ) : currentAction === urlTasks.add ? (
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  openConfirmation();
-                }}
+                // onSubmit={(e) => {
+                //   e.preventDefault();
+                //   openConfirmation();
+                // }}
                 className="flex flex-col gap-2 items-center"
               >
                 <InputField
@@ -259,7 +247,6 @@ export const UrlsComponent = ({
                     label: 'text-black font-semibold text-shadow-gray-100',
                   }}
                 />
-                <button type="submit">Submit</button>
               </form>
             ) : (
               <span>Deleting the Url...</span>
@@ -267,7 +254,11 @@ export const UrlsComponent = ({
           }
           onCancel={closeModal}
           onConfirm={
-            currentAction === urlTasks.delete ? openConfirmation : undefined
+            currentAction === urlTasks.delete
+              ? openConfirmation
+              : currentAction === urlTasks.edit
+              ? openConfirmation
+              : closeModal
           }
         />
       )}

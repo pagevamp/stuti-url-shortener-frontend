@@ -2,12 +2,16 @@
 import { dummyData } from '@/public/data/dummyData';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, useMemo } from 'react';
-import { urlOrder } from '../app/(protected)/urls/page';
 
 export enum urlTasks {
   'add',
   'edit',
   'delete',
+}
+
+export enum urlOrder {
+  ASC,
+  DESC,
 }
 
 export enum sortFields {
@@ -80,6 +84,8 @@ export function useUrls() {
   const [sortOrderAsc, setSortOrderAsc] = React.useState(true);
 
   function handleSortOrder(order: string, field: string) {
+    setSortOrderAsc(!sortOrderAsc);
+
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
 
@@ -95,8 +101,7 @@ export function useUrls() {
       params.delete('sortColumn');
     }
 
-    push(`${pathname}?${params.toString()}`);
-    setSortOrderAsc(!sortOrderAsc);
+    replace(`${pathname}?${params.toString()}`);
   }
 
   function handlePagination(page: number) {
@@ -117,8 +122,8 @@ export function useUrls() {
   ) {
     const itemsPerPage = 5;
     const lowerCaseQuery = query.toLowerCase();
-    const order: urlOrder = sortOrder;
-    const field: sortFields = sortColumn;
+    const order = sortOrder;
+    const field = sortColumn;
     const filteredData = useMemo(() => {
       const start = (currentPage - 1) * itemsPerPage;
       const queriedData = dummyData.filter(
@@ -130,16 +135,10 @@ export function useUrls() {
       );
 
       if (order === urlOrder.ASC && field) {
-        const sortedData = queriedData.sort(
-          (a, b) =>
-            a.field! - b.field! || a.field! - b.field! || a.field! - b.field!
-        );
+        const sortedData = queriedData.sort((a, b) => a.field! - b.field!);
         return sortedData.slice(start, start + itemsPerPage);
       } else if (order === urlOrder.DESC && field) {
-        const sortedData = queriedData.sort(
-          (a, b) =>
-            b.field! - a.field! || b.field! - a.field! || b.field! - a.field!
-        );
+        const sortedData = queriedData.sort((a, b) => b.field! - a.field!);
         return sortedData.slice(start, start + itemsPerPage);
       }
 
