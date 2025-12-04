@@ -1,9 +1,7 @@
-import React from 'react';
+import { Topbar } from '@/components/common/TopBar';
 import { Toaster } from 'react-hot-toast';
-import '../colors.css';
-import { Topbar } from '@/src/components/common/TopBar/Topbar';
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-w-screen min-h-screen">
       <Toaster position="top-right" />
@@ -13,4 +11,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default layout;
+export default Layout;

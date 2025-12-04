@@ -1,11 +1,7 @@
-import { UrlsComponent } from '@/src/features/urls/UrlsComponent';
+import { UrlsComponent } from '@/features/urls/UrlsComponent';
 
 const Urls = async () => {
-  return (
-    <>
-      <UrlsComponent />
-    </>
-  );
+  return <UrlsComponent />;
 };
 
 export default Urls;

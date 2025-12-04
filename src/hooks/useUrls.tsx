@@ -1,12 +1,12 @@
 'use client';
+import { UrlFormErrors } from '@/core/types/url-types';
+import { urlFormValidationSchema } from '@/core/validation/url-validation';
 import React, { useState, ChangeEvent } from 'react';
-import { UrlFormErrors } from '../core/types/url-types';
-import { urlFormValidationSchema } from '../core/validation/url-validation';
 
 export enum urlTasks {
-  add = 'add',
-  edit = 'edit',
-  delete = 'delete',
+  ADD = 'add',
+  EDIT = 'edit',
+  DELETE = 'delete',
 }
 
 export function useUrls() {
