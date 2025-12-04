@@ -2,42 +2,8 @@ import {
   filterFormValidationSchema,
   urlFormValidationSchema,
 } from './../validation/url-validation';
-import { sortFields } from '@/src/hooks/useUrls';
 import { MouseEventHandler } from 'react';
 import * as z from 'zod';
-
-export interface UrlTableTypes {
-  user_id: string;
-  title: string;
-  short_code: string;
-  original_url: string;
-  updated_at: Date;
-  created_at: Date;
-  expires_at: Date;
-}
-
-export interface UrlTableIcons {
-  icon: string;
-  title: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-}
-
-export interface UrlTableHeadProps {
-  field?: sortFields;
-  type?: string;
-  children?: React.ReactElement | React.ReactNode;
-}
-
-export interface TableHeadProps {
-  className?: string;
-  slot?: React.ReactNode;
-  children?: React.ReactElement | React.ReactNode;
-}
-
-export interface TableCellProps {
-  className?: string;
-  children?: React.ReactElement | React.ReactNode;
-}
 
 export interface ModalTypes {
   title: string;
