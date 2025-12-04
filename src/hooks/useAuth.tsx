@@ -63,8 +63,16 @@ export function useAuth() {
   };
 
   const handleLogout = async () => {
-    router.push('/login');
-    await logOutUser();
+    try {
+      await logOutUser();
+      router.push('/login');
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(`Logout failed : ${err.message}`);
+      } else {
+        toast.error(`Logout failed : An unknown error occurred`);
+      }
+    }
   };
 
   return {
