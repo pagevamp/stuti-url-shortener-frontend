@@ -10,7 +10,13 @@ import {
   TableRow,
 } from '@/src/components/ui/table';
 import { Icon } from '@iconify/react';
-import { sortFields, urlOrder, urlTasks, useUrls } from '@/src/hooks/useUrls';
+import {
+  filterDates,
+  sortFields,
+  urlOrder,
+  urlTasks,
+  useUrls,
+} from '@/src/hooks/useUrls';
 import Modal from '@/src/components/common/Modal/Modal';
 import { InputField } from '@/src/components/common/InputField.tsx/InputField';
 import { ConfirmationDialogBox } from '@/src/components/common/ConfirmationBox/ConfirmationDialogBox';
@@ -23,11 +29,15 @@ import { UrlTableHead } from '@/src/components/common/UrlTableHead.tsx/UrlTableH
 
 export const UrlsComponent = ({
   query,
+  filter,
+  filterField,
   sortOrder,
   sortColumn,
   currentPage,
 }: {
   query: string;
+  filter: filterDates;
+  filterField: sortFields;
   sortOrder: urlOrder;
   sortColumn: sortFields;
   currentPage: number;
@@ -66,7 +76,14 @@ export const UrlsComponent = ({
   };
 
   const itemsPerPage = 5;
-  const data = useFilterTable(query, sortColumn, sortOrder, currentPage);
+  const data = useFilterTable(
+    query,
+    filter,
+    filterField,
+    sortColumn,
+    sortOrder,
+    currentPage
+  );
 
   return (
     <div className="my-20 mx-8 p-5 bg-gray-200 w-fit">
@@ -86,7 +103,11 @@ export const UrlsComponent = ({
         </Button>
       </section>
 
-      <Suspense key={query + sortColumn + sortOrder + currentPage}>
+      <Suspense
+        key={
+          query + sortColumn + sortOrder + filter + filterField + currentPage
+        }
+      >
         <Table>
           <TableHeader>
             <TableRow className="border-b border-t border-[#E6EFF5]">
@@ -192,7 +213,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Title"
                   value={editFormData.title}
                   error={error?.title}
-                  onChange={handleFormInputChange}
+                  onChange={(e) => handleFormInputChange(e)}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -207,7 +228,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Expiry Date"
                   value={editFormData.expiresAt}
                   error={error?.expiresAt}
-                  onChange={handleFormInputChange}
+                  onChange={(e) => handleFormInputChange(e)}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -246,7 +267,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Title"
                   value={editFormData.title}
                   error={error?.title}
-                  onChange={handleFormInputChange}
+                  onChange={(e) => handleFormInputChange(e)}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -261,7 +282,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Expiry Date"
                   value={editFormData.expiresAt}
                   error={error?.expiresAt}
-                  onChange={handleFormInputChange}
+                  onChange={(e) => handleFormInputChange(e)}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',

@@ -1,4 +1,7 @@
-import { urlFormValidationSchema } from './../validation/url-validation';
+import {
+  filterFormValidationSchema,
+  urlFormValidationSchema,
+} from './../validation/url-validation';
 import { sortFields } from '@/src/hooks/useUrls';
 import { MouseEventHandler } from 'react';
 import * as z from 'zod';
@@ -61,4 +64,13 @@ export interface UrlFormTypes {
 
 export type UrlFormErrors = Partial<
   Record<keyof z.infer<typeof urlFormValidationSchema>, string>
+>;
+
+export interface FilterFormTypes {
+  start_date: Date;
+  end_date: Date;
+}
+
+export type FilterFormErrors = Partial<
+  Record<keyof z.infer<typeof filterFormValidationSchema>, string>
 >;

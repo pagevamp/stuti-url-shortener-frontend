@@ -2,8 +2,11 @@
 import { dummyData } from '@/public/data/dummyData';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, useMemo } from 'react';
-import { UrlFormErrors } from '../core/types/url-types';
-import { urlFormValidationSchema } from '../core/validation/url-validation';
+import { FilterFormErrors, UrlFormErrors } from '../core/types/url-types';
+import {
+  filterFormValidationSchema,
+  urlFormValidationSchema,
+} from '../core/validation/url-validation';
 
 export enum urlTasks {
   add = 'add',
@@ -22,11 +25,17 @@ export enum sortFields {
   expires_at = 'expires_at',
 }
 
+export enum filterDates {
+  start_date = 'start_date',
+  end_date = 'end_date',
+}
+
 export function useUrls() {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState<urlTasks | null>(null);
 
+  // for edit and add form
   const [editFormData, setEditFormData] = useState({
     title: '',
     expiresAt: '',
@@ -37,6 +46,27 @@ export function useUrls() {
   const handleFormInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // for filter form
+  const [filterFormData, setFilterFormData] = useState({
+    start_date: '',
+    end_date: '',
+  });
+
+  const [filterError, setFilterError] = useState<FilterFormErrors>({});
+  const [filterCardOpen, setFilterCardOpen] = useState(false);
+
+  const handleFilterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilterFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const openFilter = () => {
+    setFilterCardOpen(true);
+  };
+
+  const closeFilter = () => {
+    setFilterCardOpen(false);
   };
 
   const openModal = (action: urlTasks) => {
@@ -54,6 +84,7 @@ export function useUrls() {
   const openConfirmation = () => setConfirmationOpen(true);
   const closeConfirmation = () => setConfirmationOpen(false);
 
+  // handle edit and add form submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -85,6 +116,31 @@ export function useUrls() {
       title: '',
       expiresAt: '',
     });
+  };
+
+  // handle filter form submit
+
+  const handleFilterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formValues = filterFormData;
+    const result = filterFormValidationSchema.safeParse(formValues);
+
+    if (!result.success) {
+      const formattedErrors: FilterFormErrors = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof FilterFormErrors;
+        formattedErrors[field] = issue.message;
+      });
+      setFilterError(formattedErrors);
+      return;
+    }
+    setFilterError({});
+    // handleFilter(re, filterFormData);
+  };
+
+  const toggleCard = () => {
+    setFilterCardOpen(!filterCardOpen);
   };
 
   const searchParams = useSearchParams();
@@ -128,7 +184,7 @@ export function useUrls() {
     }
     setSortOrderAsc(!sortOrderAsc);
 
-    await replace(`${pathname}?${params.toString()}`);
+    replace(`${pathname}?${params.toString()}`);
   }
 
   function handlePagination(page: number) {
@@ -141,8 +197,26 @@ export function useUrls() {
     replace(`${pathname}?${params.toString()}`);
   }
 
+  function handleFilter(filter: filterDates, filterField: sortFields) {
+    const params = new URLSearchParams(searchParams);
+    if (filter) {
+      params.set('filter', filter.toString());
+    } else {
+      params.delete('filter');
+    }
+
+    if (filterField) {
+      params.set('filterField', filterField.toString());
+    } else {
+      params.delete('filterField');
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }
+
   function useFilterTable(
     query: string,
+    filter: filterDates,
+    filterField: sortFields,
     sortColumn: sortFields,
     sortOrder: urlOrder,
     currentPage: number
@@ -205,5 +279,15 @@ export function useUrls() {
     handleSortOrder,
     handlePagination,
     useFilterTable,
+    filterError,
+    filterFormData,
+    handleFilter,
+    handleFilterSubmit,
+    handleFilterInputChange,
+    openFilter,
+    closeFilter,
+    filterCardOpen,
+    setFilterCardOpen,
+    toggleCard,
   };
 }
