@@ -1,19 +1,18 @@
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { verifyEmail } from '@/src/core/api/verify-email-api';
+import { verifyEmail } from '@/core/api/verify-email-api';
+import { useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export function useVerify() {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const token = searchParams.get('token');
 
-  useEffect(() => {
-    const token = searchParams.get('token');
+try {
     verifyEmail(token as string);
-
-    function redirectLogin() {
-      router.push('/login');
+  }catch(err){
+    if (err instanceof Error) {
+      toast.error(`Failed to verify token: ${err.message}`);
+    } else {
+      toast.error('Failed to verify token: An unknown error occurred');
     }
-    setTimeout(redirectLogin, 6000);
-  }, []);
-
+  }
 }

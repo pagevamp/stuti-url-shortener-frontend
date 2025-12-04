@@ -1,9 +1,10 @@
 'use client';
-import { InputField } from '../../../components/common/InputField/InputField';
-import { Button } from '../../../components/common/Button/Button';
+
 import { Icon } from '@iconify/react';
-import { useRegister } from '@/src/hooks/useRegister';
 import Link from 'next/link';
+import { useRegister } from '@/hooks/useRegister';
+import { InputField } from '@/components/common/InputField';
+import { Button } from '@/components/common/Button';
 
 export const RegisterComponent = () => {
   const { error, registerFormData, handleChange, handleSubmit } = useRegister();

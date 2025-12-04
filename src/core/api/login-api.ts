@@ -1,4 +1,4 @@
-import { api } from '@/src/lib/axios';
+import { api } from '@/lib/axios';
 import { UserLoginParams } from '../types/login-types';
 
 export const loginUser = (body: UserLoginParams) => {

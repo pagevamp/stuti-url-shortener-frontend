@@ -1,9 +1,9 @@
 'use client';
-import { InputField } from '../../../components/common/InputField/InputField';
-import { Button } from '../../../components/common/Button/Button';
 import { Icon } from '@iconify/react';
-import { useAuth } from '@/src/hooks/useAuth';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
+import { InputField } from '@/components/common/InputField';
+import { Button } from '@/components/common/Button';
 
 export const LoginComponent = () => {
   const { formData, error, handleChange, handleSubmit } = useAuth();

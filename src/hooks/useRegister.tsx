@@ -1,10 +1,10 @@
 'use client';
 import { ChangeEvent, useState } from 'react';
-import { registerFormValidationSchema } from '../core/validation/register-validation';
-import { RegisterErrors } from '../core/types/register-types';
-import { registerUser } from '../core/api/register-api';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import { RegisterErrors } from '@/core/types/register-types';
+import { registerFormValidationSchema } from '@/core/validation/register-validation';
+import { registerUser } from '@/core/api/register-api';
 
 export function useRegister() {
   const router = useRouter();

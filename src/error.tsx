@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/src/components/common/Button/Button';
+import { Button } from '@/components/common/Button';
 
 const UnauthorizedPage = () => {
   const router = useRouter();
@@ -12,7 +12,6 @@ const UnauthorizedPage = () => {
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-slate-100 flex items-center justify-center p-4">
       <article className="w-full max-w-md shadow-2xl border-0 bg-white/80 backdrop-blur-sm">
         <section className="p-8 text-center space-y-6">
-          {/* Icon Section */}
           <div className="relative">
             <div className="w-24 h-24 mx-auto bg-linear-to-r from-undraw-primary-100 to-emerald-800 rounded-full flex items-center justify-center shadow-lg">
               <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
@@ -34,7 +33,6 @@ const UnauthorizedPage = () => {
             </div>
           </div>
 
-          {/* Content Section */}
           <div className="space-y-4">
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight font-primary">
               Access Denied
@@ -57,14 +55,12 @@ const UnauthorizedPage = () => {
             </div>
           </div>
 
-          {/* Error Code */}
           <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
             <p className="text-xs text-gray-500 font-secondary">
               Error Code: 403 - Forbidden
             </p>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button
               onClick={handleGoBack}
@@ -74,7 +70,6 @@ const UnauthorizedPage = () => {
             </Button>
           </div>
 
-          {/* Footer */}
           <div className="pt-4 border-t border-gray-100">
             <p className="text-xs text-gray-400 font-secondary tracking-wide">
               URL Shortener

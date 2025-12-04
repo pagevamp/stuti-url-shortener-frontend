@@ -1,7 +1,7 @@
 'use client';
 import { Icon } from '@iconify/react';
-import { Button } from '../Button/Button';
-import { useAuth } from '@/src/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
+import { Button } from '../Button';
 
 export const Topbar = () => {
   const { handleLogout } = useAuth();

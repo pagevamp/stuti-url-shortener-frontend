@@ -1,7 +1,7 @@
 'use client';
-import { Button } from '@/src/components/common/Button/Button';
-import { InputField } from '@/src/components/common/InputField/InputField';
-import { useResend } from '@/src/hooks/useResend';
+import { Button } from '@/components/common/Button';
+import { InputField } from '@/components/common/InputField';
+import { useResend } from '@/hooks/useResend';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
 
