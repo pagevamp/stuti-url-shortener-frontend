@@ -90,11 +90,11 @@ export const UrlsComponent = ({
 
   return (
     <div className="my-20 mx-8 p-5 bg-gray-200 w-fit">
-      <section className="flex flex-row items-center place-content-stretch mx-10 my-5 w-full">
+      <section className="flex flex-row items-center place-content-stretch mx-10 my-5 w-full relative">
         <SearchComponent />
 
         <Button
-          className="flex flex-row gap-3 h-12 text-white font-semibold px-2 place-self-end"
+          className="flex flex-row gap-3 h-12 text-white font-semibold px-2 place-self-end absolute right-20"
           onClick={add.onClick}
         >
           Shorten New Url{' '}
