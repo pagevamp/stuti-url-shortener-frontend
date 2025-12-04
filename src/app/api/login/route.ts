@@ -1,4 +1,8 @@
 import { NextResponse } from 'next/server';
+<<<<<<< HEAD
+=======
+export const runtime = 'nodejs';
+>>>>>>> feat/auth
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -9,6 +13,10 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+<<<<<<< HEAD
+=======
+      credentials: 'include',
+>>>>>>> feat/auth
     }
   );
 
@@ -33,3 +41,7 @@ export async function POST(req: Request) {
 
   return response;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> feat/auth

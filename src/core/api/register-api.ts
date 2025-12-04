@@ -1,6 +1,6 @@
-import axios from "axios"
-import { UserRegistrationParams } from "../types/register-types"
+import {api} from '@/src/lib/axios';
+import { UserRegistrationParams } from '../types/register-types';
 
 export const registerUser = (body: UserRegistrationParams) => {
-  return axios.post(`/auth/sign-up`, body)
-}
+  return api.post(`/auth/sign-up`, body);
+};

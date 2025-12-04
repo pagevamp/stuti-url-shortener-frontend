@@ -1,8 +1,22 @@
 'use client';
 import { Icon } from '@iconify/react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export const VerifyEmailComponent = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const redirectLogin = setTimeout(() => {
+      router.push('/login');
+    }, 6000);
+
+    return () => {
+      clearTimeout(redirectLogin);
+    };
+  }, []);
+
   return (
     <motion.div
       className="place-items-center w-fit"

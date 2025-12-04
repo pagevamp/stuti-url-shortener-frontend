@@ -1,34 +1,39 @@
-'use server';
 import axios from 'axios';
-import { cookies } from 'next/headers';
+import { getAccessToken } from './actions';
+import { PROTECTED_PATH } from '../routes';
 
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL,
-  timeout: 5000,
-});
+const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
-api.interceptors.request.use(
-  async (config) => {
-    try {
-      const cookieStore = await cookies();
-      const accessToken = cookieStore.get('accessToken');
+const createApiInstance = (baseURL: string | undefined) => {
+  const instance = axios.create({
+    baseURL,
+    timeout: 5000,
+    withCredentials: true,
+  });
 
-      if (accessToken && config.headers) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`;
+  instance.interceptors.request.use(
+    async (config) => {
+      if (PROTECTED_PATH.some((path) => config.url?.includes(path))) {
+        if (typeof window === 'undefined') {
+          try {
+            const accessTokenObj = await getAccessToken();
+            const accessToken = accessTokenObj?.value;
+            if (accessToken && config.headers) {
+              config.headers['Authorization'] = `Bearer ${accessToken}`;
+            }
+          } catch (err) {
+            console.error('Invalid token', err);
+          }
+        }
       }
-    } catch (err) {
-      console.error('Invalid token', err);
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  );
 
-api.interceptors.request.use((config) => {
-  return config;
-});
+  return instance;
+};
 
-export default api;
-
+export const api = createApiInstance(BASE_API_URL);
