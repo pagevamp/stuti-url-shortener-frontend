@@ -1,5 +1,5 @@
 'use client';
-import { UrlFormErrors, UrlFormTypes } from '@/core/types/url-types';
+import { UrlFormErrors } from '@/core/types/url-types';
 import { urlFormValidationSchema } from '@/core/validation/url-validation';
 import React, { useState, ChangeEvent } from 'react';
 
