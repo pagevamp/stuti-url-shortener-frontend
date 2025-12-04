@@ -135,10 +135,10 @@ export function useUrls() {
       setFilterError(formattedErrors);
       return;
     }
-    const name = result.data as keyof sortFields;
-    const value = result.data.end_date || result.data.start_date;
+    // const name = result.data as keyof sortFields;
+    // const value = result.data.end_date || result.data.start_date;
 
-    handleFilter(name, value);
+    // handleFilter(name, value);
 
     setFilterError({});
   };
