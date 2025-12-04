@@ -1,9 +1,11 @@
+'use client';
 import { ChangeEvent, useState } from 'react';
 import { LoginErrors } from '../core/types/login-types';
 import { loginFormValidationSchema } from '../core/validation/login-validation';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '../core/api/login-api';
 import toast from 'react-hot-toast';
+import { logOutUser } from '../core/api/logout-api';
 
 export function useLogin() {
   const router = useRouter();
@@ -60,6 +62,11 @@ export function useLogin() {
     }
   };
 
+  const handleLogout = async () => {
+    router.push('/login');
+    await logOutUser();
+  };
+
   return {
     error,
     setError,
@@ -67,5 +74,6 @@ export function useLogin() {
     setFormData,
     handleSubmit,
     handleChange,
+    handleLogout,
   };
 }

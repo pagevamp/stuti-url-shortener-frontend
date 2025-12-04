@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
     return handlePublicPath(request, pathname, token);
   }
 
-  if (pathname === '/unauthorized') {
+  if (pathname === '/error') {
     return NextResponse.next();
   }
 
