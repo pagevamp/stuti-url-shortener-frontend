@@ -17,14 +17,16 @@ import {
   useUrls,
 } from '@hooks/useUrls';
 import Modal from '@components/common/Modal/Modal';
-import { InputField } from '@/components/common/InputField/InputField';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
 import { Suspense } from 'react';
 import { SearchComponent } from '@components/common/SearchComponent/SearchComponent';
 import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
 import { Pagination } from '@components/common/PaginationComponent/Pagination';
-import { dummyData } from '@public/data/dummyData';
+import { UrlTableTypes } from '@/core/types/url-types';
+import { useUrlIntegration } from '@/hooks/useUrlIntegration';
+import { EditUrlForm } from '@/components/common/EditUrlForm';
+import { AddUrlForm } from '@/components/common/AddUrlForm';
 
 export const UrlsComponent = ({
   query,
@@ -46,18 +48,21 @@ export const UrlsComponent = ({
   const {
     modalOpen,
     confirmationOpen,
-    editFormData,
     currentAction,
-    error,
     openModal,
     closeModal,
     openConfirmation,
     closeConfirmation,
-    handleFormInputChange,
     handleSubmit,
     handleConfirm,
     useFilterTable,
+    handleTrigger,
+    handleTitle,
+    handleConfirmationTitle,
+    handleConfirmationMessage,
   } = useUrls();
+
+  const { urlData } = useUrlIntegration();
 
   const tableHeaders = ['User ID', 'Title', 'Shortened URL', 'Original URL'];
   const actions = [
@@ -142,24 +147,24 @@ export const UrlsComponent = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((data, index: number) => (
+            {data.map((data: UrlTableTypes, index: number) => (
               <TableRow key={index}>
-                <TableCell>{data.user_id}</TableCell>
+                <TableCell>{data.userId}</TableCell>
                 <TableCell>{data.title}</TableCell>
-                <TableCell>{data.short_code}</TableCell>
+                <TableCell>{data.originalURL}</TableCell>
                 <TableCell>
                   <a
-                    href={data.original_url}
+                    href={data.originalURL}
                     className="text-decoration:none flex flex-row "
                   >
                     <span></span>
-                    {data.original_url}
+                    {data.originalURL}
                     <Icon icon="line-md:link" className="text-emerald-900" />
                   </a>
                 </TableCell>
-                <TableCell> {data.created_at.toString()}</TableCell>
-                <TableCell>{data.updated_at.toString()}</TableCell>
-                <TableCell>{data.expires_at.toString()}</TableCell>
+                <TableCell> {data.createdAt.toString()}</TableCell>
+                <TableCell>{data.updatedAt.toString()}</TableCell>
+                <TableCell>{data.expiresAt.toString()}</TableCell>
                 <TableCell className="flex flex-row gap-5">
                   {actions.map((action, idx) => (
                     <button key={idx} onClick={action.onClick}>
@@ -177,7 +182,7 @@ export const UrlsComponent = ({
           </TableBody>
           <TableCaption>
             <section className="flex flex-col gap-2 ">
-              <Pagination totalPages={dummyData.length / itemsPerPage} />
+              <Pagination totalPages={urlData.length / itemsPerPage} />
               <span>
                 Your URLS shortened by{' '}
                 <span className="text-emerald-900 font-extrabold">.SUS</span>
@@ -187,176 +192,36 @@ export const UrlsComponent = ({
         </Table>
       </Suspense>
 
-      {modalOpen && (
-        <Modal
-          isOpen={modalOpen}
-          trigger={
-            currentAction === urlTasks.ADD
-              ? 'Add URL'
-              : currentAction === urlTasks.EDIT
-              ? 'Edit URL'
-              : 'Delete URL'
-          }
-          title={
-            currentAction === urlTasks.ADD
-              ? 'Add URL'
-              : currentAction === urlTasks.EDIT
-              ? 'Edit URL'
-              : 'Delete URL'
-          }
-          message={
-            currentAction === urlTasks.EDIT ? (
-              <form
-                className="flex flex-col gap-2 items-center"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }}
-              >
-                <InputField
-                  name="title"
-                  type="text"
-                  labelName="Title"
-                  icon="fluent:slide-text-title-edit-16-regular"
-                  placeholder="Enter Title"
-                  value={editFormData.title}
-                  error={error?.title}
-                  onChange={handleFormInputChange}
-                  classNames={{
-                    input:
-                      'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    label: 'text-black font-semibold text-shadow-gray-100',
-                  }}
-                />
-                <InputField
-                  name="expiresAt"
-                  type="date"
-                  labelName="Expiry Date"
-                  icon="line-md:calendar"
-                  placeholder="Enter Expiry Date"
-                  value={editFormData.expiresAt}
-                  error={error?.expiresAt}
-                  onChange={handleFormInputChange}
-                  classNames={{
-                    input:
-                      'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    label: 'text-black font-semibold text-shadow-gray-100',
-                  }}
-                />
+      {/* {modalOpen && ( */}
+      <Modal
+        isOpen={modalOpen}
+        trigger={handleTrigger()}
+        title={handleTitle()}
+        message={
+          currentAction === urlTasks.EDIT ? (
+            <EditUrlForm />
+          ) : currentAction === urlTasks.ADD ? (
+            <AddUrlForm />
+          ) : (
+            <span>Deleting the Url...</span>
+          )
+        }
+        onCancel={closeModal}
+        onConfirm={
+          currentAction === urlTasks.DELETE
+            ? openConfirmation
+            : currentAction === urlTasks.EDIT
+            ? handleSubmit
+            : closeModal
+        }
+      />
 
-                <div className="flex flex-row gap-4 mt-4">
-                  <button
-                    className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
-                    onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
-                    type="submit"
-                  >
-                    Edit URL
-                  </button>
-                </div>
-              </form>
-            ) : currentAction === urlTasks.ADD ? (
-              <form
-                className="flex flex-col gap-2 items-center"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }}
-              >
-                <InputField
-                  name="title"
-                  type="text"
-                  labelName="Title"
-                  icon="fluent:slide-text-title-edit-16-regular"
-                  placeholder="Enter Title"
-                  value={editFormData.title}
-                  error={error?.title}
-                  onChange={handleFormInputChange}
-                  classNames={{
-                    input:
-                      'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    label: 'text-black font-semibold text-shadow-gray-100',
-                  }}
-                />
-                <InputField
-                  name="originalURL"
-                  type="text"
-                  labelName="Original Url"
-                  icon="flowbite:link-outline"
-                  placeholder="Enter Url"
-                  value={editFormData.originalURL}
-                  error={error?.originalURL}
-                  onChange={handleFormInputChange}
-                  classNames={{
-                    input:
-                      'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    label: 'text-black font-semibold text-shadow-gray-100',
-                  }}
-                />
-                <InputField
-                  name="expiresAt"
-                  type="date"
-                  labelName="Expiry Date"
-                  icon="line-md:calendar"
-                  placeholder="Enter Expiry Date"
-                  value={editFormData.expiresAt}
-                  error={error?.expiresAt}
-                  onChange={handleFormInputChange}
-                  classNames={{
-                    input:
-                      'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
-                    label: 'text-black font-semibold text-shadow-gray-100',
-                  }}
-                />
-
-                <div className="flex flex-row gap-4 mt-4">
-                  <button
-                    className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
-                    onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
-                    type="submit"
-                  >
-                    Add URL
-                  </button>
-                </div>
-              </form>
-            ) : (
-              <span>Deleting the Url...</span>
-            )
-          }
-          onCancel={closeModal}
-          onConfirm={
-            currentAction === urlTasks.DELETE
-              ? openConfirmation
-              : currentAction === urlTasks.EDIT
-              ? handleSubmit
-              : closeModal
-          }
-        />
-      )}
-
-      {confirmationOpen && currentAction !== urlTasks.ADD && (
+      {currentAction !== urlTasks.ADD && (
         <ConfirmationDialogBox
           isOpen={confirmationOpen}
-          trigger={currentAction === urlTasks.EDIT ? 'Edit URL' : 'Delete URL'}
-          title={
-            currentAction === urlTasks.EDIT
-              ? 'Edit Confirmation'
-              : 'Delete Confirmation'
-          }
-          message={
-            currentAction === urlTasks.EDIT
-              ? 'Are you sure you want to edit this URL?'
-              : 'Are you sure you want to delete this URL?'
-          }
+          trigger={handleTrigger()}
+          title={handleConfirmationTitle()}
+          message={handleConfirmationMessage()}
           onCancel={closeConfirmation}
           onConfirm={handleConfirm}
         />

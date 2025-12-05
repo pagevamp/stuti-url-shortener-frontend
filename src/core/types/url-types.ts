@@ -4,13 +4,13 @@ import { MouseEventHandler } from 'react';
 import * as z from 'zod';
 
 export interface UrlTableTypes {
-  user_id: string;
+  userId: string;
   title: string;
-  short_code: string;
-  original_url: string;
-  updated_at: Date;
-  created_at: Date;
-  expires_at: Date;
+  encryptedUrl: string;
+  originalURL: string;
+  updatedAt: Date;
+  createdAt: Date;
+  expiresAt: Date;
 }
 
 export interface UrlTableIcons {
@@ -57,14 +57,14 @@ export interface ConfirmationTypes {
 export interface UrlFormTypes {
   title: string;
   expiryAt: Date;
-  originalURL: string;
+  originalURL?: string;
 }
 
 export interface SearchTypes {
-  original_url?: string;
+  originalURL?: string;
   title?: string;
-  user_id?: string;
-  short_code?: string;
+  userId?: string;
+  encryptedUrl?: string;
 }
 
 export type UrlFormErrors = Partial<

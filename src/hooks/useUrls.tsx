@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, useMemo } from 'react';
 import { SearchTypes, UrlFormErrors } from '@core/types/url-types';
 import { urlFormValidationSchema } from '@core/validation/url-validation';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { dummyData } from '@public/data/dummyData';
+import { useUrlIntegration } from './useUrlIntegration';
 
 export enum urlTasks {
   ADD = 'add',
@@ -17,9 +17,9 @@ export enum urlOrder {
 }
 
 export enum sortFields {
-  UPDATED_AT = 'updated_at',
-  CREATED_AT = 'created_at',
-  EXPIRES_AT = 'expires_at',
+  UPDATED_AT = 'updatedAt',
+  CREATED_AT = 'createdAt',
+  EXPIRES_AT = 'expiresAt',
 }
 
 export enum filterDates {
@@ -36,6 +36,8 @@ export function useUrls() {
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState<urlTasks | null>(null);
 
+  const { urlData, useGetUrls, usePostUrls } = useUrlIntegration();
+
   // to edit and add form
   const [editFormData, setEditFormData] = useState({
     title: '',
@@ -50,13 +52,14 @@ export function useUrls() {
     setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // --------------------------------------------------------------------------------
+
   // for filter input
   const [filterFormData, setFilterFormData] = useState({
     start_date: '',
     end_date: '',
   });
 
-  // const [filterError, setFilterError] = useState<FilterFormErrors>({});
   const [filterCardOpen, setFilterCardOpen] = useState(false);
 
   const handleFilterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +67,8 @@ export function useUrls() {
     setFilterFormData((prev) => ({ ...prev, [name]: value }));
     handleFilter(name as filterDates, value as unknown as Date);
   };
+
+  // --------------------------------------------------------------------------------
 
   const openFilter = () => {
     setFilterCardOpen(true);
@@ -88,6 +93,8 @@ export function useUrls() {
   };
   const openConfirmation = () => setConfirmationOpen(true);
   const closeConfirmation = () => setConfirmationOpen(false);
+
+  // --------------------------------------------------------------------------------
 
   // handle edit and add form submit
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,6 +131,43 @@ export function useUrls() {
       originalURL: '',
     });
   };
+
+  const handleTrigger = () => {
+    if (currentAction === urlTasks.ADD) {
+      return 'Add URL';
+    } else if (currentAction === urlTasks.EDIT) {
+      return 'Edit URL';
+    } else {
+      return 'Delete URL';
+    }
+  };
+
+  const handleTitle = () => {
+    if (currentAction === urlTasks.ADD) {
+      return 'Add URL';
+    } else if (currentAction === urlTasks.EDIT) {
+      return 'Edit URL';
+    } else {
+      return 'Delete URL';
+    }
+  };
+
+  const handleConfirmationTitle = () => {
+    if (currentAction === urlTasks.ADD) {
+      return 'Edit Confirmation';
+    } else {
+      return 'Delete Confirmation';
+    }
+  };
+
+  const handleConfirmationMessage = () => {
+    if (currentAction === urlTasks.ADD) {
+      return 'Are you sure you want to edit this URL?';
+    } else {
+      return 'Are you sure you want to delete this URL?';
+    }
+  };
+  // --------------------------------------------------------------------------------
 
   function handleSearch(term: string) {
     const params = new URLSearchParams(searchParams);
@@ -231,12 +275,12 @@ export function useUrls() {
     const field = sortColumn;
     const manipulatedData = useMemo(() => {
       const start = (currentPage - 1) * itemsPerPage;
-      const queriedData = dummyData.filter(
+      const queriedData = urlData.filter(
         (data: SearchTypes) =>
-          data.original_url?.toLowerCase().includes(lowerCaseQuery) ||
+          data.originalURL?.toLowerCase().includes(lowerCaseQuery) ||
           data.title?.toLowerCase().includes(lowerCaseQuery) ||
-          data.user_id?.toLowerCase().includes(lowerCaseQuery) ||
-          data.short_code?.toLowerCase().includes(lowerCaseQuery)
+          data.userId?.toLowerCase().includes(lowerCaseQuery) ||
+          data.encryptedUrl?.toLowerCase().includes(lowerCaseQuery)
       );
 
       if (
@@ -338,5 +382,9 @@ export function useUrls() {
     closeFilter,
     filterCardOpen,
     setFilterCardOpen,
+    handleTrigger,
+    handleTitle,
+    handleConfirmationTitle,
+    handleConfirmationMessage,
   };
 }
