@@ -1,8 +1,8 @@
 'use client';
+import { ModalTypes } from '@/core/types/url-types';
+import { Button } from '../Button';
 
-import { ModalTypes } from '@core/types/url-types';
-
-const Modal = ({
+export const Modal = ({
   title,
   message,
   trigger,
@@ -10,19 +10,21 @@ const Modal = ({
   onConfirm,
   onCancel,
 }: ModalTypes) => {
-  if (isOpen === false) {
+  if (!isOpen) {
     return null;
   }
   return (
     <article className="absolute top-[35%] left-[35%] mx-auto">
       <section className="flex flex-col items-center gap-3 border border-undraw-secondary-100 shadow-xl shadow-blue-950 rounded-2xl bg-white px-12 py-12 relative z-50 w-fit">
-        <button
+        <Button
+          variant="icon"
+          size="icon"
           className="absolute -top-1 -right-1 py-1 px-2 bg-white text-red-700 border border-red-700 rounded-full cursor-pointer text-xs shadow-2xl"
           aria-label="Close"
           onClick={onCancel}
         >
           x
-        </button>
+        </Button>
         <div className="text-xl text-undraw-primary font-extrabold">
           {title}
         </div>
@@ -31,24 +33,22 @@ const Modal = ({
         </div>
         {trigger === 'Delete URL' && (
           <div className="flex flex-row gap-4 mt-4">
-            <button
+            <Button
               className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
               onClick={onCancel}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
               type="submit"
               onClick={onConfirm}
             >
               {trigger}
-            </button>
+            </Button>
           </div>
         )}
       </section>
     </article>
   );
 };
-
-export default Modal;
