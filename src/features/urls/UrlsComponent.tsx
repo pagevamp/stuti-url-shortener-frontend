@@ -10,7 +10,6 @@ import {
 } from '@components/ui/table';
 import { Icon } from '@iconify/react';
 import { sortFields, urlOrder, urlTasks, useUrls } from '@hooks/useUrls';
-import { InputField } from '@components/common/InputField.tsx/InputField';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
 import { Suspense } from 'react';
@@ -19,6 +18,7 @@ import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
 import { Pagination } from '@components/common/PaginationComponent/Pagination';
 import { dummyData } from '@public/data/dummyData';
 import { Modal } from '@/components/common/Modal';
+import { InputField } from '@/components/common/InputField';
 
 export const UrlsComponent = ({
   query,

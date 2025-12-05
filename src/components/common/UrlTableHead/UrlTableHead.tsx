@@ -1,8 +1,8 @@
 import { UrlTableHeadProps } from '@core/types/url-types';
 import { sortFields, urlOrder, useUrls } from '@hooks/useUrls';
-import { Button } from '../Button/Button';
 import { Icon } from '@iconify/react';
 import { TableHead } from '../../ui/table';
+import { Button } from '../Button';
 
 export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
   const { sortOrderAsc, handleSortOrder } = useUrls();
