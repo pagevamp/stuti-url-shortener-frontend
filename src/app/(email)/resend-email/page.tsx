@@ -1,4 +1,4 @@
-import { ResendEmailComponent } from "@/src/features/email-verification/resend-email/ResendEmailComponent";
+import { ResendEmailComponent } from "@/features/email-verification/resend-email/ResendEmailComponent";
 
 const ResendEmail = () => {
   return <ResendEmailComponent />;

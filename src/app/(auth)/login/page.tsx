@@ -1,4 +1,4 @@
-import { LoginComponent } from '@/src/features/auth/login/LoginComponent';
+import { LoginComponent } from "@/features/auth/login/LoginComponent";
 
 const Login = () => {
   return <LoginComponent />;

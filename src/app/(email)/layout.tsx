@@ -1,5 +1,5 @@
+import { Container } from '@/components/common/Container';
 import React from 'react';
-import { Container } from '@/src/components/common/Container/Container';
 
 const ResendEmailLayout = ({ children }: { children: React.ReactNode }) => {
   return (

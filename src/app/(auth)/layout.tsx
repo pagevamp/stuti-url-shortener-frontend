@@ -1,8 +1,9 @@
 'use client';
-import { ImageSlider } from '@/src/components/common/ImageSlider/ImageSlider';
-import { RadialDecorator } from '@/src/components/common/RadialDecorator/RadialDecorator';
+import { Container } from '@/components/common/Container';
+import { ImageSlider } from '@/components/common/ImageSlider';
+import { RadialDecorator } from '@/components/common/RadialDecorator';
 import React from 'react';
-import { Container } from '@/src/components/common/Container/Container';
+
 import { Toaster } from 'react-hot-toast';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
