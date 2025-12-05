@@ -1,7 +1,8 @@
-import { sortFields } from '@/src/hooks/useUrls';
+import { sortFields } from '@/hooks/useUrls';
 import { urlFormValidationSchema } from './../validation/url-validation';
 import { MouseEventHandler } from 'react';
 import * as z from 'zod';
+import { Url } from 'url';
 
 export interface UrlTableTypes {
   user_id: string;
@@ -56,7 +57,15 @@ export interface ConfirmationTypes {
 
 export interface UrlFormTypes {
   title: string;
-  expiry_date: Date;
+  expiryAt: Date;
+  originalURL: Url;
+}
+
+export interface SearchTypes {
+  original_url?: string;
+  title?: string;
+  user_id?: string;
+  short_code?: string;
 }
 
 export type UrlFormErrors = Partial<

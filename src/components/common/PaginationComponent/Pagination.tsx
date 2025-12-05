@@ -1,4 +1,4 @@
-import { useUrls } from '@/src/hooks/useUrls';
+import { useUrls } from '@/hooks/useUrls';
 import { Icon } from '@iconify/react';
 import React, { MouseEventHandler } from 'react';
 

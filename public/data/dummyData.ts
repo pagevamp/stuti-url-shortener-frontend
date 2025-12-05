@@ -1,4 +1,4 @@
-import { UrlTableTypes } from '@/src/core/types/url-types';
+import { UrlTableTypes } from '@core/types/url-types';
 
 export const dummyData: UrlTableTypes[] = [
   {

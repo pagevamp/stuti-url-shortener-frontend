@@ -1,8 +1,8 @@
 'use client';
 import { Icon } from '@iconify/react';
 import { useState } from 'react';
-import { Button } from '../Button/Button';
 import { cn } from '@/lib/utils';
+import { Button } from '../Button';
 
 export interface InputProps {
   name: string;
@@ -14,7 +14,6 @@ export interface InputProps {
   value?: string;
   classNames?: { input?: string; label?: string };
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onSubmit?: React.InputEventHandler<HTMLInputElement>;
 }
 
 export const InputField = ({
@@ -26,7 +25,6 @@ export const InputField = ({
   value,
   placeholder,
   classNames,
-  onSubmit,
   onChange,
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false);

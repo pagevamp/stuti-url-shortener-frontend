@@ -1,5 +1,5 @@
 'use client';
-import { ConfirmationTypes } from '@/src/core/types/url-types';
+import { ConfirmationTypes } from '@core/types/url-types';
 
 export const ConfirmationDialogBox = ({
   title,

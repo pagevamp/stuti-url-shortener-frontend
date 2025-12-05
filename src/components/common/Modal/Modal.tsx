@@ -1,5 +1,6 @@
 'use client';
-import { ModalTypes } from '@/src/core/types/url-types';
+
+import { ModalTypes } from '@core/types/url-types';
 
 const Modal = ({
   title,

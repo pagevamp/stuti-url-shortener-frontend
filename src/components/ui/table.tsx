@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { TableCellProps, TableHeadProps } from '@/src/core/types/url-types';
+import { TableCellProps, TableHeadProps } from '@core/types/url-types';
 
 function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (

@@ -1,14 +1,14 @@
 'use client';
 import React, { useState, ChangeEvent, useMemo } from 'react';
-import { UrlFormErrors } from '../core/types/url-types';
-import { urlFormValidationSchema } from '../core/validation/url-validation';
-import { dummyData } from '@/public/data/dummyData';
+import { SearchTypes, UrlFormErrors } from '@core/types/url-types';
+import { urlFormValidationSchema } from '@core/validation/url-validation';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { dummyData } from '@public/data/dummyData';
 
 export enum urlTasks {
-  add = 'add',
-  edit = 'edit',
-  delete = 'delete',
+  ADD = 'add',
+  EDIT = 'edit',
+  DELETE = 'delete',
 }
 
 export enum urlOrder {
@@ -17,9 +17,9 @@ export enum urlOrder {
 }
 
 export enum sortFields {
-  updated_at = 'updated_at',
-  created_at = 'created_at',
-  expires_at = 'expires_at',
+  UPDATED_AT = 'updated_at',
+  CREATED_AT = 'created_at',
+  EXPIRES_AT = 'expires_at',
 }
 
 export function useUrls() {
@@ -157,7 +157,7 @@ export function useUrls() {
     const manipulatedData = useMemo(() => {
       const start = (currentPage - 1) * itemsPerPage;
       const queriedData = dummyData.filter(
-        (data) =>
+        (data: SearchTypes) =>
           data.original_url?.toLowerCase().includes(lowerCaseQuery) ||
           data.title?.toLowerCase().includes(lowerCaseQuery) ||
           data.user_id?.toLowerCase().includes(lowerCaseQuery) ||

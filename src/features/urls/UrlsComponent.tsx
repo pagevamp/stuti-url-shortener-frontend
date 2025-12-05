@@ -1,5 +1,4 @@
 'use client';
-
 import {
   Table,
   TableBody,
@@ -8,18 +7,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/src/components/ui/table';
+} from '@components/ui/table';
 import { Icon } from '@iconify/react';
-import { sortFields, urlOrder, urlTasks, useUrls } from '@/src/hooks/useUrls';
-import Modal from '@/src/components/common/Modal/Modal';
-import { InputField } from '@/src/components/common/InputField.tsx/InputField';
-import { ConfirmationDialogBox } from '@/src/components/common/ConfirmationBox/ConfirmationDialogBox';
-import { Button } from '@/src/components/common/Button/Button';
+import { sortFields, urlOrder, urlTasks, useUrls } from '@hooks/useUrls';
+import Modal from '@components/common/Modal/Modal';
+import { InputField } from '@components/common/InputField.tsx/InputField';
+import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
+import { Button } from '@components/common/Button/Button';
 import { Suspense } from 'react';
-import { SearchComponent } from '@/src/components/common/SearchComponent/SearchComponent';
-import { UrlTableHead } from '@/src/components/common/UrlTableHead/UrlTableHead';
-import { dummyData } from '@/public/data/dummyData';
-import { Pagination } from '@/src/components/common/PaginationComponent/Pagination';
+import { SearchComponent } from '@components/common/SearchComponent/SearchComponent';
+import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
+import { Pagination } from '@components/common/PaginationComponent/Pagination';
+import { dummyData } from '@public/data/dummyData';
 
 export const UrlsComponent = ({
   query,
@@ -53,16 +52,16 @@ export const UrlsComponent = ({
     {
       icon: 'mdi:pencil',
       title: 'edit',
-      onClick: () => openModal(urlTasks.edit),
+      onClick: () => openModal(urlTasks.EDIT),
     },
     {
       icon: 'gg:trash',
       title: 'delete',
-      onClick: () => openModal(urlTasks.delete),
+      onClick: () => openModal(urlTasks.DELETE),
     },
   ];
   const add = {
-    onClick: () => openModal(urlTasks.add),
+    onClick: () => openModal(urlTasks.ADD),
   };
 
   const itemsPerPage = 5;
@@ -98,13 +97,13 @@ export const UrlsComponent = ({
                   {headers}
                 </TableHead>
               ))}
-              <UrlTableHead type="sorted" field={sortFields.created_at}>
+              <UrlTableHead type="sorted" field={sortFields.CREATED_AT}>
                 Created At
               </UrlTableHead>
-              <UrlTableHead type="sorted" field={sortFields.updated_at}>
+              <UrlTableHead type="sorted" field={sortFields.UPDATED_AT}>
                 Updated At
               </UrlTableHead>
-              <UrlTableHead type="sorted" field={sortFields.expires_at}>
+              <UrlTableHead type="sorted" field={sortFields.EXPIRES_AT}>
                 Expires At
               </UrlTableHead>
               <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]">
@@ -113,7 +112,7 @@ export const UrlsComponent = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((data, index) => (
+            {data.map((data, index: number) => (
               <TableRow key={index}>
                 <TableCell>{data.user_id}</TableCell>
                 <TableCell>{data.title}</TableCell>
@@ -162,21 +161,21 @@ export const UrlsComponent = ({
         <Modal
           isOpen={modalOpen}
           trigger={
-            currentAction === urlTasks.add
+            currentAction === urlTasks.ADD
               ? 'Add URL'
-              : currentAction === urlTasks.edit
+              : currentAction === urlTasks.EDIT
               ? 'Edit URL'
               : 'Delete URL'
           }
           title={
-            currentAction === urlTasks.add
+            currentAction === urlTasks.ADD
               ? 'Add URL'
-              : currentAction === urlTasks.edit
+              : currentAction === urlTasks.EDIT
               ? 'Edit URL'
               : 'Delete URL'
           }
           message={
-            currentAction === urlTasks.edit ? (
+            currentAction === urlTasks.EDIT ? (
               <form
                 className="flex flex-col gap-2 items-center"
                 onSubmit={(e) => {
@@ -192,7 +191,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Title"
                   value={editFormData.title}
                   error={error?.title}
-                  onChange={(e) => handleFormInputChange(e)}
+                  onChange={handleFormInputChange}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -207,7 +206,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Expiry Date"
                   value={editFormData.expiresAt}
                   error={error?.expiresAt}
-                  onChange={(e) => handleFormInputChange(e)}
+                  onChange={handleFormInputChange}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -230,7 +229,7 @@ export const UrlsComponent = ({
                   </button>
                 </div>
               </form>
-            ) : currentAction === urlTasks.add ? (
+            ) : currentAction === urlTasks.ADD ? (
               <form
                 className="flex flex-col gap-2 items-center"
                 onSubmit={(e) => {
@@ -246,7 +245,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Title"
                   value={editFormData.title}
                   error={error?.title}
-                  onChange={(e) => handleFormInputChange(e)}
+                  onChange={handleFormInputChange}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -261,7 +260,7 @@ export const UrlsComponent = ({
                   placeholder="Enter Expiry Date"
                   value={editFormData.expiresAt}
                   error={error?.expiresAt}
-                  onChange={(e) => handleFormInputChange(e)}
+                  onChange={handleFormInputChange}
                   classNames={{
                     input:
                       'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -290,26 +289,26 @@ export const UrlsComponent = ({
           }
           onCancel={closeModal}
           onConfirm={
-            currentAction === urlTasks.delete
+            currentAction === urlTasks.DELETE
               ? openConfirmation
-              : currentAction === urlTasks.edit
+              : currentAction === urlTasks.EDIT
               ? handleSubmit
               : closeModal
           }
         />
       )}
 
-      {confirmationOpen && currentAction !== urlTasks.add && (
+      {confirmationOpen && currentAction !== urlTasks.ADD && (
         <ConfirmationDialogBox
           isOpen={confirmationOpen}
-          trigger={currentAction === urlTasks.edit ? 'Edit URL' : 'Delete URL'}
+          trigger={currentAction === urlTasks.EDIT ? 'Edit URL' : 'Delete URL'}
           title={
-            currentAction === urlTasks.edit
+            currentAction === urlTasks.EDIT
               ? 'Edit Confirmation'
               : 'Delete Confirmation'
           }
           message={
-            currentAction === urlTasks.edit
+            currentAction === urlTasks.EDIT
               ? 'Are you sure you want to edit this URL?'
               : 'Are you sure you want to delete this URL?'
           }

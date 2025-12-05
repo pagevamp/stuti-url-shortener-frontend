@@ -1,5 +1,5 @@
-import { UrlTableHeadProps } from '@/src/core/types/url-types';
-import { urlOrder, useUrls } from '@/src/hooks/useUrls';
+import { UrlTableHeadProps } from '@core/types/url-types';
+import { urlOrder, useUrls } from '@hooks/useUrls';
 import { Button } from '../Button/Button';
 import { Icon } from '@iconify/react';
 import { TableHead } from '../../ui/table';
