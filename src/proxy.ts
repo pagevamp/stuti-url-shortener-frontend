@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PUBLIC_PATH } from './routes';
-import { getAccessToken } from './lib/actions';
+import { PUBLIC_PATH } from '@routes/.';
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -10,16 +9,12 @@ export async function proxy(request: NextRequest) {
     return handlePublicPath(request, pathname, token);
   }
 
-  if (pathname === '/unauthorized') {
-    return NextResponse.next();
-  }
-
   // Authentication check
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (token && await isTokenExpired(token) === true) {
+  if (token && (await isTokenExpired(token)) === true) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
   const userId = await getUserFromSession(token);
@@ -35,7 +30,6 @@ async function handlePublicPath(
   pathname: string,
   token?: string
 ) {
-
   if (token && PUBLIC_PATH.some((path) => pathname === path)) {
     const userId = await getUserFromSession(token);
     if (userId) {

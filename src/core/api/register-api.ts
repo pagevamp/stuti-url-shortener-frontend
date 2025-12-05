@@ -1,4 +1,4 @@
-import {api} from '@/src/lib/axios';
+import { api } from '@/lib/axios';
 import { UserRegistrationParams } from '../types/register-types';
 
 export const registerUser = (body: UserRegistrationParams) => {

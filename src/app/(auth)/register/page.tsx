@@ -1,11 +1,7 @@
-import { RegisterComponent } from "@/src/features/auth/register/RegisterComponent"
+import { RegisterComponent } from "@/features/auth/register/RegisterComponent";
 
 const Register = () => {
-  return (
-    <>
-      <RegisterComponent />
-    </>
-  )
-}
+  return <RegisterComponent />;
+};
 
-export default Register
+export default Register;

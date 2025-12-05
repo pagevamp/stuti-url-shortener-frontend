@@ -1,12 +1,13 @@
-"use client"
-import { InputField } from "../../../components/common/InputField/InputField"
-import { Button } from "../../../components/common/Button/Button"
-import { Icon } from "@iconify/react"
-import { useRegister } from "@/src/hooks/useRegister"
-import Link from "next/link"
+'use client';
+
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
+import { useRegister } from '@/hooks/useRegister';
+import { InputField } from '@/components/common/InputField';
+import { Button } from '@/components/common/Button';
 
 export const RegisterComponent = () => {
-  const { error, registerFormData, handleChange, handleSubmit } = useRegister()
+  const { error, registerFormData, handleChange, handleSubmit } = useRegister();
   return (
     <form
       className="flex flex-col my-5 mx-auto w-[85%] gap-3 place-content-center"
@@ -23,7 +24,7 @@ export const RegisterComponent = () => {
         placeholder="Enter your name"
         labelName="Full Name"
         value={registerFormData.fullName}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         error={error?.fullName}
       />
 
@@ -34,7 +35,7 @@ export const RegisterComponent = () => {
         placeholder="Enter your username"
         labelName="User Name"
         value={registerFormData.username}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         error={error?.username}
       />
 
@@ -45,7 +46,7 @@ export const RegisterComponent = () => {
         placeholder="Enter your email"
         labelName="Email"
         value={registerFormData.email}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         error={error?.email}
       />
       <InputField
@@ -55,7 +56,7 @@ export const RegisterComponent = () => {
         placeholder="Enter  password"
         labelName="Password"
         value={registerFormData.password}
-        onChange={(e) => handleChange(e)}
+        onChange={handleChange}
         error={error?.password}
       />
       <Button type="submit">
@@ -78,5 +79,5 @@ export const RegisterComponent = () => {
         </Link>
       </p>
     </form>
-  )
-}
+  );
+};

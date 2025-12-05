@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { PROTECTED_PATH } from '@/routes';
 import { getAccessToken } from './actions';
-import { PROTECTED_PATH } from '../routes';
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
