@@ -1,5 +1,5 @@
 import { UrlTableHeadProps } from '@core/types/url-types';
-import { urlOrder, useUrls } from '@hooks/useUrls';
+import { sortFields, urlOrder, useUrls } from '@hooks/useUrls';
 import { Button } from '../Button/Button';
 import { Icon } from '@iconify/react';
 import { TableHead } from '../../ui/table';
@@ -22,7 +22,7 @@ export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
           type="button"
           variant="ghost"
           size="icon"
-          onClick={() => handleSortOrder(order, field!)}
+          onClick={() => handleSortOrder(order, field as sortFields)}
         >
           <Icon
             icon={sortOrderAsc ? 'lucide:sort-desc' : 'lucide:sort-asc'}

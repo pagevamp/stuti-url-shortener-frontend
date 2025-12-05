@@ -13,5 +13,5 @@ export const urlFormValidationSchema = z.object({
       message: 'The Expiry Date must be in the future',
     }),
 
-  originalURL: z.url().optional,
+  originalURL: z.url().optional(),
 });
