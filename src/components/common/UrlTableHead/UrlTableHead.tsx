@@ -3,6 +3,7 @@ import { sortFields, urlOrder, useUrls } from '@hooks/useUrls';
 import { Button } from '../Button/Button';
 import { Icon } from '@iconify/react';
 import { TableHead } from '../../ui/table';
+import { FilterCard } from '../FilterCard';
 
 export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
   const {
@@ -48,6 +49,7 @@ export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
           />
         </Button>
       )}
+      {filterCardOpen && <FilterCard/>}
     </TableHead>
   );
 };
