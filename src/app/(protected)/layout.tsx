@@ -1,4 +1,4 @@
-import React from 'react';
+import { Topbar } from '@/components/common/TopBar';
 import { Toaster } from 'react-hot-toast';
 import { Topbar } from '@components/common/TopBar/Topbar';
 
