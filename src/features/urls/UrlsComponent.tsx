@@ -16,7 +16,6 @@ import {
   urlTasks,
   useUrls,
 } from '@hooks/useUrls';
-import Modal from '@components/common/Modal/Modal';
 import { InputField } from '@/components/common/InputField/InputField';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
@@ -25,6 +24,7 @@ import { SearchComponent } from '@components/common/SearchComponent/SearchCompon
 import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
 import { Pagination } from '@components/common/PaginationComponent/Pagination';
 import { dummyData } from '@public/data/dummyData';
+import { Modal } from '@/components/common/Modal';
 
 export const UrlsComponent = ({
   query,
