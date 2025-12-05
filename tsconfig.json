@@ -19,13 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@public/*": ["./public/*"],
-      "@components/*": ["./src/components/*"],
-      "@features/*": ["./src/features/*"],
-      "@core/*": ["./src/core/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@lib/*": ["./src/lib/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [
@@ -35,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/common/InputField"  ],
+  ],
   "exclude": ["node_modules"]
 }
