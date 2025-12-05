@@ -25,6 +25,7 @@ import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
 import { Pagination } from '@components/common/PaginationComponent/Pagination';
 import { dummyData } from '@public/data/dummyData';
 import { Modal } from '@/components/common/Modal';
+import { InputField } from '@/components/common/InputField';
 
 export const UrlsComponent = ({
   query,
