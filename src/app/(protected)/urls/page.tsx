@@ -6,27 +6,28 @@ const Urls = async (props: {
     query?: string;
     sortOrder?: urlOrder;
     sortColumn?: sortFields;
-    filterFrom?: filterDates.start_date;
-    filterTo?: filterDates.end_date;
+    filterType?: filterDates;
+    filterDate?: Date | null;
     filterField?: sortFields;
     page?: string;
   }>;
 }) => {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
-  const filterFrom = searchParams?.filterFrom || filterDates.start_date;
-  const filterTo = searchParams?.filterTo || filterDates.end_date;
-  const filterField = searchParams?.filterField || sortFields.created_at;
+  const filterType = searchParams?.filterType || filterDates.START_DATE;
+  const filterDate =
+    searchParams?.filterDate || new Date('2025-01-01T12:30:00');
+  const filterField = searchParams?.filterField || sortFields.CREATED_AT;
   const sortOrder = searchParams?.sortOrder || urlOrder.ASC;
-  const sortColumn = searchParams?.sortColumn || sortFields.created_at;
+  const sortColumn = searchParams?.sortColumn || sortFields.CREATED_AT;
 
   const currentPage = Number(searchParams?.page) || 1;
   return (
     <>
       <UrlsComponent
         query={query}
-        filterFrom={filterFrom}
-        filterTo={filterTo}
+        filterType={filterType}
+        filterDate={filterDate}
         filterField={filterField}
         sortColumn={sortColumn}
         sortOrder={sortOrder}

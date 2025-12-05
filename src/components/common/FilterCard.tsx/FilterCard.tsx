@@ -1,69 +1,57 @@
-import { useUrls } from '@/src/hooks/useUrls';
-import React from 'react';
+import { filterDates, useUrls } from '@/src/hooks/useUrls';
 import { InputField } from '../InputField.tsx/InputField';
+import { useSearchParams } from 'next/navigation';
 
 export const FilterCard = () => {
-  const {
-    filterError,
-    filterFormData,
-    handleFilterSubmit,
-    handleFilterInputChange,
-  } = useUrls();
+  const { filterFormData, handleFilterInputChange } = useUrls();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
+  const type = params.get('filterType');
+  const prev = params.get('filterDate');
+
   return (
-    <section>
-      <form
-        className="flex flex-row gap-1 items-center z-100 border border-undraw-secondary-100 w-fit p-1"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleFilterSubmit(e);
-        }}
-      >
+    <section className="mx-auto">
+      <div className="flex flex-row gap-1 items-center z-100 border border-undraw-secondary-100 w-fit px-4 py-1">
         <InputField
           name="start_date"
           type="date"
           labelName="Start Date"
           icon="line-md:calendar"
           placeholder="Enter Start Date"
-          value={filterFormData.start_date}
-          error={filterError?.start_date}
-          
-          onChange={(e) => handleFilterInputChange(e)}
+          value={
+            filterFormData.start_date || type === filterDates.START_DATE
+              ? prev!
+              : ''
+          }
+          onChange={handleFilterInputChange}
           classNames={{
             input:
               'bg-white text-xs text-undraw-secondary-100 font-light w-fit h-6',
             label: 'text-black font-normal text-shadow-gray-100 text-xs',
           }}
         />
-        <button className="text-xs font-bold text--blue-950">Filter</button>
-      </form>
+      </div>
 
-      <form
-        className="flex flex-row gap-1 items-center z-100 border border-undraw-secondary-100 w-fit p-1"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleFilterSubmit(e);
-        }}
-      >
+      <div className="flex flex-row gap-1 items-center z-100 border border-undraw-secondary-100 w-fit px-4 py-1">
         <InputField
           name="end_date"
           type="date"
           labelName="End Date"
           icon="line-md:calendar"
           placeholder="Enter End Date"
-          value={filterFormData.end_date}
-          error={filterError?.end_date}
-          onChange={(e) => handleFilterInputChange(e)}
+          value={
+            filterFormData.end_date || type === filterDates.END_DATE
+              ? prev!
+              : ''
+          }
+          onChange={handleFilterInputChange}
           classNames={{
             input:
               'bg-white text-xs text-undraw-secondary-100 font-light w-fit h-6',
             label: 'text-black font-normal text-shadow-gray-100 text-xs',
           }}
         />
-
-        <button className="text-xs font-bold text--blue-950" type="submit">
-          Filter
-        </button>
-      </form>
+      </div>
     </section>
   );
 };

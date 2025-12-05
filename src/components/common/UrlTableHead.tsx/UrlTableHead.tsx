@@ -1,5 +1,5 @@
 import { UrlTableHeadProps } from '@/src/core/types/url-types';
-import { urlOrder, useUrls } from '@/src/hooks/useUrls';
+import { sortFields, urlOrder, useUrls } from '@/src/hooks/useUrls';
 import { Button } from '../Button/Button';
 import { Icon } from '@iconify/react';
 import { TableHead } from '../../ui/table';
@@ -11,6 +11,7 @@ export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
     setFilterCardOpen,
     sortOrderAsc,
     handleSortOrder,
+    handleFilterFields,
   } = useUrls();
   const isSorted = type == 'sorted';
   const order = sortOrderAsc ? urlOrder.ASC : urlOrder.DESC;
@@ -22,7 +23,15 @@ export const UrlTableHead = ({ field, type, children }: UrlTableHeadProps) => {
   return (
     <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]">
       {isSorted && (
-        <Button type="button" variant="ghost" size="icon" onClick={toggleCard}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={() => {
+            toggleCard();
+            handleFilterFields(field as sortFields);
+          }}
+        >
           <Icon icon="tdesign:filter-sort" className="text-emerald-950" />
         </Button>
       )}

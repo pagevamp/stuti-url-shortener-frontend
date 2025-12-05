@@ -3,10 +3,7 @@ import { dummyData } from '@/public/data/dummyData';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, useMemo } from 'react';
 import { FilterFormErrors, UrlFormErrors } from '../core/types/url-types';
-import {
-  filterFormValidationSchema,
-  urlFormValidationSchema,
-} from '../core/validation/url-validation';
+import { urlFormValidationSchema } from '../core/validation/url-validation';
 
 export enum urlTasks {
   add = 'add',
@@ -20,17 +17,20 @@ export enum urlOrder {
 }
 
 export enum sortFields {
-  updated_at = 'updated_at',
-  created_at = 'created_at',
-  expires_at = 'expires_at',
+  UPDATED_AT = 'updated_at',
+  CREATED_AT = 'created_at',
+  EXPIRES_AT = 'expires_at',
 }
 
 export enum filterDates {
-  start_date = 'start_date',
-  end_date = 'end_date',
+  START_DATE = 'start_date',
+  END_DATE = 'end_date',
 }
 
 export function useUrls() {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { push, replace } = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState<urlTasks | null>(null);
@@ -48,19 +48,21 @@ export function useUrls() {
     setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // for filter form
+  // for filter input
   const [filterFormData, setFilterFormData] = useState({
     start_date: '',
     end_date: '',
   });
 
-  const [filterError, setFilterError] = useState<FilterFormErrors>({});
+  // const [filterError, setFilterError] = useState<FilterFormErrors>({});
   const [filterCardOpen, setFilterCardOpen] = useState(false);
 
   const handleFilterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilterFormData((prev) => ({ ...prev, [name]: value }));
+    handleFilter(name as filterDates, value as unknown as Date);
   };
+
   const openFilter = () => {
     setFilterCardOpen(true);
   };
@@ -118,35 +120,6 @@ export function useUrls() {
     });
   };
 
-  // handle filter form submit
-
-  const handleFilterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const formValues = filterFormData;
-    const result = filterFormValidationSchema.safeParse(formValues);
-
-    if (!result.success) {
-      const formattedErrors: FilterFormErrors = {};
-      result.error.issues.forEach((issue) => {
-        const field = issue.path[0] as keyof FilterFormErrors;
-        formattedErrors[field] = issue.message;
-      });
-      setFilterError(formattedErrors);
-      return;
-    }
-    // const name = result.data as keyof sortFields;
-    // const value = result.data.end_date || result.data.start_date;
-
-    // handleFilter(name, value);
-
-    setFilterError({});
-  };
-
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
-
   function handleSearch(term: string) {
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
@@ -197,36 +170,48 @@ export function useUrls() {
     replace(`${pathname}?${params.toString()}`);
   }
 
-  function handleFilter(
-    filterField: sortFields,
-    filterFrom?: filterDates.start_date,
-    filterTo?: filterDates.end_date
-  ) {
+  function handleFilter(filterType: filterDates, filterDate: Date) {
     const params = new URLSearchParams(searchParams);
-    if (filterFrom) {
-      params.set('filterFrom', filterFrom.toString());
+    if (filterType) {
+      params.set('filterType', filterType.toString());
     } else {
-      params.delete('filterFrom');
+      params.delete('filterType');
     }
 
-    if (filterTo) {
-      params.set('filterTo', filterTo.toString());
+    if (filterDate) {
+      params.set('filterDate', filterDate.toString());
     } else {
-      params.delete('filterTo');
+      params.delete('filterDate');
     }
+
+    const addFilter = setTimeout(() => {
+      push(`${pathname}?${params.toString()}`);
+    }, 5000);
+    return () => {
+      clearTimeout(addFilter);
+    };
+  }
+
+  function handleFilterFields(filterField: sortFields) {
+    const params = new URLSearchParams(searchParams);
 
     if (filterField) {
       params.set('filterField', filterField.toString());
     } else {
       params.delete('filterField');
     }
-    replace(`${pathname}?${params.toString()}`);
+    const addFilterField = setTimeout(() => {
+      replace(`${pathname}?${params.toString()}`);
+    }, 1500);
+    return () => {
+      clearTimeout(addFilterField);
+    };
   }
 
   function useFilterTable(
     query: string,
-    filterFrom: filterDates.start_date,
-    filterTo: filterDates.end_date,
+    filterType: filterDates,
+    filterDate: Date,
     filterField: sortFields,
     sortColumn: sortFields,
     sortOrder: urlOrder,
@@ -235,8 +220,8 @@ export function useUrls() {
     const itemsPerPage = 5;
     const lowerCaseQuery = query.toLowerCase();
     const order = sortOrder;
-    const filterStart = filterFrom;
-    const filterEnd = filterTo;
+    const filterAs = filterType;
+    const filterValue = filterDate;
     const filterColumn = filterField;
     const field = sortColumn;
     const manipulatedData = useMemo(() => {
@@ -249,21 +234,40 @@ export function useUrls() {
           data.short_code?.toLowerCase().includes(lowerCaseQuery)
       );
 
-      if (filterFrom && filterColumn) {
+      if (
+        filterAs === (filterDates.START_DATE as string) &&
+        filterColumn &&
+        filterValue
+      ) {
         const filteredData = [...queriedData].filter((filtered) => {
           const filterInstance = filtered[filterColumn];
-          return (
-            filterInstance?.toDateString().includes(filterFrom) &&
-            filterInstance?.toDateString() > filterFrom
-          );
+          return filterInstance.getTime() >= new Date(filterValue).getTime();
         });
         return filteredData.slice(start, start + itemsPerPage);
-      } else if (filterTo && filterColumn) {
+      } else if (
+        filterAs === (filterDates.END_DATE as string) &&
+        filterColumn &&
+        filterValue &&
+        filterColumn
+      ) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = filtered[filterColumn];
+          return filterInstance?.getTime() <= new Date(filterValue).getTime();
+        });
+        return filteredData.slice(start, start + itemsPerPage);
+      } else if (
+        filterAs ===
+          ((filterDates.END_DATE as string) &&
+            (filterDates.START_DATE as string)) &&
+        filterColumn &&
+        filterValue &&
+        filterColumn
+      ) {
         const filteredData = [...queriedData].filter((filtered) => {
           const filterInstance = filtered[filterColumn];
           return (
-            filterInstance?.toDateString().includes(filterTo) &&
-            filterInstance?.toDateString() < filterTo
+            filterInstance?.getTime() <= new Date(filterValue).getTime() &&
+            filterInstance.getTime() >= new Date(filterValue).getTime()
           );
         });
         return filteredData.slice(start, start + itemsPerPage);
@@ -292,8 +296,8 @@ export function useUrls() {
       currentPage,
       order,
       field,
-      filterFrom,
-      filterTo,
+      filterAs,
+      filterValue,
       filterColumn,
     ]);
     return manipulatedData;
@@ -321,10 +325,9 @@ export function useUrls() {
     handleSortOrder,
     handlePagination,
     useFilterTable,
-    filterError,
     filterFormData,
     handleFilter,
-    handleFilterSubmit,
+    handleFilterFields,
     handleFilterInputChange,
     openFilter,
     closeFilter,

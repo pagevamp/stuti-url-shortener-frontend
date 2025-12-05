@@ -29,16 +29,16 @@ import { UrlTableHead } from '@/src/components/common/UrlTableHead.tsx/UrlTableH
 
 export const UrlsComponent = ({
   query,
-  filterFrom,
-  filterTo,
+  filterType,
+  filterDate,
   filterField,
   sortOrder,
   sortColumn,
   currentPage,
 }: {
   query: string;
-  filterFrom: filterDates.start_date;
-  filterTo: filterDates.end_date;
+  filterType: filterDates;
+  filterDate: Date;
   filterField: sortFields;
   sortOrder: urlOrder;
   sortColumn: sortFields;
@@ -80,8 +80,8 @@ export const UrlsComponent = ({
   const itemsPerPage = 5;
   const data = useFilterTable(
     query,
-    filterFrom,
-    filterTo,
+    filterType,
+    filterDate,
     filterField,
     sortColumn,
     sortOrder,
@@ -111,8 +111,8 @@ export const UrlsComponent = ({
           query +
           sortColumn +
           sortOrder +
-          filterFrom +
-          filterTo +
+          filterType +
+          filterDate +
           filterField +
           currentPage
         }
@@ -128,13 +128,13 @@ export const UrlsComponent = ({
                   {headers}
                 </TableHead>
               ))}
-              <UrlTableHead type="sorted" field={sortFields.created_at}>
+              <UrlTableHead type="sorted" field={sortFields.CREATED_AT}>
                 Created At
               </UrlTableHead>
-              <UrlTableHead type="sorted" field={sortFields.updated_at}>
+              <UrlTableHead type="sorted" field={sortFields.UPDATED_AT}>
                 Updated At
               </UrlTableHead>
-              <UrlTableHead type="sorted" field={sortFields.expires_at}>
+              <UrlTableHead type="sorted" field={sortFields.EXPIRES_AT}>
                 Expires At
               </UrlTableHead>
               <TableHead className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]">
