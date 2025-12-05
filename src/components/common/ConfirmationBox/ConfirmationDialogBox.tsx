@@ -33,13 +33,13 @@ export const ConfirmationDialogBox = ({
 
         <div className="flex flex-row gap-4">
           <Button
-            className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
+            className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4 w-fit"
             onClick={onCancel}
           >
             Cancel
           </Button>
           <Button
-            className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
+            className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 w-fit"
             type="submit"
             onClick={onConfirm}
           >
