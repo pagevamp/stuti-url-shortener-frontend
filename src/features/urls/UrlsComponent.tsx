@@ -9,9 +9,15 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Icon } from '@iconify/react';
-import { sortFields, urlOrder, urlTasks, useUrls } from '@hooks/useUrls';
+import {
+  filterDates,
+  sortFields,
+  urlOrder,
+  urlTasks,
+  useUrls,
+} from '@hooks/useUrls';
 import Modal from '@components/common/Modal/Modal';
-import { InputField } from '@components/common/InputField.tsx/InputField';
+import { InputField } from '@/components/common/InputField/InputField';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
 import { Suspense } from 'react';
@@ -22,11 +28,17 @@ import { dummyData } from '@public/data/dummyData';
 
 export const UrlsComponent = ({
   query,
+  filterType,
+  filterDate,
+  filterField,
   sortOrder,
   sortColumn,
   currentPage,
 }: {
   query: string;
+  filterType: filterDates;
+  filterDate: Date;
+  filterField: sortFields;
   sortOrder: urlOrder;
   sortColumn: sortFields;
   currentPage: number;
@@ -65,7 +77,15 @@ export const UrlsComponent = ({
   };
 
   const itemsPerPage = 5;
-  const data = useFilterTable(query, sortColumn, sortOrder, currentPage);
+  const data = useFilterTable(
+    query,
+    filterType,
+    filterDate,
+    filterField,
+    sortColumn,
+    sortOrder,
+    currentPage
+  );
 
   return (
     <div className="my-20 mx-8 p-5 bg-gray-200 w-fit">
@@ -85,7 +105,17 @@ export const UrlsComponent = ({
         </Button>
       </section>
 
-      <Suspense key={query + sortColumn + sortOrder + currentPage}>
+      <Suspense
+        key={
+          query +
+          sortColumn +
+          sortOrder +
+          filterType +
+          filterDate +
+          filterField +
+          currentPage
+        }
+      >
         <Table>
           <TableHeader>
             <TableRow className="border-b border-t border-[#E6EFF5]">

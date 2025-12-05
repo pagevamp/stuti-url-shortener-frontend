@@ -1,16 +1,23 @@
 import { UrlsComponent } from '@features/urls/UrlsComponent';
-import { sortFields, urlOrder } from '@hooks/useUrls';
+import { filterDates, sortFields, urlOrder } from '@hooks/useUrls';
 
 const Urls = async (props: {
   searchParams?: Promise<{
     query?: string;
     sortOrder?: urlOrder;
     sortColumn?: sortFields;
+    filterType?: filterDates;
+    filterDate?: Date | null;
+    filterField?: sortFields;
     page?: string;
   }>;
 }) => {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
+  const filterType = searchParams?.filterType || filterDates.START_DATE;
+  const filterDate =
+    searchParams?.filterDate || new Date('2025-01-01T12:30:00');
+  const filterField = searchParams?.filterField || sortFields.CREATED_AT;
   const sortOrder = searchParams?.sortOrder || urlOrder.ASC;
   const sortColumn = searchParams?.sortColumn || sortFields.CREATED_AT;
 
@@ -19,6 +26,9 @@ const Urls = async (props: {
     <>
       <UrlsComponent
         query={query}
+        filterType={filterType}
+        filterDate={filterDate}
+        filterField={filterField}
         sortColumn={sortColumn}
         sortOrder={sortOrder}
         currentPage={currentPage}
