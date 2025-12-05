@@ -1,8 +1,4 @@
 @import './colors.css';
-<<<<<<< HEAD
-
-=======
->>>>>>> feat/url-tables
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
