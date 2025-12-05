@@ -1,5 +1,5 @@
 'use client';
-import { ConfirmationTypes } from '@core/types/url-types';
+import { ConfirmationTypes } from '@/core/types/url-types';
 import { Button } from '../Button';
 
 export const ConfirmationDialogBox = ({
@@ -10,7 +10,7 @@ export const ConfirmationDialogBox = ({
   onCancel,
   onConfirm,
 }: ConfirmationTypes) => {
-  if (isOpen === false) {
+  if (!isOpen) {
     return null;
   }
 
@@ -33,13 +33,13 @@ export const ConfirmationDialogBox = ({
 
         <div className="flex flex-row gap-4">
           <Button
-            className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4 w-fit"
+            className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
             onClick={onCancel}
           >
             Cancel
           </Button>
           <Button
-            className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 w-fit"
+            className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
             type="submit"
             onClick={onConfirm}
           >
