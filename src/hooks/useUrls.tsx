@@ -31,6 +31,7 @@ export function useUrls() {
   const [editFormData, setEditFormData] = useState({
     title: '',
     expiresAt: '',
+    originalURL: '',
   });
 
   const [error, setError] = useState<UrlFormErrors>({});
@@ -50,6 +51,7 @@ export function useUrls() {
     setEditFormData({
       title: '',
       expiresAt: '',
+      originalURL: '',
     });
   };
   const openConfirmation = () => setConfirmationOpen(true);
@@ -77,6 +79,7 @@ export function useUrls() {
     setEditFormData({
       title: '',
       expiresAt: '',
+      originalURL: '',
     });
   };
 
@@ -86,6 +89,7 @@ export function useUrls() {
     setEditFormData({
       title: '',
       expiresAt: '',
+      originalURL: '',
     });
   };
 

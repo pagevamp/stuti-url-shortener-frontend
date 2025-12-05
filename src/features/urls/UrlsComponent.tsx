@@ -253,6 +253,21 @@ export const UrlsComponent = ({
                   }}
                 />
                 <InputField
+                  name="originalURL"
+                  type="text"
+                  labelName="Original Url"
+                  icon="flowbite:link-outline"
+                  placeholder="Enter Url"
+                  value={editFormData.originalURL}
+                  error={error?.originalURL}
+                  onChange={handleFormInputChange}
+                  classNames={{
+                    input:
+                      'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
+                    label: 'text-black font-semibold text-shadow-gray-100',
+                  }}
+                />
+                <InputField
                   name="expiresAt"
                   type="date"
                   labelName="Expiry Date"
