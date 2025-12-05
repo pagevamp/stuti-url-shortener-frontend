@@ -1,9 +1,7 @@
-import React from 'react'
+import { UrlsComponent } from '@/features/urls/UrlsComponent';
 
-const Urls = () => {
-  return (
-    <div>Urls</div>
-  )
-}
+const Urls = async () => {
+  return <UrlsComponent />;
+};
 
-export default Urls
+export default Urls;
