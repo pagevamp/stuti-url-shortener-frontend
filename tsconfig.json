@@ -25,7 +25,8 @@
       "@features/*": ["./src/features/*"],
       "@core/*": ["./src/core/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@lib/*": ["./src/lib/*"]
+      "@lib/*": ["./src/lib/*"],
+      "@routes/*": ["./src/routes/*"]
     }
   },
   "include": [
@@ -35,6 +36,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/components/common/InputField"  ],
+  ],
   "exclude": ["node_modules"]
 }
