@@ -36,7 +36,7 @@ export function useUrls() {
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState<urlTasks | null>(null);
 
-  const { urlData, useGetUrls, usePostUrls } = useUrlIntegration();
+  const { urlData } = useUrlIntegration();
 
   // to edit and add form
   const [editFormData, setEditFormData] = useState({

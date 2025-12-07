@@ -1,7 +1,6 @@
 import { getAllUrls, postUrls } from '@/core/api';
 import { UrlFormTypes, UrlTableTypes } from '@/core/types/url-types';
-import axios from 'axios';
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 export function useUrlIntegration() {

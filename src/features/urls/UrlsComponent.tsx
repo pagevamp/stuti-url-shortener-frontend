@@ -16,7 +16,6 @@ import {
   urlTasks,
   useUrls,
 } from '@hooks/useUrls';
-import Modal from '@components/common/Modal/Modal';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
 import { Suspense } from 'react';
@@ -27,6 +26,7 @@ import { UrlTableTypes } from '@/core/types/url-types';
 import { useUrlIntegration } from '@/hooks/useUrlIntegration';
 import { EditUrlForm } from '@/components/common/EditUrlForm';
 import { AddUrlForm } from '@/components/common/AddUrlForm';
+import { Modal } from '@/components/common/Modal';
 
 export const UrlsComponent = ({
   query,
