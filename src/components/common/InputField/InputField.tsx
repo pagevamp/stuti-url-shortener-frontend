@@ -1,16 +1,19 @@
-import { Icon } from "@iconify/react"
-import { useState } from "react"
-import { Button } from "../Button"
+'use client';
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Button } from '../Button';
 
 export interface InputProps {
-  name: string
-  labelName: string
-  icon: string
-  error?: string
-  type?: string
-  placeholder: string
-  value?: string
-  onChange?: React.ChangeEventHandler<HTMLInputElement>
+  name: string;
+  labelName: string;
+  icon: string;
+  error?: string;
+  type?: string;
+  placeholder: string;
+  value?: string;
+  classNames?: { input?: string; label?: string };
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const InputField = ({
@@ -21,20 +24,24 @@ export const InputField = ({
   error,
   value,
   placeholder,
+  classNames,
   onChange,
 }: InputProps) => {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
-  const isPassword = type == "password"
+  const isPassword = type == 'password';
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div>
       <label
         htmlFor={name}
-        className="text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-primary-100"
+        className={cn(
+          'text-shadow-md text-shadow-lime-950 flex flex-row gap-2 items-center text-primary-100',
+          classNames?.label
+        )}
       >
         <Icon
           icon={icon}
@@ -44,7 +51,12 @@ export const InputField = ({
         />
         {labelName}
       </label>
-      <div className="flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-undraw-secondary-100 shadow-md shadow-lime-950 bg-primary-100 text-undraw-secondary-100 font-light px-2 py-2 text-sm placeholder:text-placeholder-100 placeholder:text-sm">
+      <div
+        className={cn(
+          'flex flex-row items-center h-12 w-full my-2 rounded-md border-2 border-undraw-secondary-100 shadow-md shadow-lime-950 bg-primary-100 text-undraw-secondary-100 font-light px-2 py-2 text-sm placeholder:text-placeholder-100 placeholder:text-sm',
+          classNames?.input
+        )}
+      >
         {isPassword && (
           <Button
             type="button"
@@ -58,17 +70,17 @@ export const InputField = ({
               <Icon icon="mdi-light:eye" width="20" height="20" />
             )}
             <span className="sr-only">
-              {showPassword ? "Hide password" : "Show password"}
+              {showPassword ? 'Hide password' : 'Show password'}
             </span>
           </Button>
         )}
         <input
           name={name}
-          type={isPassword && showPassword ? "text" : type}
+          type={isPassword && showPassword ? 'text' : type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="border-none bg-transparent focus:outline-none focus:ring-0"
+          className="border-none bg-transparent focus:outline-none focus:ring-0 w-full"
         />
       </div>
       {error && (
@@ -85,5 +97,5 @@ export const InputField = ({
         </p>
       )}
     </div>
-  )
-}
+  );
+};
