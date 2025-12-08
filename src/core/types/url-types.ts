@@ -1,16 +1,16 @@
-import { sortFields } from '@/hooks/useUrls';
+import { sortFields } from '@/features/urls/constants';
 import { urlFormValidationSchema } from './../validation/url-validation';
 import { MouseEventHandler } from 'react';
 import * as z from 'zod';
 
 export interface UrlTableTypes {
-  userId: string;
+  id: string;
   title: string;
-  encryptedUrl: string;
-  originalURL: string;
-  updatedAt: Date;
-  createdAt: Date;
-  expiresAt: Date;
+  shortCode: string;
+  originalUrl: string;
+  updatedAt: string | Date;
+  createdAt: string | Date;
+  expiresAt: string | Date;
 }
 
 export interface UrlTableIcons {
@@ -56,15 +56,15 @@ export interface ConfirmationTypes {
 
 export interface UrlFormTypes {
   title: string;
-  expiryAt: Date;
-  originalURL?: string;
+  expiresAt: string | Date;
+  originalUrl?: string;
 }
 
 export interface SearchTypes {
-  originalURL?: string;
+  id?: string;
   title?: string;
-  userId?: string;
-  encryptedUrl?: string;
+  shortCode?: string;
+  originalUrl?: string;
 }
 
 export type UrlFormErrors = Partial<

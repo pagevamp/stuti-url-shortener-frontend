@@ -9,7 +9,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-undraw-secondary-100 border-2 border-cyan-800 text-white border-l rounded-3xl mx-auto',
+          'bg-undraw-secondary-100 border-2 border-cyan-800 text-white rounded-3xl mx-auto',
         handler:
           'bg-undraw-secondary-100 border-2 border-cyan-800 rounded-3xl flex flex-row gap-3 h-fit text-white font-semibold px-2 place-self-end',
         ghost: 'bg-transparent text-placeholder-100',

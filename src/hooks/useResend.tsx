@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { ResendErrors } from '@/core/types/resend-types';
 import { resendEmailValidationSchema } from '@/core/validation/resend-validation';
-import { resendVerification } from '@/core/api/resend-api';
+import { resendVerification } from '@/core/api/email-verification-api/resend-api';
 
 export function useResend() {
   const router = useRouter();

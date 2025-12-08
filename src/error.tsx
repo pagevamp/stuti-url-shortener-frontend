@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/common/Button';
 
-const UnauthorizedPage = () => {
+const Error = () => {
   const router = useRouter();
   const handleGoBack = () => {
     router.back();
@@ -81,4 +81,4 @@ const UnauthorizedPage = () => {
   );
 };
 
-export default UnauthorizedPage;
+export default Error;

@@ -15,7 +15,7 @@ export const ConfirmationDialogBox = ({
   }
 
   return (
-    <article className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%]">
+    <article className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] z-20">
       <section className="flex flex-col items-center gap-2 border border-undraw-secondary-100 shadow-xl shadow-blue-950 rounded-2xl bg-white px-10 py-12 relative z-100 w-fit">
         <Button
           size="icon"

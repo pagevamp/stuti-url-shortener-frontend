@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { RegisterErrors } from '@/core/types/register-types';
 import { registerFormValidationSchema } from '@/core/validation/register-validation';
-import { registerUser } from '@/core/api/register-api';
+import { registerUser } from '@/core/api/auth-api/register-api';
 
 export function useRegister() {
   const router = useRouter();

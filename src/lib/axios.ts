@@ -14,17 +14,15 @@ const createApiInstance = (baseURL: string | undefined) => {
   instance.interceptors.request.use(
     async (config) => {
       if (PROTECTED_PATH.some((path) => config.url?.includes(path))) {
-        // if (typeof window !== 'undefined') {
-          try {
-            const accessTokenObj = await getAccessToken();
-            const accessToken = accessTokenObj?.value;
-            if (accessToken && config.headers) {
-              config.headers['authorization'] = `Bearer ${accessToken}`;
-            }
-          } catch (err) {
-            console.error('Invalid token', err);
+        try {
+          const accessTokenObj = await getAccessToken();
+          const accessToken = accessTokenObj?.value;
+          if (accessToken && config.headers) {
+            config.headers['authorization'] = `Bearer ${accessToken}`;
           }
-        // }
+        } catch (err) {
+          console.error('Invalid token', err);
+        }
       }
       return config;
     },

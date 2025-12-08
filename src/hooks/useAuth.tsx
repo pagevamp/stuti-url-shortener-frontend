@@ -4,8 +4,9 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { LoginErrors } from '@/core/types/login-types';
 import { loginFormValidationSchema } from '@/core/validation/login-validation';
-import { loginUser } from '@/core/api/login-api';
-import { logOutUser } from '@/core/api/logout-api';
+import { logOutUser } from '@/core/api/auth-api/logout-api';
+import { loginUser } from '@/core/api/auth-api/login-api';
+
 
 export function useAuth() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export function useAuth() {
       });
       setError({});
       toast.success('Login successful');
-      router.push('/');
+      router.push('/urls');
     } catch (err) {
       if (err instanceof Error) {
         toast.error(`Login failed : ${err.message}`);

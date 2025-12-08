@@ -1,4 +1,4 @@
-import { verifyEmail } from '@/core/api/verify-email-api';
+import { verifyEmail } from '@/core/api/email-verification-api/verify-email-api';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 

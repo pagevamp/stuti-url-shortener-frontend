@@ -15,7 +15,7 @@ export const VerifyEmailComponent = () => {
     return () => {
       clearTimeout(redirectLogin);
     };
-  }, []);
+  }, [router]);
 
   return (
     <motion.div

@@ -9,13 +9,7 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Icon } from '@iconify/react';
-import {
-  filterDates,
-  sortFields,
-  urlOrder,
-  urlTasks,
-  useUrls,
-} from '@hooks/useUrls';
+import { useUrls } from '@hooks/useUrls';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
 import { Suspense } from 'react';
@@ -23,10 +17,12 @@ import { SearchComponent } from '@components/common/SearchComponent/SearchCompon
 import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
 import { Pagination } from '@components/common/PaginationComponent/Pagination';
 import { UrlTableTypes } from '@/core/types/url-types';
-import { useUrlIntegration } from '@/hooks/useUrlIntegration';
 import { EditUrlForm } from '@/components/common/EditUrlForm';
 import { AddUrlForm } from '@/components/common/AddUrlForm';
 import { Modal } from '@/components/common/Modal';
+import { useUrlIntegration } from '@/hooks/useUrlIntegration';
+import { filterDates, sortFields, tableHeaders, urlOrder } from './constants';
+import { urlTasks } from './constants';
 
 export const UrlsComponent = ({
   query,
@@ -51,9 +47,9 @@ export const UrlsComponent = ({
     currentAction,
     openModal,
     closeModal,
-    openConfirmation,
     closeConfirmation,
-    handleSubmit,
+    handleSubmitAction,
+    handleTableId,
     handleConfirm,
     useFilterTable,
     handleTrigger,
@@ -62,9 +58,21 @@ export const UrlsComponent = ({
     handleConfirmationMessage,
   } = useUrls();
 
-  const { urlData } = useUrlIntegration();
+  const { useGetUrls } = useUrlIntegration();
+  const urlData = useGetUrls();
 
-  const tableHeaders = ['User ID', 'Title', 'Shortened URL', 'Original URL'];
+  const itemsPerPage = 5;
+  const data = useFilterTable(
+    query,
+    filterType,
+    filterDate,
+    filterField,
+    sortColumn,
+    sortOrder,
+    currentPage,
+    urlData
+  );
+
   const actions = [
     {
       icon: 'mdi:pencil',
@@ -81,24 +89,14 @@ export const UrlsComponent = ({
     onClick: () => openModal(urlTasks.ADD),
   };
 
-  const itemsPerPage = 5;
-  const data = useFilterTable(
-    query,
-    filterType,
-    filterDate,
-    filterField,
-    sortColumn,
-    sortOrder,
-    currentPage
-  );
-
   return (
-    <div className="my-20 mx-8 p-5 bg-gray-200 w-fit">
+    <div className="my-20 mx-6 p-4 bg-undraw-primary-100 border-3 border-undraw-secondary-100 shadow-2xl shadow-gray-800 w-fit">
       <section className="flex flex-row items-center place-content-stretch mx-10 my-5 w-full relative">
         <SearchComponent />
 
         <Button
-          className="flex flex-row gap-3 h-12 text-white font-semibold px-2 place-self-end absolute right-20"
+          variant="handler"
+          className="absolute right-20"
           onClick={add.onClick}
         >
           Shorten New Url{' '}
@@ -110,17 +108,7 @@ export const UrlsComponent = ({
         </Button>
       </section>
 
-      <Suspense
-        key={
-          query +
-          sortColumn +
-          sortOrder +
-          filterType +
-          filterDate +
-          filterField +
-          currentPage
-        }
-      >
+      <Suspense key={query + currentPage}>
         <Table>
           <TableHeader>
             <TableRow className="border-b border-t border-[#E6EFF5]">
@@ -146,43 +134,47 @@ export const UrlsComponent = ({
               </TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {data.map((data: UrlTableTypes, index: number) => (
-              <TableRow key={index}>
-                <TableCell>{data.userId}</TableCell>
+              <TableRow key={index} onClick={() => handleTableId(data.id)}>
+                <TableCell>{data.id}</TableCell>
                 <TableCell>{data.title}</TableCell>
-                <TableCell>{data.originalURL}</TableCell>
                 <TableCell>
                   <a
-                    href={data.originalURL}
+                    href={data.originalUrl}
                     className="text-decoration:none flex flex-row "
                   >
                     <span></span>
-                    {data.originalURL}
+                    {data.shortCode}
                     <Icon icon="line-md:link" className="text-emerald-900" />
                   </a>
                 </TableCell>
-                <TableCell> {data.createdAt.toString()}</TableCell>
-                <TableCell>{data.updatedAt.toString()}</TableCell>
-                <TableCell>{data.expiresAt.toString()}</TableCell>
+                <TableCell>{data.originalUrl}</TableCell>
+                <TableCell> {data?.createdAt?.toString()}</TableCell>
+                <TableCell>{data?.updatedAt?.toString()}</TableCell>
+                <TableCell>{data?.expiresAt?.toString()}</TableCell>
                 <TableCell className="flex flex-row gap-5">
                   {actions.map((action, idx) => (
-                    <button key={idx} onClick={action.onClick}>
-                      <Icon
-                        icon={action.icon}
-                        height={22}
-                        width={22}
-                        className="text-emerald-900"
-                      />
-                    </button>
+                    <Button
+                      variant="icon"
+                      size="icon"
+                      key={idx}
+                      onClick={action.onClick}
+                    >
+                      <Icon icon={action.icon} className="text-emerald-900" />
+                    </Button>
                   ))}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
+
           <TableCaption>
-            <section className="flex flex-col gap-2 ">
-              <Pagination totalPages={urlData.length / itemsPerPage} />
+            <section className="flex flex-col gap-2">
+              <Pagination
+                totalPages={Math.ceil(urlData.length / itemsPerPage)}
+              />
               <span>
                 Your URLS shortened by{' '}
                 <span className="text-emerald-900 font-extrabold">.SUS</span>
@@ -207,16 +199,10 @@ export const UrlsComponent = ({
           )
         }
         onCancel={closeModal}
-        onConfirm={
-          currentAction === urlTasks.DELETE
-            ? openConfirmation
-            : currentAction === urlTasks.EDIT
-            ? handleSubmit
-            : closeModal
-        }
+        onConfirm={handleSubmitAction}
       />
 
-      {currentAction !== urlTasks.ADD && (
+      {currentAction === urlTasks.DELETE && (
         <ConfirmationDialogBox
           isOpen={confirmationOpen}
           trigger={handleTrigger()}

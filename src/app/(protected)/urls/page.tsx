@@ -1,5 +1,5 @@
+import { filterDates, sortFields, urlOrder } from '@/features/urls/constants';
 import { UrlsComponent } from '@features/urls/UrlsComponent';
-import { filterDates, sortFields, urlOrder } from '@hooks/useUrls';
 
 const Urls = async (props: {
   searchParams?: Promise<{

@@ -1,22 +1,18 @@
 import React from 'react';
 import { InputField } from '@components/common/InputField';
 import { useUrls } from '@/hooks/useUrls';
+import { Button } from '../Button';
 
 export const EditUrlForm = () => {
-  const {
-    editFormData,
-    error,
-    closeModal,
-    handleFormInputChange,
-    handleSubmit,
-  } = useUrls();
+  const { editFormData, error, handleEditFormInputChange, handleEditSubmit } =
+    useUrls();
 
   return (
     <form
       className="flex flex-col gap-2 items-center"
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit(e);
+        handleEditSubmit(e);
       }}
     >
       <InputField
@@ -27,7 +23,7 @@ export const EditUrlForm = () => {
         placeholder="Enter Title"
         value={editFormData.title}
         error={error?.title}
-        onChange={handleFormInputChange}
+        onChange={handleEditFormInputChange}
         classNames={{
           input:
             'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -40,9 +36,9 @@ export const EditUrlForm = () => {
         labelName="Expiry Date"
         icon="line-md:calendar"
         placeholder="Enter Expiry Date"
-        value={editFormData.expiresAt}
+        value={editFormData.expiresAt.toString()}
         error={error?.expiresAt}
-        onChange={handleFormInputChange}
+        onChange={handleEditFormInputChange}
         classNames={{
           input:
             'bg-white text-sm text-undraw-secondary-100 font-bold min-w-80',
@@ -50,20 +46,12 @@ export const EditUrlForm = () => {
         }}
       />
 
-      <div className="flex flex-row gap-4 mt-4">
-        <button
-          className="text-xs font-bold text-white bg-red-950 border-0 rounded-2xl p-4"
-          onClick={closeModal}
-        >
-          Cancel
-        </button>
-        <button
-          className="text-xs font-bold text-white bg-blue-950 border-0 rounded-2xl p-4"
-          type="submit"
-        >
-          Edit URL
-        </button>
-      </div>
+      <Button
+        className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 mb-6"
+        type="submit"
+      >
+        Edit URL
+      </Button>
     </form>
   );
 };

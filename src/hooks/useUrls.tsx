@@ -1,82 +1,60 @@
 'use client';
-import React, { useState, ChangeEvent, useMemo } from 'react';
-import { SearchTypes, UrlFormErrors } from '@core/types/url-types';
+import React, { useState, ChangeEvent, useMemo, FormEvent } from 'react';
+import {
+  SearchTypes,
+  UrlFormErrors,
+  UrlFormTypes,
+  UrlTableTypes,
+} from '@core/types/url-types';
 import { urlFormValidationSchema } from '@core/validation/url-validation';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import {
+  filterDates,
+  sortFields,
+  urlOrder,
+  urlTasks,
+} from '@/features/urls/constants';
 import { useUrlIntegration } from './useUrlIntegration';
-
-export enum urlTasks {
-  ADD = 'add',
-  EDIT = 'edit',
-  DELETE = 'delete',
-}
-
-export enum urlOrder {
-  ASC = 'ASC',
-  DESC = 'DESC',
-}
-
-export enum sortFields {
-  UPDATED_AT = 'updatedAt',
-  CREATED_AT = 'createdAt',
-  EXPIRES_AT = 'expiresAt',
-}
-
-export enum filterDates {
-  START_DATE = 'start_date',
-  END_DATE = 'end_date',
-}
 
 export function useUrls() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace, push } = useRouter();
 
+  const { handlePostUrls, handleEditUrls, handleDeleteUrls } =
+    useUrlIntegration();
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState<urlTasks | null>(null);
 
-  const { urlData } = useUrlIntegration();
-
-  // to edit and add form
-  const [editFormData, setEditFormData] = useState({
+  // to add form
+  const [addFormData, setAddFormData] = useState<UrlFormTypes>({
     title: '',
     expiresAt: '',
-    originalURL: '',
+    originalUrl: '',
+  });
+
+  const handleAddFormInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setAddFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // to edit and form
+  const [editFormData, setEditFormData] = useState<UrlFormTypes>({
+    title: '',
+    expiresAt: '',
   });
 
   const [error, setError] = useState<UrlFormErrors>({});
 
-  const handleFormInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleEditFormInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // --------------------------------------------------------------------------------
 
-  // for filter input
-  const [filterFormData, setFilterFormData] = useState({
-    start_date: '',
-    end_date: '',
-  });
-
-  const [filterCardOpen, setFilterCardOpen] = useState(false);
-
-  const handleFilterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFilterFormData((prev) => ({ ...prev, [name]: value }));
-    handleFilter(name as filterDates, value as unknown as Date);
-  };
-
-  // --------------------------------------------------------------------------------
-
-  const openFilter = () => {
-    setFilterCardOpen(true);
-  };
-
-  const closeFilter = () => {
-    setFilterCardOpen(false);
-  };
+  //to handle modal and dialog box
 
   const openModal = (action: urlTasks) => {
     setCurrentAction(action);
@@ -85,22 +63,17 @@ export function useUrls() {
 
   const closeModal = () => {
     setModalOpen(false);
-    setEditFormData({
-      title: '',
-      expiresAt: '',
-      originalURL: '',
-    });
   };
   const openConfirmation = () => setConfirmationOpen(true);
   const closeConfirmation = () => setConfirmationOpen(false);
 
   // --------------------------------------------------------------------------------
 
-  // handle edit and add form submit
-  const handleSubmit = async (e: React.FormEvent) => {
+  // handle submit add form events
+  const handleAddSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formValues = editFormData;
+    const formValues = addFormData;
     const result = urlFormValidationSchema.safeParse(formValues);
 
     if (!result.success) {
@@ -112,26 +85,63 @@ export function useUrls() {
       setError(formattedErrors);
       return;
     }
+
     setError({});
-
-    openConfirmation();
-    setEditFormData({
+    handlePostUrls(addFormData);
+    setAddFormData({
       title: '',
-      expiresAt: '',
-      originalURL: '',
+      expiresAt: '' as unknown as Date,
+      originalUrl: '',
     });
+    setModalOpen(false);
   };
 
-  const handleConfirm = () => {
-    closeConfirmation();
+  // --------------------------------------------------------------------------------
+
+  // handle submit edit form events in the modal
+  const [tableId, setTableId] = useState('');
+  function handleTableId(id: string) {
+    setTableId(id);
+  }
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const formValues = editFormData;
+    const result = urlFormValidationSchema.safeParse(formValues);
+    if (!result.success) {
+      const formattedErrors: UrlFormErrors = {};
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof UrlFormErrors;
+        formattedErrors[field] = issue.message;
+      });
+      setError(formattedErrors);
+      return;
+    }
+    setError({});
+    handleEditUrls(tableId, editFormData);
+    setEditFormData({
+      title: '',
+      expiresAt: '' as unknown as Date,
+    });
     closeModal();
-    setEditFormData({
-      title: '',
-      expiresAt: '',
-      originalURL: '',
-    });
   };
 
+  // --------------------------------------------------------------------------------
+
+  // handle confirm for delete actions from the modals
+  const handleConfirm = () => {
+    if (currentAction === urlTasks.DELETE) {
+      handleDeleteUrls(tableId);
+      closeConfirmation();
+      closeModal();
+    }
+    return 0;
+  };
+
+  // --------------------------------------------------------------------------------
+
+  // to conditionally render the action-based content and button on the modal
   const handleTrigger = () => {
     if (currentAction === urlTasks.ADD) {
       return 'Add URL';
@@ -152,6 +162,9 @@ export function useUrls() {
     }
   };
 
+  // --------------------------------------------------------------------------------
+
+  // to conditionally render the action-based content on the confirmation dialog box
   const handleConfirmationTitle = () => {
     if (currentAction === urlTasks.ADD) {
       return 'Edit Confirmation';
@@ -167,8 +180,20 @@ export function useUrls() {
       return 'Are you sure you want to delete this URL?';
     }
   };
+
   // --------------------------------------------------------------------------------
 
+  // to conditionally render the action-based content on the confirmation dialog box
+  const handleSubmitAction = () => {
+    if (currentAction === urlTasks.DELETE) {
+      openConfirmation();
+    }
+    return 0;
+  };
+
+  // --------------------------------------------------------------------------------
+
+  // to handle setting the search parameters
   function handleSearch(term: string) {
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
@@ -187,6 +212,10 @@ export function useUrls() {
     };
   }
 
+  // --------------------------------------------------------------------------------
+
+  // to handle setting the sorting parameters
+
   const [sortOrderAsc, setSortOrderAsc] = React.useState(true);
 
   async function handleSortOrder(order: urlOrder, field: sortFields) {
@@ -204,10 +233,15 @@ export function useUrls() {
     } else {
       params.delete('sortColumn');
     }
+
     setSortOrderAsc(!sortOrderAsc);
 
     replace(`${pathname}?${params.toString()}`);
   }
+
+  // --------------------------------------------------------------------------------
+
+  // to handle pagination of the table
 
   function handlePagination(page: number) {
     const params = new URLSearchParams(searchParams);
@@ -218,6 +252,53 @@ export function useUrls() {
     }
     replace(`${pathname}?${params.toString()}`);
   }
+
+  // --------------------------------------------------------------------------------
+
+  // to set which column/field  on the table to filter
+  function handleFilterFields(filterField: sortFields) {
+    const params = new URLSearchParams(searchParams);
+
+    if (filterField) {
+      params.set('filterField', filterField.toString());
+    } else {
+      params.delete('filterField');
+    }
+    const addFilterField = setTimeout(() => {
+      replace(`${pathname}?${params.toString()}`);
+    }, 1500);
+    return () => {
+      clearTimeout(addFilterField);
+    };
+  }
+
+  // --------------------------------------------------------------------------------
+
+  // to handle input for filtering
+  const [filterFormData, setFilterFormData] = useState({
+    start_date: '',
+    end_date: '',
+  });
+
+  const [filterCardOpen, setFilterCardOpen] = useState(false);
+
+  const handleFilterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilterFormData((prev) => ({ ...prev, [name]: value }));
+    handleFilter(name as filterDates, value as unknown as Date);
+  };
+
+  const openFilter = () => {
+    setFilterCardOpen(true);
+  };
+
+  const closeFilter = () => {
+    setFilterCardOpen(false);
+  };
+
+  // --------------------------------------------------------------------------------
+
+  // to handle setting the filter parameters
 
   function handleFilter(filterType: filterDates, filterDate: Date) {
     const params = new URLSearchParams(searchParams);
@@ -241,22 +322,9 @@ export function useUrls() {
     };
   }
 
-  function handleFilterFields(filterField: sortFields) {
-    const params = new URLSearchParams(searchParams);
+  // --------------------------------------------------------------------------------
 
-    if (filterField) {
-      params.set('filterField', filterField.toString());
-    } else {
-      params.delete('filterField');
-    }
-    const addFilterField = setTimeout(() => {
-      replace(`${pathname}?${params.toString()}`);
-    }, 1500);
-    return () => {
-      clearTimeout(addFilterField);
-    };
-  }
-
+  // to render data on the table based on the url parameters
   function useFilterTable(
     query: string,
     filterType: filterDates,
@@ -264,7 +332,8 @@ export function useUrls() {
     filterField: sortFields,
     sortColumn: sortFields,
     sortOrder: urlOrder,
-    currentPage: number
+    currentPage: number,
+    urlData: UrlTableTypes[]
   ) {
     const itemsPerPage = 5;
     const lowerCaseQuery = query.toLowerCase();
@@ -277,11 +346,11 @@ export function useUrls() {
       const start = (currentPage - 1) * itemsPerPage;
       const queriedData = urlData.filter(
         (data: SearchTypes) =>
-          data.originalURL?.toLowerCase().includes(lowerCaseQuery) ||
           data.title?.toLowerCase().includes(lowerCaseQuery) ||
-          data.userId?.toLowerCase().includes(lowerCaseQuery) ||
-          data.encryptedUrl?.toLowerCase().includes(lowerCaseQuery)
+          data.shortCode?.toLowerCase().includes(lowerCaseQuery)
       );
+
+      // to render the data after filtering the queried data
 
       if (
         filterAs === (filterDates.START_DATE as string) &&
@@ -289,7 +358,7 @@ export function useUrls() {
         filterValue
       ) {
         const filteredData = [...queriedData].filter((filtered) => {
-          const filterInstance = filtered[filterColumn];
+          const filterInstance = new Date(filtered[filterColumn]);
           return filterInstance.getTime() >= new Date(filterValue).getTime();
         });
         return filteredData.slice(start, start + itemsPerPage);
@@ -300,8 +369,8 @@ export function useUrls() {
         filterColumn
       ) {
         const filteredData = [...queriedData].filter((filtered) => {
-          const filterInstance = filtered[filterColumn];
-          return filterInstance?.getTime() <= new Date(filterValue).getTime();
+          const filterInstance = new Date(filtered[filterColumn]);
+          return filterInstance.getTime() <= new Date(filterValue).getTime();
         });
         return filteredData.slice(start, start + itemsPerPage);
       } else if (
@@ -313,29 +382,29 @@ export function useUrls() {
         filterColumn
       ) {
         const filteredData = [...queriedData].filter((filtered) => {
-          const filterInstance = filtered[filterColumn];
+          const filterInstance = new Date(filtered[filterColumn]);
           return (
             filterInstance?.getTime() <= new Date(filterValue).getTime() &&
-            filterInstance.getTime() >= new Date(filterValue).getTime()
+            filterInstance?.getTime() >= new Date(filterValue).getTime()
           );
         });
         return filteredData.slice(start, start + itemsPerPage);
       }
 
+      // to render the data after sorting the queried data
+
       if (order === urlOrder.ASC && field) {
         const sortedData = [...queriedData].sort((a, b) => {
-          const x = a[field];
-          const y = b[field];
-          if (x instanceof Date) return x.getTime() - y.getTime();
-          return 0;
+          const x = new Date(a[field]);
+          const y = new Date(b[field]);
+          return x?.getTime() - y?.getTime();
         });
         return sortedData.slice(start, start + itemsPerPage);
       } else if (order === urlOrder.DESC && field) {
         const sortedData = [...queriedData].sort((a, b) => {
-          const x = a[field];
-          const y = b[field];
-          if (x instanceof Date) return y.getTime() - x.getTime();
-          return 0;
+          const x = new Date(a[field]);
+          const y = new Date(b[field]);
+          return y?.getTime() - x?.getTime();
         });
         return sortedData.slice(start, start + itemsPerPage);
       }
@@ -348,6 +417,7 @@ export function useUrls() {
       filterAs,
       filterValue,
       filterColumn,
+      urlData,
     ]);
     return manipulatedData;
   }
@@ -355,18 +425,24 @@ export function useUrls() {
   return {
     modalOpen,
     confirmationOpen,
+    addFormData,
     editFormData,
     currentAction,
     searchParams,
     pathname,
     error,
+    setModalOpen,
     setError,
     openModal,
     closeModal,
     openConfirmation,
     closeConfirmation,
-    handleFormInputChange,
-    handleSubmit,
+    handleAddFormInputChange,
+    handleEditFormInputChange,
+    handleAddSubmit,
+    handleEditSubmit,
+    handleTableId,
+    handleSubmitAction,
     handleConfirm,
     handleSearch,
     sortOrderAsc,
@@ -388,3 +464,5 @@ export function useUrls() {
     handleConfirmationMessage,
   };
 }
+
+//

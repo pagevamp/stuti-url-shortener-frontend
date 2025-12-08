@@ -71,7 +71,7 @@ function TableHead({ slot, children, className, ...props }: TableHeadProps) {
     <th
       data-slot="table-head"
       className={cn(
-        'text-foreground h-10 px-2 text-left align-middle font-medium [&th]:last:border-r-0 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5 overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px]',
+        'text-foreground h-10 px-2 text-left align-middle font-medium [&th]:last:border-r-0 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5 overflow-hidden text-ellipsis whitespace-nowrap max-w-[180px]',
         className
       )}
       {...props}
@@ -87,7 +87,7 @@ function TableCell({ children, className, ...props }: TableCellProps) {
     <td
       data-slot="table-cell"
       className={cn(
-        'p-6 align-middle [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5 [&td]:last:border-r-0 border-r border-gray-100 overflow-hidden text-ellipsis whitespace-nowrap max-w-[200px]',
+        'p-6 align-middle [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5 [&td]:last:border-r-0 border-r border-gray-100 overflow-hidden text-ellipsis whitespace-nowrap max-w-[180px]',
         className
       )}
       {...props}
@@ -105,7 +105,7 @@ function TableCaption({
     <caption
       data-slot="table-caption"
       className={cn(
-        'text-muted-foreground my-4 text-sm justify-center',
+        'text-muted-foreground mt-10 mb-6 text-sm justify-center',
         className
       )}
       {...props}

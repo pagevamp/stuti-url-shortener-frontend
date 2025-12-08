@@ -8,11 +8,11 @@ export const urlFormValidationSchema = z.object({
 
   expiresAt: z.coerce
     .date()
-    .min(1, { message: 'Expiry Date is required' })
-    .refine((data) => data > new Date(), {
+    // .min(1, { message: 'Expiry Date is required' })
+    .refine((date) => date > new Date(), {
       message: 'The Expiry Date must be in the future',
     }),
-  originalURL: z.string().url().optional(),
+  originalUrl: z.string().url().optional(),
 });
 
 export const filterFormValidationSchema = z.object({

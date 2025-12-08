@@ -1,6 +1,7 @@
 import { useSearchParams } from 'next/navigation';
 import { InputField } from '../InputField';
-import { filterDates, useUrls } from '@/hooks/useUrls';
+import {  useUrls } from '@/hooks/useUrls';
+import { filterDates } from '@/features/urls/constants';
 
 export const FilterCard = () => {
   const { filterFormData, handleFilterInputChange } = useUrls();
