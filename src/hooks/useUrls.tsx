@@ -184,9 +184,13 @@ export function useUrls() {
   // --------------------------------------------------------------------------------
 
   // to conditionally render the action-based content on the confirmation dialog box
-  const handleSubmitAction = () => {
+  const handleSubmitAction = (e: FormEvent) => {
     if (currentAction === urlTasks.DELETE) {
       openConfirmation();
+    } else if (currentAction === urlTasks.EDIT) {
+      handleEditSubmit(e);
+    } else if (currentAction === urlTasks.ADD) {
+      handleAddSubmit(e);
     }
     return 0;
   };

@@ -1,15 +1,10 @@
-import React from 'react';
 import { InputField } from '@components/common/InputField';
 import { useUrls } from '@/hooks/useUrls';
 import { Button } from '../Button';
 
 export const AddUrlForm = () => {
-  const {
-    addFormData,
-    error,
-    handleAddSubmit,
-    handleAddFormInputChange,
-  } = useUrls();
+  const { addFormData, error, handleAddSubmit, handleAddFormInputChange } =
+    useUrls();
 
   return (
     <form
@@ -66,7 +61,7 @@ export const AddUrlForm = () => {
       />
 
       <Button
-        className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 mb-6"
+        className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 mb-4"
         type="submit"
       >
         Add URL

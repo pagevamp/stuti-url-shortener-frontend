@@ -41,7 +41,7 @@ const Error = () => {
               <p className="text-md text-gray-700 font-secondary">
                 Unauthorized Access
               </p>
-              <p className="text-sm text-gray-500 leading-relaxed font-secondary font-[300]">
+              <p className="text-sm text-gray-500 leading-relaxed font-secondary font-light">
                 You don&apos;t have permission to access this resource in the
                 URL Shortener. Please contact support at
                 <a

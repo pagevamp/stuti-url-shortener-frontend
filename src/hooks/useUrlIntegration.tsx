@@ -1,3 +1,5 @@
+import { TableLoader } from '@/components/common/TableLoader/TableLoader';
+import { TableHeader } from '@/components/ui/table';
 import {
   deleteUrl,
   editUrl,
@@ -14,11 +16,11 @@ export function useUrlIntegration() {
     useEffect(() => {
       try {
         const getUrls = async () => {
-          getAllUrls().then((urlJson) => setUrlData(urlJson.data));
+          await getAllUrls().then((urlJson) => setUrlData(urlJson.data));
         };
         getUrls();
         const urlInterval = setInterval(getUrls, 3000);
-
+        <TableLoader />;
         return () => clearInterval(urlInterval);
       } catch (err) {
         if (err instanceof Error) {

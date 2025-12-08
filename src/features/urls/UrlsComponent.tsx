@@ -136,8 +136,8 @@ export const UrlsComponent = ({
           </TableHeader>
 
           <TableBody>
-            {data.map((data: UrlTableTypes, index: number) => (
-              <TableRow key={index} onClick={() => handleTableId(data.id)}>
+            {data.map((data: UrlTableTypes) => (
+              <TableRow key={data.id} onClick={() => handleTableId(data.id)}>
                 <TableCell>{data.id}</TableCell>
                 <TableCell>{data.title}</TableCell>
                 <TableCell>
