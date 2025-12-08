@@ -32,15 +32,15 @@ export const Button = ({
   variant,
   size,
   className,
-  type = 'button',
+  type = "button",
   onClick,
-}: React.ComponentProps<'button'> &
+}: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
-    children: React.ReactNode;
-    type?: 'button' | 'submit' | 'reset';
-    variant?: VariantProps<typeof buttonVariants>;
-    size?: VariantProps<typeof buttonVariants>;
-    onClick?: MouseEventHandler<HTMLButtonElement>;
+    children: React.ReactNode
+    type?: "button" | "submit" | "reset"
+    variant?: VariantProps<typeof buttonVariants>
+    size?: VariantProps<typeof buttonVariants>
+    onClick?: () => void
   }) => {
   return (
     <button
@@ -50,5 +50,5 @@ export const Button = ({
     >
       {children}
     </button>
-  );
-};
+  )
+}

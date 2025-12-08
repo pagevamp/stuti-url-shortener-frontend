@@ -10,17 +10,23 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
+    "@radix-ui/react-slot": "^1.2.4",
     "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.24",
+    "ionicons": "^8.0.13",
     "lucide-react": "^0.555.0",
+    "motion": "^12.23.24",
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-hot": "^0.0.1",
+    "react-form-stepper": "^2.0.3",
     "react-hot-toast": "^2.6.0",
+    "swiper": "^12.0.3",
     "tailwind-merge": "^3.4.0",
-    "toast": "^0.5.4"
+    "toast": "^0.5.4",
+    "utils": "link:@/lib/utils"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
