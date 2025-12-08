@@ -10,14 +10,16 @@ export const buttonVariants = cva(
       variant: {
         default:
           'bg-undraw-secondary-100 border-2 border-cyan-800 text-white border-l rounded-3xl mx-auto',
+        handler:
+          'bg-undraw-secondary-100 border-2 border-cyan-800 rounded-3xl flex flex-row gap-3 h-fit text-white font-semibold px-2 place-self-end',
         ghost: 'bg-transparent text-placeholder-100',
-        icon: 'bg-transparent text-placeholder-100',
+        icon: 'bg-transparent p-0 m-0',
       },
       size: {
         default: 'px-10 py-2 w-40 h-14 ',
-        icon: 'size-5',
-        'icon-sm': 'size-8',
-        'icon-lg': 'size-16',
+        icon: 'h-5 w-5 p-0 m-0',
+        'icon-sm': 'h-8 w-8 p-0 m-0',
+        'icon-lg': 'h-16 w-16 p-0 m-0',
       },
     },
     defaultVariants: {

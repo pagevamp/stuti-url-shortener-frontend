@@ -26,7 +26,7 @@
       "@core/*": ["./src/core/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@lib/*": ["./src/lib/*"],
-      "@routes/*": ["./src/lib/*"]
+      "@routes/*": ["./src/routes/*"]
     }
   },
   "include": [

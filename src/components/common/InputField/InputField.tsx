@@ -8,10 +8,10 @@ export interface InputProps {
   name: string;
   labelName: string;
   icon: string;
-  error?: string;
-  type?: string;
+  error?: string | '';
+  type?: string | '';
   placeholder: string;
-  value?: string;
+  value?: string | '';
   classNames?: { input?: string; label?: string };
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }

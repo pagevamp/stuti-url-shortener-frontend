@@ -24,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${primary.variable} ${secondary.variable} antialiased`}>
+      <body
+        className={`${primary.variable} ${secondary.variable} antialiased [&:has([data-modal=true])]:overflow-hidden`}
+      >
         {children}
       </body>
     </html>
