@@ -9,10 +9,10 @@ import {
 import { urlFormValidationSchema } from '@core/validation/url-validation';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
-  filterDates,
-  sortFields,
-  urlOrder,
-  urlTasks,
+  FilterDates,
+  SortFields,
+  UrlOrder,
+  UrlTasks,
 } from '@/features/urls/constants';
 import { useUrlIntegration } from './useUrlIntegration';
 
@@ -25,7 +25,7 @@ export function useUrls() {
     useUrlIntegration();
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmationOpen, setConfirmationOpen] = useState(false);
-  const [currentAction, setCurrentAction] = useState<urlTasks | null>(null);
+  const [currentAction, setCurrentAction] = useState<UrlTasks | null>(null);
 
   // to add form
   const [addFormData, setAddFormData] = useState<UrlFormTypes>({
@@ -56,7 +56,7 @@ export function useUrls() {
 
   //to handle modal and dialog box
 
-  const openModal = (action: urlTasks) => {
+  const openModal = (action: UrlTasks) => {
     setCurrentAction(action);
     setModalOpen(true);
   };
@@ -104,11 +104,11 @@ export function useUrls() {
     setTableId(id);
   }
 
-  const handleEditSubmit = async (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: FormEvent, tableId: string) => {
     e.preventDefault();
 
-    const formValues = editFormData;
-    const result = urlFormValidationSchema.safeParse(formValues);
+    const editFormValues = editFormData;
+    const result = urlFormValidationSchema.safeParse(editFormValues);
     if (!result.success) {
       const formattedErrors: UrlFormErrors = {};
       result.error.issues.forEach((issue) => {
@@ -118,12 +118,9 @@ export function useUrls() {
       setError(formattedErrors);
       return;
     }
+
     setError({});
     handleEditUrls(tableId, editFormData);
-    setEditFormData({
-      title: '',
-      expiresAt: '' as unknown as Date,
-    });
     closeModal();
   };
 
@@ -131,21 +128,28 @@ export function useUrls() {
 
   // handle confirm for delete actions from the modals
   const handleConfirm = () => {
-    if (currentAction === urlTasks.DELETE) {
+    if (currentAction === UrlTasks.DELETE) {
       handleDeleteUrls(tableId);
       closeConfirmation();
       closeModal();
+    } else if (currentAction === UrlTasks.EDIT) {
+      handleEditUrls(tableId, editFormData);
+      closeConfirmation();
+      closeModal();
+      setEditFormData({
+        title: '',
+        expiresAt: '' as unknown as Date,
+      });
     }
-    return 0;
   };
 
   // --------------------------------------------------------------------------------
 
   // to conditionally render the action-based content and button on the modal
   const handleTrigger = () => {
-    if (currentAction === urlTasks.ADD) {
+    if (currentAction === UrlTasks.ADD) {
       return 'Add URL';
-    } else if (currentAction === urlTasks.EDIT) {
+    } else if (currentAction === UrlTasks.EDIT) {
       return 'Edit URL';
     } else {
       return 'Delete URL';
@@ -153,9 +157,9 @@ export function useUrls() {
   };
 
   const handleTitle = () => {
-    if (currentAction === urlTasks.ADD) {
+    if (currentAction === UrlTasks.ADD) {
       return 'Add URL';
-    } else if (currentAction === urlTasks.EDIT) {
+    } else if (currentAction === UrlTasks.EDIT) {
       return 'Edit URL';
     } else {
       return 'Delete URL';
@@ -166,31 +170,25 @@ export function useUrls() {
 
   // to conditionally render the action-based content on the confirmation dialog box
   const handleConfirmationTitle = () => {
-    if (currentAction === urlTasks.ADD) {
-      return 'Edit Confirmation';
-    } else {
-      return 'Delete Confirmation';
-    }
+    if (currentAction === UrlTasks.EDIT) return 'Edit Confirmation';
+    if (currentAction === UrlTasks.DELETE) return 'Delete Confirmation';
+    return '';
   };
 
   const handleConfirmationMessage = () => {
-    if (currentAction === urlTasks.ADD) {
+    if (currentAction === UrlTasks.EDIT)
       return 'Are you sure you want to edit this URL?';
-    } else {
+    if (currentAction === UrlTasks.DELETE)
       return 'Are you sure you want to delete this URL?';
-    }
+    return '';
   };
 
   // --------------------------------------------------------------------------------
 
   // to conditionally render the action-based content on the confirmation dialog box
-  const handleSubmitAction = (e: FormEvent) => {
-    if (currentAction === urlTasks.DELETE) {
+  const handleSubmitAction = () => {
+    if (currentAction === UrlTasks.DELETE) {
       openConfirmation();
-    } else if (currentAction === urlTasks.EDIT) {
-      handleEditSubmit(e);
-    } else if (currentAction === urlTasks.ADD) {
-      handleAddSubmit(e);
     }
     return 0;
   };
@@ -222,7 +220,7 @@ export function useUrls() {
 
   const [sortOrderAsc, setSortOrderAsc] = React.useState(true);
 
-  async function handleSortOrder(order: urlOrder, field: sortFields) {
+  async function handleSortOrder(order: UrlOrder, field: SortFields) {
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
 
@@ -259,8 +257,14 @@ export function useUrls() {
 
   // --------------------------------------------------------------------------------
 
+  // to set toggle/open the filter bar
+
+  const [filterOpen, setFilterOpen] = useState<boolean>(true);
+
+  // --------------------------------------------------------------------------------
+
   // to set which column/field  on the table to filter
-  function handleFilterFields(filterField: sortFields) {
+  function handleFilterFields(filterField: SortFields) {
     const params = new URLSearchParams(searchParams);
 
     if (filterField) {
@@ -270,7 +274,7 @@ export function useUrls() {
     }
     const addFilterField = setTimeout(() => {
       replace(`${pathname}?${params.toString()}`);
-    }, 1500);
+    }, 300);
     return () => {
       clearTimeout(addFilterField);
     };
@@ -289,38 +293,26 @@ export function useUrls() {
   const handleFilterInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilterFormData((prev) => ({ ...prev, [name]: value }));
-    handleFilter(name as filterDates, value as unknown as Date);
-  };
-
-  const openFilter = () => {
-    setFilterCardOpen(true);
-  };
-
-  const closeFilter = () => {
-    setFilterCardOpen(false);
+    handleFilter(name as FilterDates, value as unknown as Date);
   };
 
   // --------------------------------------------------------------------------------
 
   // to handle setting the filter parameters
 
-  function handleFilter(filterType: filterDates, filterDate: Date) {
+  function handleFilter(filterType: FilterDates, filterDate: Date) {
     const params = new URLSearchParams(searchParams);
-    if (filterType) {
-      params.set('filterType', filterType.toString());
-    } else {
-      params.delete('filterType');
+    if (filterType === FilterDates.START_DATE) {
+      params.set('start_date', filterDate.toString());
     }
 
-    if (filterDate) {
-      params.set('filterDate', filterDate.toString());
-    } else {
-      params.delete('filterDate');
+    if (filterType === FilterDates.END_DATE) {
+      params.set('end_date', filterDate.toString());
     }
 
     const addFilter = setTimeout(() => {
       push(`${pathname}?${params.toString()}`);
-    }, 5000);
+    }, 1000);
     return () => {
       clearTimeout(addFilter);
     };
@@ -328,22 +320,38 @@ export function useUrls() {
 
   // --------------------------------------------------------------------------------
 
+  // to handle setting the filter parameters
+
+  function handleClearFilter() {
+    const date = new Date(0);
+    const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
+
+    params.set('start_date', date.toString());
+
+    params.delete('end_date');
+
+    params.delete('filterField');
+
+    replace(`${pathname}?${params.toString()}`);
+  }
+
+  // --------------------------------------------------------------------------------
+
   // to render data on the table based on the url parameters
   function useFilterTable(
     query: string,
-    filterType: filterDates,
-    filterDate: Date,
-    filterField: sortFields,
-    sortColumn: sortFields,
-    sortOrder: urlOrder,
+    start_date: FilterDates.START_DATE,
+    end_date: FilterDates.END_DATE,
+    filterField: SortFields,
+    sortColumn: SortFields,
+    sortOrder: UrlOrder,
     currentPage: number,
     urlData: UrlTableTypes[]
   ) {
     const itemsPerPage = 5;
     const lowerCaseQuery = query.toLowerCase();
     const order = sortOrder;
-    const filterAs = filterType;
-    const filterValue = filterDate;
     const filterColumn = filterField;
     const field = sortColumn;
     const manipulatedData = useMemo(() => {
@@ -354,57 +362,18 @@ export function useUrls() {
           data.shortCode?.toLowerCase().includes(lowerCaseQuery)
       );
 
-      // to render the data after filtering the queried data
-
-      if (
-        filterAs === (filterDates.START_DATE as string) &&
-        filterColumn &&
-        filterValue
-      ) {
-        const filteredData = [...queriedData].filter((filtered) => {
-          const filterInstance = new Date(filtered[filterColumn]);
-          return filterInstance.getTime() >= new Date(filterValue).getTime();
-        });
-        return filteredData.slice(start, start + itemsPerPage);
-      } else if (
-        filterAs === (filterDates.END_DATE as string) &&
-        filterColumn &&
-        filterValue &&
-        filterColumn
-      ) {
-        const filteredData = [...queriedData].filter((filtered) => {
-          const filterInstance = new Date(filtered[filterColumn]);
-          return filterInstance.getTime() <= new Date(filterValue).getTime();
-        });
-        return filteredData.slice(start, start + itemsPerPage);
-      } else if (
-        filterAs ===
-          ((filterDates.END_DATE as string) &&
-            (filterDates.START_DATE as string)) &&
-        filterColumn &&
-        filterValue &&
-        filterColumn
-      ) {
-        const filteredData = [...queriedData].filter((filtered) => {
-          const filterInstance = new Date(filtered[filterColumn]);
-          return (
-            filterInstance?.getTime() <= new Date(filterValue).getTime() &&
-            filterInstance?.getTime() >= new Date(filterValue).getTime()
-          );
-        });
-        return filteredData.slice(start, start + itemsPerPage);
-      }
-
       // to render the data after sorting the queried data
 
-      if (order === urlOrder.ASC && field) {
+      if (order === UrlOrder.ASC && field) {
         const sortedData = [...queriedData].sort((a, b) => {
           const x = new Date(a[field]);
           const y = new Date(b[field]);
           return x?.getTime() - y?.getTime();
         });
         return sortedData.slice(start, start + itemsPerPage);
-      } else if (order === urlOrder.DESC && field) {
+      }
+
+      if (order === UrlOrder.DESC && field) {
         const sortedData = [...queriedData].sort((a, b) => {
           const x = new Date(a[field]);
           const y = new Date(b[field]);
@@ -412,21 +381,95 @@ export function useUrls() {
         });
         return sortedData.slice(start, start + itemsPerPage);
       }
+
+      // // to render the data after filtering the queried data
+      // // to filter with starting date
+      // if (start_date && filterColumn) {
+      //   const filteredData = [...queriedData].filter((filtered) => {
+      //     const filterInstance = new Date(filtered[filterColumn]);
+      //     return filterInstance.getTime() >= new Date(start_date).getTime();
+      //   });
+      //   return filteredData.slice(start, start + itemsPerPage);
+      // }
+      // // to filter to end date
+      // if (end_date && filterColumn) {
+      //   const filteredData = [...queriedData].filter((filtered) => {
+      //     const filterInstance = new Date(filtered[filterColumn]);
+      //     return filterInstance.getTime() <= new Date(end_date).getTime();
+      //   });
+      //   return filteredData.slice(start, start + itemsPerPage);
+      // }
+
       return queriedData.slice(start, start + itemsPerPage);
-    }, [
-      lowerCaseQuery,
-      currentPage,
-      order,
-      field,
-      filterAs,
-      filterValue,
-      filterColumn,
-      urlData,
-    ]);
+    }, [currentPage, urlData, order, field, lowerCaseQuery]);
     return manipulatedData;
   }
 
+  // // to render data on the table based on the url parameters
+  // function useFinalTable(
+  //   query: string,
+  //   start_date: FilterDates.START_DATE,
+  //   end_date: FilterDates.END_DATE,
+  //   filterField: SortFields,
+  //   sortColumn: SortFields,
+  //   sortOrder: UrlOrder,
+  //   currentPage: number,
+  //   urlData: UrlTableTypes[]
+  // ) {
+  //   const itemsPerPage = 5;
+  //   const lowerCaseQuery = query.toLowerCase();
+  //   const order = sortOrder;
+  //   const filterColumn = filterField;
+  //   const field = sortColumn;
+  //   const manipulatedFinalData = useMemo(() => {
+  //     const start = (currentPage - 1) * itemsPerPage;
+  //     const finalData = useFilterTable(
+  //       query,
+  //       start_date,
+  //       end_date,
+  //       filterField,
+  //       sortColumn,
+  //       sortOrder,
+  //       currentPage,
+  //       urlData
+  //     );
+
+  //     // to render the data after filtering the queried data
+  //     // to filter with starting date
+  //     if (start_date && filterColumn) {
+  //       const filteredData = [...finalData].filter((filtered) => {
+  //         const filterInstance = new Date(filtered[filterColumn]);
+  //         return filterInstance.getTime() >= new Date(start_date).getTime();
+  //       });
+  //       return filteredData.slice(start, start + itemsPerPage);
+  //     }
+  //     // to filter to end date
+  //     if (end_date && filterColumn) {
+  //       const filteredData = [...finalData].filter((filtered) => {
+  //         const filterInstance = new Date(filtered[filterColumn]);
+  //         return filterInstance.getTime() <= new Date(end_date).getTime();
+  //       });
+  //       return filteredData.slice(start, start + itemsPerPage);
+  //     }
+
+  //     return finalData.slice(start, start + itemsPerPage);
+  //   }, [
+  //     currentPage,
+  //     query,
+  //     start_date,
+  //     end_date,
+  //     filterField,
+  //     sortColumn,
+  //     sortOrder,
+  //     urlData,
+  //     filterColumn,
+  //   ]);
+
+  //   return manipulatedFinalData;
+  // }
+
   return {
+    tableId,
     modalOpen,
     confirmationOpen,
     addFormData,
@@ -458,15 +501,14 @@ export function useUrls() {
     handleFilter,
     handleFilterFields,
     handleFilterInputChange,
-    openFilter,
-    closeFilter,
+    filterOpen,
+    setFilterOpen,
     filterCardOpen,
     setFilterCardOpen,
     handleTrigger,
     handleTitle,
     handleConfirmationTitle,
     handleConfirmationMessage,
+    handleClearFilter,
   };
 }
-
-//

@@ -11,7 +11,7 @@ export const buttonVariants = cva(
         default:
           'bg-undraw-secondary-100 border-2 border-cyan-800 text-white rounded-3xl mx-auto',
         handler:
-          'bg-undraw-secondary-100 border-2 border-cyan-800 rounded-3xl flex flex-row gap-3 h-fit text-white font-semibold px-2 place-self-end',
+          'bg-undraw-secondary-100 border-2 border-cyan-800 rounded-3xl flex flex-row gap-3 h-12 text-white font-semibold px-2 place-self-end',
         ghost: 'bg-transparent text-placeholder-100',
         icon: 'bg-transparent p-0 m-0',
       },

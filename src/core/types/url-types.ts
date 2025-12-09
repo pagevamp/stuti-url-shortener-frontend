@@ -1,4 +1,4 @@
-import { sortFields } from '@/features/urls/constants';
+import { SortFields } from '@/features/urls/constants';
 import { urlFormValidationSchema } from './../validation/url-validation';
 import { MouseEventHandler } from 'react';
 import * as z from 'zod';
@@ -20,7 +20,7 @@ export interface UrlTableIcons {
 }
 
 export interface UrlTableHeadProps {
-  field?: sortFields;
+  field?: SortFields;
   type?: string;
   children?: React.ReactElement | React.ReactNode;
 }
@@ -65,6 +65,11 @@ export interface SearchTypes {
   title?: string;
   shortCode?: string;
   originalUrl?: string;
+}
+
+export interface UrlFormProps {
+  tableId?: string;
+  closeModal: () => void;
 }
 
 export type UrlFormErrors = Partial<

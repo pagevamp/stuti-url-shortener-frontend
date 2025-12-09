@@ -4,30 +4,30 @@ export const tableHeaders = [
   'Shortened URL',
   'Original URL',
 ];
-export enum urlTasks {
+export enum UrlTasks {
   ADD = 'add',
   EDIT = 'edit',
   DELETE = 'delete',
 }
 
-export enum urlStatus {
+export enum UrlStatus {
   NEW = 'new',
   OLD = 'old',
   EXPIRED = 'expired',
 }
 
-export enum urlOrder {
+export enum UrlOrder {
   ASC = 'ASC',
   DESC = 'DESC',
 }
 
-export enum sortFields {
+export enum SortFields {
   UPDATED_AT = 'updatedAt',
   CREATED_AT = 'createdAt',
   EXPIRES_AT = 'expiresAt',
 }
 
-export enum filterDates {
+export enum FilterDates {
   START_DATE = 'start_date',
   END_DATE = 'end_date',
 }

@@ -1,8 +1,9 @@
 import { InputField } from '@components/common/InputField';
 import { useUrls } from '@/hooks/useUrls';
 import { Button } from '../Button';
+import { UrlFormProps } from '@/core/types/url-types';
 
-export const AddUrlForm = () => {
+export const AddUrlForm = ({ closeModal }: UrlFormProps) => {
   const { addFormData, error, handleAddSubmit, handleAddFormInputChange } =
     useUrls();
 
@@ -60,12 +61,22 @@ export const AddUrlForm = () => {
         }}
       />
 
-      <Button
-        className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 mb-4"
-        type="submit"
-      >
-        Add URL
-      </Button>
+      <div className="flex flex-row gap-4 mt-4">
+        <Button
+          className="text-md font-bold text-white bg-red-950 border-0 rounded-2xl p-2 cursor-pointer"
+          onClick={closeModal}
+          type="button"
+        >
+          Cancel
+        </Button>
+
+        <Button
+          className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-2 cursor-pointer"
+          type="submit"
+        >
+          Add URL
+        </Button>
+      </div>
     </form>
   );
 };

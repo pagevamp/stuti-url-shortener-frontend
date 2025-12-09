@@ -2,8 +2,9 @@ import React from 'react';
 import { InputField } from '@components/common/InputField';
 import { useUrls } from '@/hooks/useUrls';
 import { Button } from '../Button';
+import { UrlFormProps } from '@/core/types/url-types';
 
-export const EditUrlForm = () => {
+export const EditUrlForm = ({ tableId, closeModal }: UrlFormProps) => {
   const { editFormData, error, handleEditFormInputChange, handleEditSubmit } =
     useUrls();
 
@@ -12,7 +13,7 @@ export const EditUrlForm = () => {
       className="flex flex-col gap-2 items-center"
       onSubmit={(e) => {
         e.preventDefault();
-        handleEditSubmit(e);
+        handleEditSubmit(e, tableId!);
       }}
     >
       <InputField
@@ -36,7 +37,11 @@ export const EditUrlForm = () => {
         labelName="Expiry Date"
         icon="line-md:calendar"
         placeholder="Enter Expiry Date"
-        value={editFormData.expiresAt.toString()}
+        value={
+          editFormData.expiresAt
+            ? new Date(editFormData.expiresAt).toISOString().split('T')[0]
+            : ''
+        }
         error={error?.expiresAt}
         onChange={handleEditFormInputChange}
         classNames={{
@@ -46,12 +51,22 @@ export const EditUrlForm = () => {
         }}
       />
 
-      <Button
-        className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-4 mb-6"
-        type="submit"
-      >
-        Edit URL
-      </Button>
+      <div className="flex flex-row gap-4 mt-4">
+        <Button
+          className="text-md font-bold text-white bg-red-950 border-0 rounded-2xl p-2 cursor-pointer"
+          type="button"
+          onClick={closeModal}
+        >
+          Cancel
+        </Button>
+
+        <Button
+          className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-2 cursor-pointer"
+          type="submit"
+        >
+          Edit URL
+        </Button>
+      </div>
     </form>
   );
 };

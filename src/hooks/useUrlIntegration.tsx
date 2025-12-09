@@ -20,7 +20,6 @@ export function useUrlIntegration() {
         };
         getUrls();
         const urlInterval = setInterval(getUrls, 3000);
-        <TableLoader />;
         return () => clearInterval(urlInterval);
       } catch (err) {
         if (err instanceof Error) {

@@ -69,9 +69,9 @@ export const InputField = ({
             ) : (
               <Icon icon="mdi-light:eye" width="20" height="20" />
             )}
-            <span className="sr-only">
+            {/* <span className="sr-only">
               {showPassword ? 'Hide password' : 'Show password'}
-            </span>
+            </span> */}
           </Button>
         )}
         <input
@@ -85,14 +85,14 @@ export const InputField = ({
       </div>
       {error && (
         <p className="text-xs text-red-700 flex items-center gap-1 mt-1">
-          <div className="w-fit">
+          <span className="w-fit">
             <Icon
               icon="solar:close-square-bold"
               width="14"
               height="14"
               className="text-red-950"
             />
-          </div>
+          </span>
           <span>{error}</span>
         </p>
       )}

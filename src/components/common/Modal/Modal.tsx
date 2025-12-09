@@ -32,15 +32,15 @@ export const Modal = ({
           <div className="text-xl text-undraw-primary-100 shadow-2xs">
             {message}
           </div>
+          {trigger === 'Delete URL' && (
+            <div className="flex flex-row gap-4 mt-4">
+              <Button
+                className="text-md font-bold text-white bg-red-950 border-0 rounded-2xl p-2"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
 
-          <div className="flex flex-row gap-4 mt-4">
-            <Button
-              className="text-md font-bold text-white bg-red-950 border-0 rounded-2xl p-2"
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-            {trigger === 'Delete URL' && (
               <Button
                 className="text-md font-bold text-white bg-blue-950 border-0 rounded-2xl p-2"
                 type="submit"
@@ -48,8 +48,8 @@ export const Modal = ({
               >
                 {trigger}
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </section>
       </article>
     </div>
