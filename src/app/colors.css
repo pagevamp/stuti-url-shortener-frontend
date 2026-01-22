@@ -1,7 +1,9 @@
-@theme {
-  --color-undraw-primary-100: #448850;
+@theme inline {
+  --color-undraw-primary-100: #a0cfa9;
 
   --color-undraw-secondary-100: #17172d;
+
+  --color-undraw-tertiary-100: #448850;
 
   --color-primary-100: #e0e1d8;
 
@@ -10,4 +12,26 @@
   --color-tertiary-100: #448850;
 
   --color-placeholder-100: #716f91;
+}
+
+.light {
+  --color-undraw-primary-100: #a0cfa9;
+  --color-undraw-secondary-100: #17172d;
+  --color-undraw-tertiary-100: #448850;
+  --color-primary-100: #e0e1d8;
+  --color-secondary-100: #e5e7d6;
+  --color-tertiary-100: #448850;
+  --color-background-100: #f6f3f3;
+  --color-placeholder-100: #716f91;
+}
+
+.dark {
+  --color-undraw-primary-100: #1f1f2e;
+  --color-undraw-secondary-100: #a0cfa9;
+  --color-undraw-tertiary-100: #3c7d52;
+  --color-primary-100: #2a2b3a;
+  --color-secondary-100: #3c3d52;
+  --color-tertiary-100: #3c7d52;
+  --color-background-100: #ffffff
+  --color-placeholder-100: #c0c0c0;
 }

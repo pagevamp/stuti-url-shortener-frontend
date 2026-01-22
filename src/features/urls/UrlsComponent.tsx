@@ -12,7 +12,7 @@ import { Icon } from '@iconify/react';
 import { useUrls } from '@hooks/useUrls';
 import { ConfirmationDialogBox } from '@components/common/ConfirmationBox/ConfirmationDialogBox';
 import { Button } from '@components/common/Button/Button';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { SearchComponent } from '@components/common/SearchComponent/SearchComponent';
 import { UrlTableHead } from '@components/common/UrlTableHead/UrlTableHead';
 import { Pagination } from '@components/common/PaginationComponent/Pagination';
@@ -28,12 +28,10 @@ import {
   UrlOrder,
   UrlTasks,
 } from './constants';
-
+import { UrlTableCell } from '@/components/common/UrlTableCell/UrlTableCell';
 export const UrlsComponent = ({
   query,
-  // filterDate,
   filterField,
-  // filterTypes,
   sortOrder,
   sortColumn,
   currentPage,
@@ -42,7 +40,6 @@ export const UrlsComponent = ({
 }: {
   query: string;
   filterDate: Date;
-  // filterTypes: FilterDates;
   filterField: SortFields;
   sortOrder: UrlOrder;
   sortColumn: SortFields;
@@ -100,25 +97,61 @@ export const UrlsComponent = ({
     onClick: () => openModal(UrlTasks.ADD),
   };
 
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   return (
-    <div className="my-20 mx-6 p-4 bg-undraw-primary-100 border-3 border-undraw-secondary-100 shadow-2xl shadow-gray-800 w-fit">
+    <div className="my-20 mx-6 p-4 bg-undraw-primary-100 border-3 border-undraw-secondary-100 shadow-2xl shadow-gray-800 w-fit max-w-[95vw] rounded-2xl">
       <section className="flex flex-row items-center place-content-stretch mx-10 my-5 w-full relative">
         <SearchComponent />
 
-        <div className="absolute right-20 flex flex-row items-center gap-2">
-          <Button variant="handler" onClick={handleClearFilter}>
-            Clear Filters
-            <Icon icon="mage:filter-fill" height={22} width={22} />
-          </Button>
-          <Button variant="handler" onClick={add.onClick}>
-            Shorten New Url{' '}
-            <Icon
-              icon="icon-park-outline:clothes-pants-short"
-              height={22}
-              width={22}
-            />
-          </Button>
-        </div>
+        {isSmallScreen ? (
+          <div className="absolute right-10 flex flex-row items-center gap-1">
+            <Button
+              variant="handler"
+              onClick={handleClearFilter}
+              className="max-w-fit py-2 px-4"
+            >
+              <Icon icon="mage:filter-fill" height={22} width={22} />
+            </Button>
+            <Button
+              variant="handler"
+              onClick={add.onClick}
+              className="max-w-fit py-2 px-4"
+            >
+              <Icon
+                icon="icon-park-outline:clothes-pants-short"
+                height={22}
+                width={22}
+              />
+            </Button>
+          </div>
+        ) : (
+          <div className="absolute right-20 flex flex-row items-center gap-2">
+            <Button variant="handler" onClick={handleClearFilter}>
+              Clear Filters
+              <Icon icon="mage:filter-fill" height={22} width={22} />
+            </Button>
+            <Button variant="handler" onClick={add.onClick}>
+              Shorten New Url{' '}
+              <Icon
+                icon="icon-park-outline:clothes-pants-short"
+                height={22}
+                width={22}
+              />
+            </Button>
+          </div>
+        )}
       </section>
 
       <Suspense key={query + currentPage}>
@@ -126,11 +159,8 @@ export const UrlsComponent = ({
           <TableHeader>
             <TableRow className="border-b border-t border-[#E6EFF5]">
               {tableHeaders.map((headers) => (
-                <TableHead
-                  key={headers}
-                  className="text-center text-[#0B0704] font-primary text-[16px] py-3 border-r w-[350px]"
-                >
-                  {headers}
+                <TableHead key={headers.header} className={headers.className}>
+                  {headers.header}
                 </TableHead>
               ))}
               <UrlTableHead type="sorted" field={SortFields.CREATED_AT}>
@@ -151,39 +181,47 @@ export const UrlsComponent = ({
           <TableBody>
             {data.map((data: UrlTableTypes) => (
               <TableRow key={data.id} onClick={() => handleTableId(data.id)}>
-                <TableCell>{data.id}</TableCell>
+                <TableCell className="hidden lg:table-cell">
+                  {data.id}
+                </TableCell>
                 <TableCell>{data.title}</TableCell>
                 <TableCell>
                   <a
-                    href={data.originalUrl}
-                    className="text-decoration:none flex flex-row "
+                    target="_blank"
+                    href={`http://localhost:3002/urls/${data.shortCode}`}
                   >
-                    <span></span>
-                    {data.shortCode}
-                    <Icon icon="line-md:link" className="text-emerald-900" />
+                    <span className="flex flex-row gap-1 text-emerald-900 cursor-pointer">
+                      <Icon icon="line-md:link" />
+                      {data.shortCode}
+                    </span>
                   </a>
                 </TableCell>
-                <TableCell>{data.originalUrl}</TableCell>
-                <TableCell>
+                <TableCell className="hidden lg:table-cell">
+                  {data.originalUrl}
+                </TableCell>
+                <UrlTableCell>
                   {data?.createdAt ? new Date(data.createdAt).toString() : '-'}
-                </TableCell>
-                <TableCell>
+                </UrlTableCell>
+                <UrlTableCell>
                   {data?.updatedAt ? new Date(data.updatedAt).toString() : '-'}
-                </TableCell>
-                <TableCell>
+                </UrlTableCell>
+                <UrlTableCell type="expiry" date={data.expiresAt}>
                   {data?.expiresAt ? new Date(data.expiresAt).toString() : '-'}
-                </TableCell>
-                <TableCell className="flex flex-row gap-5">
-                  {actions.map((action, idx) => (
-                    <Button
-                      variant="icon"
-                      size="icon"
-                      key={idx}
-                      onClick={action.onClick}
-                    >
-                      <Icon icon={action.icon} className="text-emerald-900" />
-                    </Button>
-                  ))}
+                </UrlTableCell>
+                <TableCell>
+                  <span className="flex flex-row gap-5 mx-4">
+                    {actions.map((action, idx) => (
+                      <Button
+                        variant="icon"
+                        size="icon"
+                        onClick={action.onClick}
+                        key={idx}
+                        className=" hover:bg-undraw-primary-100"
+                      >
+                        <Icon icon={action.icon} className="text-emerald-900" />
+                      </Button>
+                    ))}
+                  </span>
                 </TableCell>
               </TableRow>
             ))}

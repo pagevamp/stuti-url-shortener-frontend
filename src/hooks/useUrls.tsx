@@ -382,90 +382,168 @@ export function useUrls() {
         return sortedData.slice(start, start + itemsPerPage);
       }
 
-      // // to render the data after filtering the queried data
-      // // to filter with starting date
-      // if (start_date && filterColumn) {
-      //   const filteredData = [...queriedData].filter((filtered) => {
-      //     const filterInstance = new Date(filtered[filterColumn]);
-      //     return filterInstance.getTime() >= new Date(start_date).getTime();
-      //   });
-      //   return filteredData.slice(start, start + itemsPerPage);
-      // }
-      // // to filter to end date
-      // if (end_date && filterColumn) {
-      //   const filteredData = [...queriedData].filter((filtered) => {
-      //     const filterInstance = new Date(filtered[filterColumn]);
-      //     return filterInstance.getTime() <= new Date(end_date).getTime();
-      //   });
-      //   return filteredData.slice(start, start + itemsPerPage);
-      // }
+      // to render the data after filtering the queried data
+      // to filter with starting date
+      if (start_date && filterColumn && order === UrlOrder.DESC && field) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = new Date(filtered[filterColumn]);
+          return filterInstance.getTime() >= new Date(start_date).getTime();
+        });
+        return filteredData.slice(start, start + itemsPerPage);
+      }
+      // to filter to end date
+      if (end_date && filterColumn) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = new Date(filtered[filterColumn]);
+          return filterInstance.getTime() <= new Date(end_date).getTime();
+        });
+        return filteredData.slice(start, start + itemsPerPage);
+      }
+
+      // to render the data after filtering the queried data
+      // to filter with starting date
+      if (start_date && filterColumn && field) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = new Date(filtered[filterColumn]);
+          return filterInstance.getTime() >= new Date(start_date).getTime();
+        });
+        if (order === UrlOrder.ASC && field) {
+          const sortedData = [...filteredData].sort((a, b) => {
+            const x = new Date(a[field]);
+            const y = new Date(b[field]);
+            return x?.getTime() - y?.getTime();
+          });
+          return sortedData.slice(start, start + itemsPerPage);
+        } else if (order === UrlOrder.DESC && field) {
+          const sortedData = [...filteredData].sort((a, b) => {
+            const x = new Date(a[field]);
+            const y = new Date(b[field]);
+            return y?.getTime() - x?.getTime();
+          });
+          return sortedData.slice(start, start + itemsPerPage);
+        } else {
+          return filteredData.slice(start, start + itemsPerPage);
+        }
+      }
+      // to filter to end date
+      if (end_date && filterColumn && field) {
+        const filteredData = [...queriedData].filter((filtered) => {
+          const filterInstance = new Date(filtered[filterColumn]);
+          return filterInstance.getTime() <= new Date(end_date).getTime();
+        });
+        if (order === UrlOrder.ASC && field) {
+          const sortedData = [...filteredData].sort((a, b) => {
+            const x = new Date(a[field]);
+            const y = new Date(b[field]);
+            return x?.getTime() - y?.getTime();
+          });
+          return sortedData.slice(start, start + itemsPerPage);
+        } else if (order === UrlOrder.DESC && field) {
+          const sortedData = [...filteredData].sort((a, b) => {
+            const x = new Date(a[field]);
+            const y = new Date(b[field]);
+            return y?.getTime() - x?.getTime();
+          });
+          return sortedData.slice(start, start + itemsPerPage);
+        } else {
+          return filteredData.slice(start, start + itemsPerPage);
+        }
+      }
+
+      if (order === UrlOrder.ASC && field) {
+        const sortedData = [...queriedData].sort((a, b) => {
+          const x = new Date(a[field]);
+          const y = new Date(b[field]);
+          return x?.getTime() - y?.getTime();
+        });
+        return sortedData.slice(start, start + itemsPerPage);
+      }
+
+      if (order === UrlOrder.DESC && field) {
+        const sortedData = [...queriedData].sort((a, b) => {
+          const x = new Date(a[field]);
+          const y = new Date(b[field]);
+          return y?.getTime() - x?.getTime();
+        });
+        return sortedData.slice(start, start + itemsPerPage);
+      }
 
       return queriedData.slice(start, start + itemsPerPage);
-    }, [currentPage, urlData, order, field, lowerCaseQuery]);
+    }, [
+      currentPage,
+      urlData,
+      order,
+      field,
+      start_date,
+      filterColumn,
+      end_date,
+      lowerCaseQuery,
+    ]);
     return manipulatedData;
   }
 
-  // // to render data on the table based on the url parameters
-  // function useFinalTable(
+  // function useFilterTable(
   //   query: string,
-  //   start_date: FilterDates.START_DATE,
-  //   end_date: FilterDates.END_DATE,
-  //   filterField: SortFields,
-  //   sortColumn: SortFields,
+  //   start_date: string | null,
+  //   end_date: string | null,
+  //   filterField: SortFields | null,
+  //   sortColumn: SortFields | null,
   //   sortOrder: UrlOrder,
   //   currentPage: number,
   //   urlData: UrlTableTypes[]
   // ) {
   //   const itemsPerPage = 5;
   //   const lowerCaseQuery = query.toLowerCase();
-  //   const order = sortOrder;
-  //   const filterColumn = filterField;
-  //   const field = sortColumn;
-  //   const manipulatedFinalData = useMemo(() => {
+
+  //   const manipulatedData = useMemo(() => {
   //     const start = (currentPage - 1) * itemsPerPage;
-  //     const finalData = useFilterTable(
-  //       query,
-  //       start_date,
-  //       end_date,
-  //       filterField,
-  //       sortColumn,
-  //       sortOrder,
-  //       currentPage,
-  //       urlData
+
+  //     // 1️⃣ Filter by search query
+  //     let filteredData = urlData.filter(
+  //       (data) =>
+  //         data.title?.toLowerCase().includes(lowerCaseQuery) ||
+  //         data.shortCode?.toLowerCase().includes(lowerCaseQuery)
   //     );
 
-  //     // to render the data after filtering the queried data
-  //     // to filter with starting date
-  //     if (start_date && filterColumn) {
-  //       const filteredData = [...finalData].filter((filtered) => {
-  //         const filterInstance = new Date(filtered[filterColumn]);
-  //         return filterInstance.getTime() >= new Date(start_date).getTime();
-  //       });
-  //       return filteredData.slice(start, start + itemsPerPage);
-  //     }
-  //     // to filter to end date
-  //     if (end_date && filterColumn) {
-  //       const filteredData = [...finalData].filter((filtered) => {
-  //         const filterInstance = new Date(filtered[filterColumn]);
-  //         return filterInstance.getTime() <= new Date(end_date).getTime();
-  //       });
-  //       return filteredData.slice(start, start + itemsPerPage);
+  //     // 2️⃣ Filter by start and end date
+  //     const startDate = start_date ? new Date(start_date) : null;
+  //     const endDate = end_date ? new Date(end_date) : null;
+
+  //     if (filterField) {
+  //       if (startDate) {
+  //         filteredData = filteredData.filter(
+  //           (d) => new Date(d[filterField]).getTime() >= startDate.getTime()
+  //         );
+  //       }
+  //       if (endDate) {
+  //         filteredData = filteredData.filter(
+  //           (d) => new Date(d[filterField]).getTime() <= endDate.getTime()
+  //         );
+  //       }
   //     }
 
-  //     return finalData.slice(start, start + itemsPerPage);
+  //     // 3️⃣ Sort by column & order
+  //     if (sortColumn) {
+  //       filteredData.sort((a, b) => {
+  //         const aTime = new Date(a[sortColumn]).getTime();
+  //         const bTime = new Date(b[sortColumn]).getTime();
+  //         return sortOrder === UrlOrder.ASC ? aTime - bTime : bTime - aTime;
+  //       });
+  //     }
+
+  //     // 4️⃣ Pagination
+  //     return filteredData.slice(start, start + itemsPerPage);
   //   }, [
   //     currentPage,
-  //     query,
+  //     urlData,
   //     start_date,
   //     end_date,
   //     filterField,
   //     sortColumn,
+  //     lowerCaseQuery,
   //     sortOrder,
-  //     urlData,
-  //     filterColumn,
   //   ]);
-
-  //   return manipulatedFinalData;
+  //   return manipulatedData;
   // }
 
   return {

@@ -1,10 +1,9 @@
-import { TableLoader } from '@/components/common/TableLoader/TableLoader';
-import { TableHeader } from '@/components/ui/table';
 import {
   deleteUrl,
   editUrl,
   getAllUrls,
   postUrl,
+  redirectUrl,
 } from '@/core/api/urls-api/urls-api';
 import { UrlFormTypes, UrlTableTypes } from '@/core/types/url-types';
 import { useEffect, useState } from 'react';
@@ -53,6 +52,17 @@ export function useUrlIntegration() {
     }
   }
 
+  function handleRedirectUrls(shortCode: string) {
+    try {
+      redirectUrl(shortCode);
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(`There was an error redirecting URL : ${err.message}`);
+      }
+      toast.error('Could not redirect due to an unknown error');
+    }
+  }
+
   function handleDeleteUrls(id: string) {
     try {
       deleteUrl(id);
@@ -69,5 +79,6 @@ export function useUrlIntegration() {
     handlePostUrls,
     handleEditUrls,
     handleDeleteUrls,
+    handleRedirectUrls,
   };
 }

@@ -65,9 +65,9 @@ export const InputField = ({
             onClick={togglePasswordVisibility}
           >
             {showPassword ? (
-              <Icon icon="mdi-light:eye-off" width="20" height="20" />
+              <Icon icon="mdi-light:eye-off" width={22} height={22} />
             ) : (
-              <Icon icon="mdi-light:eye" width="20" height="20" />
+              <Icon icon="mdi-light:eye" width={22} height={22} />
             )}
             {/* <span className="sr-only">
               {showPassword ? 'Hide password' : 'Show password'}

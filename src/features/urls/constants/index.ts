@@ -1,8 +1,24 @@
 export const tableHeaders = [
-  'Url ID',
-  'Title',
-  'Shortened URL',
-  'Original URL',
+  {
+    header: 'Url ID',
+    className:
+      'text-center text-[#0B0704] font-primary text-[16px] py-3 border-r hidden lg:table-cell',
+  },
+  {
+    header: 'Title',
+    className:
+      'text-center text-[#0B0704] font-primary text-[16px] py-3 border-r',
+  },
+  {
+    header: 'Shortened URL',
+    className:
+      'text-center text-[#0B0704] font-primary text-[16px] py-3 border-r',
+  },
+  {
+    header: 'Original URL',
+    className:
+      'text-center text-[#0B0704] font-primary text-[16px] py-3 border-r hidden lg:table-cell',
+  },
 ];
 export enum UrlTasks {
   ADD = 'add',

@@ -16,3 +16,8 @@ export const editUrl = (id: string, body: UrlFormTypes) => {
 export const deleteUrl = (id: string) => {
   return api.delete(`/urls/${id}`);
 };
+
+export const redirectUrl = (shortCode: string) => {
+  window.open(`/urls/${shortCode}`, '_blank');
+};
+

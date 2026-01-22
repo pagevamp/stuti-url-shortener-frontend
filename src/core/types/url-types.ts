@@ -11,6 +11,7 @@ export interface UrlTableTypes {
   updatedAt: string | Date;
   createdAt: string | Date;
   expiresAt: string | Date;
+  encryptedUrl:string;
 }
 
 export interface UrlTableIcons {
@@ -21,6 +22,12 @@ export interface UrlTableIcons {
 
 export interface UrlTableHeadProps {
   field?: SortFields;
+  type?: string;
+  children?: React.ReactElement | React.ReactNode;
+}
+
+export interface UrlTableCellProps {
+  date?: string | Date;
   type?: string;
   children?: React.ReactElement | React.ReactNode;
 }
